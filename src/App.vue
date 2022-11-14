@@ -1,21 +1,19 @@
 <template>
-  <UserBar />
+  <User-bar />
   <br />
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">로그인</router-link> |
-    <router-link to="/signup">테스트</router-link>
-  </nav>
   <router-view/>
+  <Bottom-Menu />
 </template>
 
 <script>
 import UserBar from '@/components/layout/UserBar.vue'
+import BottomMenu from '@/components/layout/BottomMenu.vue'
 
 export default {
-  name: 'login-view',
+  name: 'App',
   components: {
-    UserBar
+    'User-bar': UserBar,
+    'Bottom-Menu': BottomMenu
   }
 }
 </script>
