@@ -3,17 +3,23 @@
   <br />
   <router-view/>
   <Bottom-Menu />
+  <div style="position:fixed; bottom: 80px; left:20px; color:gray;">
+<GoBackBtn/>
+  </div>
+
 </template>
 
 <script>
 import UserBar from '@/components/layout/UserBar.vue'
 import BottomMenu from '@/components/layout/BottomMenu.vue'
+import GobackBtnVue from '@/components/buttons/GobackBtn.vue'
 
 export default {
   name: 'App',
   components: {
     'User-bar': UserBar,
-    'Bottom-Menu': BottomMenu
+    'Bottom-Menu': BottomMenu,
+    GoBackBtn: GobackBtnVue
   }
 }
 </script>
@@ -25,18 +31,8 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
+  margin:0;
+  width:390px;
+  height:844px;
 }
 </style>

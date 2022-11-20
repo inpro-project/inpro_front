@@ -23,12 +23,12 @@ const routes = [
   {
     path: '/mainmenu',
     name: 'mainmenu',
-    component: () => import(/* webpackChunkName: "login" */ '../views/MainMenuView.vue')
+    component: () => import(/* webpackChunkName: "mainmenu" */ '../views/MainMenuView.vue')
   },
   {
     path: '/userinfo',
     name: 'userinfo',
-    component: () => import(/* webpackChunkName: "userinfo" */ '../views/UserInfoView.vue')
+    component: () => import(/* webpackChunkName: "userinfo" */ '../views/UserinfoView.vue')
   },
   {
     path: '/disctest',
@@ -38,17 +38,22 @@ const routes = [
   {
     path: '/chatlist',
     name: 'chatlist',
-    component: () => import(/* webpackChunkName: "disctest" */ '../views/ChatListView.vue')
+    component: () => import(/* webpackChunkName: "chatlist" */ '../views/ChatListView.vue')
   },
   {
     path: '/moremenu',
     name: 'moremenu',
-    component: () => import(/* webpackChunkName: "disctest" */ '../views/MoreMenuView.vue')
+    component: () => import(/* webpackChunkName: "moremenu" */ '../views/MoreMenuView.vue')
   },
   {
     path: '/fixuserinfo',
     name: 'fixuserinfo',
-    component: () => import(/* webpackChunkName: "disctest" */ '../views/FixUserInfoView.vue')
+    component: () => import(/* webpackChunkName: "fixuserinfo" */ '../views/FixUserInfoView.vue')
+  },
+  {
+    path: '/disctestresult',
+    name: 'disctestresult',
+    component: () => import(/* webpackChunkName: "disctestresult" */ '../views/DisctestResultView.vue')
   }
 
 ]
