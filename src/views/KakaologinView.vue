@@ -13,7 +13,7 @@ export default {
   methods: {
     Kakaologin () {
       window.location.replace(
-        'https://kauth.kakao.com/oauth/authorize?client_id=1eea242a89e16153efc722c1bdd366c4&redirect_uri=http://localhost:8081/signup/kakaologin&response_type=code'
+        'https://kauth.kakao.com/oauth/authorize?client_id=' + process.env.VUE_APP_KAKAO_CLIENT_ID + '&redirect_uri=' + process.env.VUE_APP_KAKAO_REDIRECT_URI + '&response_type=code'
       )
     }
   }
