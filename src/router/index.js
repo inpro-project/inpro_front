@@ -21,11 +21,6 @@ const routes = [
     component: () => import(/* webpackChunkName: "signup" */ '../views/signupView.vue')
   },
   {
-    path: '/login',
-    name: 'loginview',
-    component: () => import(/* webpackChunkName: "login" */ '../views/loginView.vue')
-  },
-  {
     path: '/userinfo',
     name: 'userinfo',
     component: () => import(/* webpackChunkName: "userinfo" */ '../views/userinfoView.vue')
@@ -34,6 +29,21 @@ const routes = [
     path: '/disctest',
     name: 'disctest',
     component: () => import(/* webpackChunkName: "disctest" */ '../views/disctestView.vue')
+  },
+  {
+    path: '/chatRoom/list',
+    name: 'ChatRoomListView',
+    component: () => import(/* webpackChunkName: "ChatRoomList" */ '../views/chat/ChatRoomListView.vue')
+  },
+  {
+    path: '/chatRoom/chat',
+    name: 'ChatRoomView',
+    component: () => import(/* webpackChunkName: "ChatRoomList" */ '../views/chat/ChatRoomView.vue')
+  },
+  {
+    path: '/kakao/login',
+    name: 'loginView',
+    component: () => import(/* webpackChunkName: "loginView" */ '../views/loginView.vue')
   }
 
 ]
