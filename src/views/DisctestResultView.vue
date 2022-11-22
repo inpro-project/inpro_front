@@ -1,17 +1,21 @@
 <template>
+  <br/>
       <div class="inner" style="width: 80%">
       <p style="text-align:left; font-size:20px;">
-        나의 DISC는?
+        나의 DISC는? {{ userDiscIdx }}
       </p>
       </div>
       <hr style="border:solid 1px gray">
     <br/>
+    <div class= test>
+      {{userDiscIdx}}
+    </div>
     <div class="progressFull">
       <div class="progress">
   <div class="progress-bar" role="progressbar" style="background-color: #e93423; width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">D</div>
-  <div class="progress-bar" role="progressbar" style="background-color: #ed8232; width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">I</div>
-  <div class="progress-bar" role="progressbar" style="background-color: #e9ee4c; color: black; width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">S</div>
-  <div class="progress-bar" role="progressbar" style="background-color: #76f64b; color:black; width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">C</div>
+  <div class="progress-bar" role="progressbar" style="background-color: #ed8232; width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">I</div>
+  <div class="progress-bar" role="progressbar" style="background-color: #e9ee4c; color: black; width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">S</div>
+  <div class="progress-bar" role="progressbar" style="background-color: #76f64b; color:black; width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">C</div>
 </div>
     </div>
     <br/>
@@ -87,14 +91,12 @@
 </div>
 <br/>
 <br/>
-    <div>
-      <button class="btn" type="submit" style="background-color: #4a60d4; color: white;" @click='getData()'>결과받기</button>
-    </div>
+<router-link to="/mainmenu">
+  <button class="btn" type="submit" style="background-color: #4a60d4; color: white;">메인화면으로 가기</button>
+</router-link>
     <br/>
     <br/>
-    <ul>
-      <li v-for="(row,i) in items" :key="'result_table_'+ i">{{row}}</li>
-    </ul>
+    <br/>
     <br/>
     <br/>
     <br/>
@@ -102,8 +104,28 @@
 
 <script>
 
+import axios from 'axios'
+
 export default {
+  data () {
+    return {
+    }
+  },
   methods: {
+    getData () {
+      axios
+        .get('http://prod.inpro-server.shop:9000/app/user-discs', { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
+        .then(res => {
+          this.discs = res.data
+          console.log(res)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
+  },
+  created () {
+    this.getData()
   }
 }
 </script>
