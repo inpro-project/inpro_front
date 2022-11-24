@@ -36,21 +36,6 @@ const routes = [
     component: () => import(/* webpackChunkName: "disctest" */ '../views/DisctestView.vue')
   },
   {
-    path: '/chatRoom/list',
-    name: 'ChatRoomListView',
-    component: () => import(/* webpackChunkName: "ChatRoomList" */ '../views/chat/ChatRoomListView.vue')
-  },
-  {
-    path: '/chatRoom/chat',
-    name: 'ChatRoomView',
-    component: () => import(/* webpackChunkName: "ChatRoomList" */ '../views/chat/ChatRoomView.vue')
-  },
-  {
-    path: '/kakao/login',
-    name: 'loginView',
-    component: () => import(/* webpackChunkName: "loginView" */ '../views/loginView.vue')
-  },
-  {
     path: '/chatlist',
     name: 'chatlist',
     component: () => import(/* webpackChunkName: "chatlist" */ '../views/ChatListView.vue')
@@ -69,6 +54,36 @@ const routes = [
     path: '/disctestresult',
     name: 'disctestresult',
     component: () => import(/* webpackChunkName: "disctestresult" */ '../views/DisctestResultView.vue')
+  },
+  {
+    path: '/fixworklist',
+    name: 'fixworklist',
+    component: () => import(/* webpackChunkName: "fixworklist" */ '../views/FixWorkListView.vue')
+  },
+  {
+    path: '/fixwinlist',
+    name: 'fixwinlist',
+    component: () => import(/* webpackChunkName: "fixwinlist" */ '../views/FixWinListView.vue')
+  },
+  {
+    path: '/fixurllist',
+    name: 'fixurllist',
+    component: () => import(/* webpackChunkName: "fixurllist" */ '../views/FixUrlListView.vue')
+  },
+  {
+    path: '/worklist',
+    name: 'worklist',
+    component: () => import(/* webpackChunkName: "fixworklist" */ '../views/WorkListView.vue')
+  },
+  {
+    path: '/winlist',
+    name: 'winlist',
+    component: () => import(/* webpackChunkName: "fixwinlist" */ '../views/WinListView.vue')
+  },
+  {
+    path: '/urllist',
+    name: 'urllist',
+    component: () => import(/* webpackChunkName: "fixurllist" */ '../views/UrlListView.vue')
   }
 
 ]
