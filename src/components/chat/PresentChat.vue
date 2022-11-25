@@ -1,58 +1,83 @@
 <template lang="">
   <div>
     <div
-      v-for="chat,idx in getNewChats"
+      v-for="chat,idx in chatMessages"
       :key="idx"
     >
       <div
-        v-if="getUserId==chat.USER_ID"
+        v-if="idx==0"
+      >
+        <div
+          v-if="getUserId!=chat.userIdx"
+          class="user-box">
+          <span class="box">
+            <img
+              class="profile"
+              :src="this.roomMembers[chat.userIdx].img"
+              alt="img"
+            >
+          </span>
+          <p class="name">{{ roomMembers[chat.userIdx].name }}</p>
+        </div>
+      </div>
+      <div
+        v-else
+      >
+        <div
+          v-if="chatMessages[idx - 1].userIdx!=chat.userIdx"
+        >
+          <div
+            v-if="getUserId!=chat.userIdx"
+            class="user-box">
+            <span class="box">
+              <img
+                class="profile"
+                :src="this.roomMembers[chat.userIdx].img"
+                alt="img"
+              >
+            </span>
+            <p class="name">{{ roomMembers[chat.userIdx].name }}</p>
+          </div>
+        </div>
+      </div>
+      <div
+        v-if="getUserId==chat.userIdx"
         class="my-msg-created-and-isread"
       >
-        <!-- 삭제 보류 -->
-        <!-- <input
-          v-if="chat.DELETED == 0"
-          type="checkbox"
-          class="checkBoxes dpnone"
-          @change="selectedToDelete(chat.CHAT_ID)"
-        > -->
         <div
-          v-if="chat.IS_READ != '' "
-          class="my-msg-isread"
-        />
-        <div
-          v-if="chat.CREATED_AT != '' "
+          v-if="chat.createdAt != '' "
           class="my-msg-created"
         >
-          {{ chat.CREATED_AT }}
+          {{ chat.createdAt.getHours() }}:{{ chat.createdAt.getMinutes() }}
         </div>
         <div
           v-if="chat.MEDIA==0"
           class="my-msg"
         >
           <span>
-            {{ chat.MESSAGE }}
+            {{ chat.message }}
           </span>
         </div>
         <div v-else-if="chat.MEDIA==1">
-          <ChatImages :images="chat.MESSAGE" />
+          <ChatImages :images="chat.message" />
         </div>
         <div v-else-if="chat.MEDIA==2">
           <video
 
             style="width:300px"
-            :src="chat.MESSAGE"
+            :src="chat.message"
             alt=""
             controls
           />
         </div>
       </div>
       <div
-        v-else-if="chat.USER_ID == 'system'"
+        v-else-if="chat.userIdx == 'system'"
         class="system-msg-box"
       >
         <div class="system-msg-divider" />
         <div class="system-msg">
-          {{ chat.MESSAGE }}
+          {{ chat.message }}
         </div>
         <div class="system-msg-divider" />
       </div>
@@ -77,23 +102,22 @@
                 class="opponent-msg"
               >
                 <span>
-                  {{ chat.MESSAGE }}
+                  {{ chat.message }}
                 </span>
               </div>
               <div v-else-if="chat.MEDIA==1">
-                <ChatImages :images="chat.MESSAGE" />
+                <!-- <ChatImages :images="chat.message" /> -->
               </div>
               <div v-else-if="chat.MEDIA==2">
                 <video
-
                   style="width:300px"
-                  :src="chat.MESSAGE"
+                  :src="chat.message"
                   alt=""
                   controls
                 />
               </div>
               <div class="opponent-msg-created">
-                {{ chat.CREATED_AT }}
+                {{ chat.createdAt }}
               </div>
             </div>
           </div>
@@ -105,97 +129,86 @@
               class="opponent-msg"
             >
               <span>
-                {{ chat.MESSAGE }}
+                {{ chat.message }}
               </span>
             </div>
             <div v-else-if="chat.MEDIA==1">
-              <ChatImages :images="chat.MESSAGE" />
+              <!-- <ChatImages :images="chat.message" /> -->
             </div>
             <div v-else-if="chat.MEDIA==2">
               <video
 
                 style="width:300px"
-                :src="chat.MESSAGE"
+                :src="chat.message"
                 alt=""
                 controls
               />
             </div>
 
             <div class="opponent-msg-created">
-              {{ chat.CREATED_AT }}
+              {{ chat.createdAt }}
             </div>
           </div>
         </div>
       </div>
     </div>
-    <button @click="craeteMsg();">click</button>
   </div>
 </template>
 <script>
-// import ChatImages from "@/components/chat/ChatImage.vue"
-// import {mapGetters,mapMutations} from "vuex"
 export default {
-
+  name: 'ChatInput',
+  props: ['newMessages', 'userId', 'roomMembers', 'roomId'],
   data () {
     return {
-      getUserId: 1,
-      getNewChats: [
-        {
-          USER_ID: 1,
-          IS_READ: 0,
-          CREATED_AT: '01:11',
-          MEDIA: 0,
-          MESSAGE: '안녕하세요~'
-        },
-        {
-          USER_ID: 2,
-          IS_READ: 1,
-          CREATED_AT: '01:12',
-          MEDIA: 0,
-          MESSAGE: '안녕하세요~'
-        }
-      ]
-    }
-  },
-
-  methods: {
-    craeteMsg () {
-      this.getNewChats.push({
-        USER_ID: 2,
-        IS_READ: 1,
-        CREATED_AT: '01:12',
-        MEDIA: 0,
-        MESSAGE: '안녕하세요~'
-      })
-      console.log(this.getNewChats)
+      getUserId: this.userId,
+      chatMessages: this.newMessages
     }
   }
-
-  // components : {
-  //   ChatImages
-  // },
-  // computed : {
-  // ...mapGetters('Chat',['getChats','getUserId','getNewChats','getDelChatList','getOpponentAvatar','getOpponentSiteName','getSocket']),
-  // },
-  // async updated(){
-  //   const chatBox = document.querySelector('.chat-container')
-  //   chatBox.scrollIntoView(false);
-  // },
-  // methods : {
-  //   ...mapMutations('Chat',['addDelChatList','addNewChats']),
-  //   selectedToDelete(chatId){
-  //     const index = this.getDelChatList.indexOf(chatId)
-  //     if (index != -1){
-  //       this.getDelChatList.splice(index,1)
-  //     } else {
-  //       this.addDelChatList(chatId)
-  //     }
-  //   },
-
-  // },
 }
 </script>
 <style lang="scss" scoped>
+.print-time{
+  display: flex;
+  flex-basis: 100%;
+  align-items: center;
+  color: rgba(0, 0, 0, 0.35);
+  font-size: 12px;
+  margin: 8px 0px;
+}
+
+.print-time::before,
+.print-time::after {
+  content: "";
+  flex-grow: 1;
+  background: rgba(0, 0, 0, 0.35);
+  height: 1px;
+  font-size: 0px;
+  line-height: 0px;
+  margin: 0px 16px;
+}
+
+.user-box {
+  align-items : flex-start;
+}
+.box {
+  width: 30px;
+  height: 30px;
+  border-radius: 70%;
+  overflow: hidden;
+  float: left;
+}
+.profile {
+  width: 30px;
+  height: 100%;
+  object-fit: cover;
+}
+
+.name {
+  position: relative;
+  top: 5px;
+  left: 5px;
+  text-align: left;
+}
 
 .dpnone {
   display: none;
