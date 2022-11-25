@@ -601,7 +601,7 @@ export default {
       const data = { goodList: this.goodList, badList: this.badList }
       console.log(data)
       axios
-        .post(process.env.VUE_APP_API_BASE_URL + '/app/user-discs', JSON.stringify(data), { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
+        .post(process.env.VUE_APP_API_BASE_URL + '/app/user-discs', JSON.stringify(data), { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
         .then(res => {
           console.log(res.data.result)
         })

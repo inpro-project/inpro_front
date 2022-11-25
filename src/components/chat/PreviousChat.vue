@@ -190,7 +190,7 @@ export default {
   methods: {
     getPreviousChat () {
       axios
-        .get(process.env.VUE_APP_API_BASE_URL + '/chat/room/enter/' + this.roomId + '/' + String(0), { headers: { Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
+        .get(process.env.VUE_APP_API_BASE_URL + '/chat/room/enter/' + this.roomId + '/' + String(0), { headers: { Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
         .then(res => {
           const previousChatMessages = []
           for (const curResponse of res.data.result) {
@@ -214,7 +214,7 @@ export default {
     },
     getMorePreviousChat () {
       axios
-        .get(process.env.VUE_APP_API_BASE_URL + '/chat/room/enter/' + this.roomId + '/' + String(this.chatMessages[0].messageIdx), { headers: { Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
+        .get(process.env.VUE_APP_API_BASE_URL + '/chat/room/enter/' + this.roomId + '/' + String(this.chatMessages[0].messageIdx), { headers: { Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
         .then(res => {
           const previousChatMessages = []
           for (const curResponse of res.data.result) {
