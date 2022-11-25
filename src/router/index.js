@@ -41,7 +41,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "ChatRoomList" */ '../views/chat/ChatRoomListView.vue')
   },
   {
-    path: '/chatRoom/chat',
+    path: '/chatRoom/chat/:roomId',
     name: 'ChatRoomView',
     component: () => import(/* webpackChunkName: "ChatRoomList" */ '../views/chat/ChatRoomView.vue')
   },
