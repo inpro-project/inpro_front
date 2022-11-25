@@ -209,7 +209,7 @@
   <!--유저태그삭제-->
 
   <button class="usertag" v-for="(userTag, idx) in userTags" :key="{idx}" type="button" style="float:left; margin-left:8px; height:38.8px" @click="deletetag(idx)">
-    <div style="position:relative; top:3px; width:90%; font-size:14px;">{{userTag.name}}</div>
+    <div style="position:relative; top:3px; width:90%; font-size:14px;">{{userTags[idx].name}}</div>
     <div style="position:relative; width:10%; bottom:22px; float:right">x</div>
   </button>
 
@@ -303,10 +303,7 @@ export default {
     deletetag (idx) {
       console.log(idx)
       this.userTags.splice(idx, 1)
-      this.inputtagidx = this.userTags[idx].userTagIdx
-      console.log(this.inputtagidx)
-      console.log(this.userTags[0])
-      this.inputtagidx = ''
+      console.log(this.userTags)
       // 태그 새로 등록할 때 userTagIdx와 이름을 어떻게 전달하는지 물어볼 필요 O
       // 삭제할 때 마지막 콘솔 창에 오류 존재 --> 해결 필요
       // 태그 삭제 (api) 추가 필요
