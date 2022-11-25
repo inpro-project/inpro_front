@@ -31,6 +31,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "userinfo" */ '../views/UserinfoView.vue')
   },
   {
+    path: '/otheruserinfo',
+    name: 'otheruserinfo',
+    component: () => import(/* webpackChunkName: "userinfo" */ '../views/OtherUserinfoView.vue')
+  },
+  {
     path: '/disctest',
     name: 'disctest',
     component: () => import(/* webpackChunkName: "disctest" */ '../views/DisctestView.vue')
@@ -50,11 +55,7 @@ const routes = [
     name: 'loginView',
     component: () => import(/* webpackChunkName: "loginView" */ '../views/loginView.vue')
   },
-  {
-    path: '/chatlist',
-    name: 'chatlist',
-    component: () => import(/* webpackChunkName: "chatlist" */ '../views/ChatListView.vue')
-  },
+  {,
   {
     path: '/moremenu',
     name: 'moremenu',
@@ -69,6 +70,51 @@ const routes = [
     path: '/disctestresult',
     name: 'disctestresult',
     component: () => import(/* webpackChunkName: "disctestresult" */ '../views/DisctestResultView.vue')
+  },
+  {
+    path: '/fixworklist',
+    name: 'fixworklist',
+    component: () => import(/* webpackChunkName: "fixworklist" */ '../views/FixWorkListView.vue')
+  },
+  {
+    path: '/fixwinlist',
+    name: 'fixwinlist',
+    component: () => import(/* webpackChunkName: "fixwinlist" */ '../views/FixWinListView.vue')
+  },
+  {
+    path: '/fixurllist',
+    name: 'fixurllist',
+    component: () => import(/* webpackChunkName: "fixurllist" */ '../views/FixUrlListView.vue')
+  },
+  {
+    path: '/worklist',
+    name: 'worklist',
+    component: () => import(/* webpackChunkName: "fixworklist" */ '../views/WorkListView.vue')
+  },
+  {
+    path: '/winlist',
+    name: 'winlist',
+    component: () => import(/* webpackChunkName: "fixwinlist" */ '../views/WinListView.vue')
+  },
+  {
+    path: '/urllist',
+    name: 'urllist',
+    component: () => import(/* webpackChunkName: "fixurllist" */ '../views/UrlListView.vue')
+  },
+  {
+    path: '/filtering',
+    name: 'filtering',
+    component: () => import(/* webpackChunkName: "fixurllist" */ '../views/FilteringView.vue')
+  },
+  {
+    path: '/showperson',
+    name: 'showperson',
+    component: () => import(/* webpackChunkName: "fixurllist" */ '../views/ShowPersonView.vue')
+  },
+  {
+    path: '/showteam',
+    name: 'showteam',
+    component: () => import(/* webpackChunkName: "fixurllist" */ '../views/ShowTeamView.vue')
   }
 
 ]

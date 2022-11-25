@@ -1,9 +1,11 @@
 <template>
   <User-bar />
   <br />
+  <br/>
+  <br/>
   <router-view/>
   <Bottom-Menu />
-  <div style="position:fixed; bottom: 80px; left:20px; color:gray;">
+  <div style="position:fixed; bottom: 80px; left:20px;">
 <GoBackBtn/>
   </div>
 

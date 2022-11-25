@@ -1,4 +1,5 @@
 <template>
+  <br/>
         <div class="outer">
       <div class=" inner" style="width: 80%">
         <div class="text-wrap">
@@ -529,6 +530,9 @@
 </router-link>
     <br/>
     <br/>
+    <button class="btn" type="submit" style="background-color: #4a60d4; color: white;" @click='fixIdx'>데이터바꾸기</button>
+    <br/>
+    <br/>
     <hr style="border:solid 1px gray">
     <p style="text-align:center; font-size:18px; color:gray">DISC란?</p>
     <div class="outer">
@@ -597,9 +601,9 @@ export default {
       const data = { goodList: this.goodList, badList: this.badList }
       console.log(data)
       axios
-        .post('http://prod.inpro-server.shop:9000/app/user-discs', JSON.stringify(data), { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2NjcyMjgxOTAsImV4cCI6MTY2ODY5OTQxOX0.mMs3bMGg6fliTD0Pjx7QApDw-XQMenbZQY-QEDPlCPw' } })
+        .post('http://prod.inpro-server.shop:9000/app/user-discs', JSON.stringify(data), { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
         .then(res => {
-          console.log(res)
+          console.log(res.data.result)
         })
         .catch(err => {
           console.log(err)

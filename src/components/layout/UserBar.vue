@@ -16,8 +16,6 @@ export default {
 
 <style scoped>
 .navbar{
-  justify-content: center;
-  position: relative;
   width:390px;
   height:70px;
 }
@@ -28,9 +26,10 @@ export default {
 
 }
 .container-fluid {
-  position:absolute;
-  top:9%;
+  position:relative;
+  left:140px;
   width:120px;
+  bottom:3px;
   color: #4a60d4;
 }
 </style>

@@ -230,7 +230,8 @@ export default {
   methods: {
     getuserinfodata () {
       axios
-        .get('http://prod.inpro-server.shop:9000/app/profiles', { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
+      // get api 뒤에 useridx 값은 나중에 조회할 user의 idx값을 삽입해야함 --> /user-profile/:userIdx
+        .get('http://prod.inpro-server.shop:9000/app/user-profiles/2', { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
         .then(res => {
           this.userTags = res.data.result.userTags
           this.userName = res.data.result.nickName
