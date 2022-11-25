@@ -603,7 +603,8 @@ export default {
       axios
         .post(process.env.VUE_APP_API_BASE_URL + '/app/user-discs', JSON.stringify(data), { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
         .then(res => {
-          console.log(res.data.result)
+          const userDiscIdx = res.data.result.userDiscIdx
+          this.$router.push({ name: 'disctestresult', params: { userDiscIdx: userDiscIdx } })
         })
         .catch(err => {
           console.log(err)

@@ -66,7 +66,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "fixuserinfo" */ '../views/FixUserInfoView.vue')
   },
   {
-    path: '/disctestresult',
+    path: '/disctestresult/:userDiscIdx',
     name: 'disctestresult',
     component: () => import(/* webpackChunkName: "disctestresult" */ '../views/DisctestResultView.vue')
   },
