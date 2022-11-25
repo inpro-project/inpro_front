@@ -93,9 +93,7 @@ export default {
 <style lang="scss" scoped >
 .msg-box {
   display : flex;
-  margin-left: 24px;
-  margin-right: 24px;
-  margin-top : 32px;
+  margin-top : 20px;
   height: 54px;
   justify-content: space-between;
   .img-info-box {
@@ -124,7 +122,6 @@ export default {
       flex-direction: column;
       justify-content: space-around ;
       text-align: left;
-      width: 50vw;
       .site-name{
         font-size : 16px;
         font-weight: 700;
@@ -145,7 +142,6 @@ export default {
       text-align: end;
       font-size : 12px;
       color : #737373;
-
     }
     .is-unread {
       width: 24px;
