@@ -45,7 +45,7 @@
       이름
     </div>
     <div class="input-group mb-3" style="float:center; position: relative; left:6px; width:75%;">
-      <input type="text" class="form-control" placeholder="이름" aria-label="Recipient's username" aria-describedby="button-addon2" @change="changeName">
+      <input type="text" class="form-control" placeholder="이름" :value="this.userName" aria-label="Recipient's username" aria-describedby="button-addon2" @change="changeName">
     </div>
   </div>
         <!-- 연령대수정 -->
@@ -147,7 +147,7 @@
           &nbsp;&nbsp;&nbsp;&nbsp;한줄소개
         </div>
         <div class="input-group" style="position:relative; width:90%; margin-top:10px;">
-<textarea class="form-control" aria-label="With textarea" style="height:50px; position:relative; left:20px;" @change="changeComment"></textarea>
+<textarea class="form-control" :value="this.comment" aria-label="With textarea" style="height:50px; position:relative; left:20px;" @change="changeComment"></textarea>
 </div>
         <br/>
 
@@ -223,11 +223,9 @@
   <button class="btn btn-outline-secondary" type="button" id="button-addon2" style="position:relative; left:45px" @click="posttag">등록</button>
 </div>
 
-        <router-link to="/userinfo">
-          <div class=" inner" style="width:100%;">
+    <div class=" inner" style="width:100%;">
     </div>
     <button class="btn" type="submit" style="border-radius:15px; font-size:18px; background-color: #4a60d4; color: white; width:50%; height:50px;" @click="CompleteFix">수정 완료</button>
-  </router-link>
   <br/>
   <br/>
   <br/>
@@ -338,10 +336,21 @@ export default {
           console.log(err)
         })
     },
-    patchuserinfodata () {
-      // 수정완료버튼 누르면 패치 구현필요 (api)
-      axios
-        .patch(process.env.VUE_APP_API_BASE_URL + '/app/profiles', { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+    async patchuserinfodata () {
+      const formData = new FormData()
+      const patchUserReq = {
+        nickName: this.userName,
+        comment: this.comment,
+        region: this.region,
+        occupation: this.occupation,
+        interests: this.interests
+      }
+      const json = JSON.stringify(patchUserReq)
+      const blob = new Blob([json], { type: 'application/json' })
+      formData.append('profileImg', this.file)
+      formData.append('patchUserReq', blob)
+      await axios
+        .patch(process.env.VUE_APP_API_BASE_URL + '/app/profiles', formData, { headers: { 'Content-Type': 'multipart/form-data', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
         .then(res => {
           console.log(res)
         })
@@ -349,9 +358,9 @@ export default {
           console.log(err)
         })
     },
-    CompleteFix () {
-      this.userinfo = { ageRange: this.ageRange, comment: this.comment, discFeatures: this.discFeatures, gender: this.gender, interests: this.interests, nickName: this.userName, occupation: this.occupation, region: this.region, repPortfolio: this.repPortfolio, searchDisc: this.searchDisc, userDisc: this.userDisc, userImgUrl: this.userImgUrl, userTags: this.userTags }
-      console.log(this.userinfo)
+    async CompleteFix () {
+      await this.patchuserinfodata()
+      this.$router.push({ name: 'userinfo' })
     }
   },
   created () {
