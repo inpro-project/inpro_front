@@ -41,10 +41,21 @@ const routes = [
     component: () => import(/* webpackChunkName: "disctest" */ '../views/DisctestView.vue')
   },
   {
-    path: '/chatlist',
-    name: 'chatlist',
-    component: () => import(/* webpackChunkName: "chatlist" */ '../views/ChatListView.vue')
+    path: '/chatRoom/list',
+    name: 'ChatRoomListView',
+    component: () => import(/* webpackChunkName: "ChatRoomList" */ '../views/chat/ChatRoomListView.vue')
   },
+  {
+    path: '/chatRoom/chat/:roomId',
+    name: 'ChatRoomView',
+    component: () => import(/* webpackChunkName: "ChatRoomList" */ '../views/chat/ChatRoomView.vue')
+  },
+  {
+    path: '/kakao/login',
+    name: 'loginView',
+    component: () => import(/* webpackChunkName: "loginView" */ '../views/loginView.vue')
+  },
+  {,
   {
     path: '/moremenu',
     name: 'moremenu',

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h5>123123</h5>
     <div>
       <ChatRoomList />
     </div>
