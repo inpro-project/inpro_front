@@ -41,7 +41,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "disctest" */ '../views/DisctestView.vue')
   },
   {
-    path: '/chatRoom/list',
+    path: '/chatlist',
     name: 'ChatRoomListView',
     component: () => import(/* webpackChunkName: "ChatRoomList" */ '../views/chat/ChatRoomListView.vue')
   },
