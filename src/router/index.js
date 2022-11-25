@@ -55,7 +55,6 @@ const routes = [
     name: 'loginView',
     component: () => import(/* webpackChunkName: "loginView" */ '../views/loginView.vue')
   },
-  {,
   {
     path: '/moremenu',
     name: 'moremenu',
