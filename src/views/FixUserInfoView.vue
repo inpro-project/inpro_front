@@ -1,58 +1,59 @@
 <template>
   <div class="outer ms-3">
-    <div class=" inner" style="width: 90%">
+    <div class="inner" style="width: 90%">
       <div class="text-wrap me-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="gray" class="bi bi-pencil-fill" viewBox="0 0 16 16">
-  <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
-</svg>
-    </div>
-    <div class="text-wrap">
-      <p style="text-align:left; position:relative; top:4px; left:4px; font-size:20px;  color:gray">
-   나의 프로필 수정
-    </p>
+          <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+        </svg>
+      </div>
+      <div class="text-wrap">
+        <p style="text-align:left; position:relative; top:4px; left:4px; font-size:20px;  color:gray">
+          나의 프로필 수정
+        </p>
+      </div>
     </div>
   </div>
+  <div v-if="userImgUrl.length==0"
+    class="border10 me-2" style="margin-left:10px">
+    <div class="profileicon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="gray" class="bi bi-person-bounding-box" viewBox="0 0 16 16">
+        <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z"/>
+        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+      </svg>
     </div>
-    <div class="border10 me-2" style="margin-left:10px">
-      <div class="profileicon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="gray" class="bi bi-person-bounding-box" viewBox="0 0 16 16">
-    <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z"/>
-    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-  </svg>
-      </div>
-      <div class="profileicontext">
-        프로필 사진 업로드
-      </div>
+    <div class="profileicontext">
+      프로필 사진 업로드
     </div>
-    <div class="border10">
+  </div>
+  <div v-else>
+    <img class="border10 me-2" style="margin-left:10px" :src="userImgUrl">
+  </div>
+  <div class="border10">
+  </div>
+
+  <!-- 프로필사진수정 -->
+  <div class="name" style="float:left; position: relative; left:20px; margin-right: 35px; margin-top:10px; margin-bottom:10px; font-size: 16px; color:gray;">
+    프로필사진
+  </div>
+  <div class="input-group" style="width:92%; margin-bottom:20px">
+    <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" style="position:relative; left:4%;" @change="changeProfile">
+    <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04"  style="position:relative; left:4%;" @click="postimg()">수정</button>
+  </div>
+<!-- 이름수정 -->
+  <div class="fixname" style="height:30px; margin-bottom: 20px;">
+    <div class="name" style="float:left; position: relative; top:5px; left:20px; margin-right: 35px; font-size: 16px; color:gray;">
+      이름
     </div>
-
-    <!-- 프로필사진수정 -->
-    <div class="name" style="float:left; position: relative; left:20px; margin-right: 35px; margin-top:10px; margin-bottom:10px; font-size: 16px; color:gray;">
-          프로필사진
-        </div>
-    <div class="input-group" style="width:92%; margin-bottom:20px">
-  <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" style="position:relative; left:4%;" @change="changeProfile">
-  <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04"  style="position:relative; left:4%;" @click="postimg()">수정</button>
-</div>
-
-     <!-- 이름수정 -->
-        <div class="fixname" style="height:30px; margin-bottom: 20px;">
-          <div class="name" style="float:left; position: relative; top:5px; left:20px; margin-right: 35px; font-size: 16px; color:gray;">
-          이름
-        </div>
-        <div class="input-group mb-3" style="float:center; position: relative; left:6px; width:75%;">
-  <input type="text" class="form-control" placeholder="이름" aria-label="Recipient's username" aria-describedby="button-addon2" @change="changeName">
-
-</div>
-        </div>
-
+    <div class="input-group mb-3" style="float:center; position: relative; left:6px; width:75%;">
+      <input type="text" class="form-control" placeholder="이름" :value="this.userName" aria-label="Recipient's username" aria-describedby="button-addon2" @change="changeName">
+    </div>
+  </div>
         <!-- 연령대수정 -->
-        <div class="fixage" style="height:30px; margin-bottom: 20px;">
-          <div class="age" style="float:left; position: relative; top:5px; left:20px; margin-right: 35px; font-size: 16px; color:gray;">
-          연령대
-        </div>
-        <div class="input-group" style="float:center; position: relative; left:10px; width:70%;">
+  <div class="fixage" style="height:30px; margin-bottom: 20px;">
+    <div class="age" style="float:left; position: relative; top:5px; left:20px; margin-right: 35px; font-size: 16px; color:gray;">
+      연령대
+    </div>
+      <div class="input-group" style="float:center; position: relative; left:10px; width:70%;">
   <select class="form-select" id="ageinputGroupSelect" aria-label="Example select with button addon" @change="changeAgeRange">
     <option selected>{{ageRange}}</option>
     <option value="10대">10대</option>
@@ -146,7 +147,7 @@
           &nbsp;&nbsp;&nbsp;&nbsp;한줄소개
         </div>
         <div class="input-group" style="position:relative; width:90%; margin-top:10px;">
-<textarea class="form-control" aria-label="With textarea" style="height:50px; position:relative; left:20px;" @change="changeComment"></textarea>
+<textarea class="form-control" :value="this.comment" aria-label="With textarea" style="height:50px; position:relative; left:20px;" @change="changeComment"></textarea>
 </div>
         <br/>
 
@@ -222,11 +223,9 @@
   <button class="btn btn-outline-secondary" type="button" id="button-addon2" style="position:relative; left:45px" @click="posttag">등록</button>
 </div>
 
-        <router-link to="/userinfo">
-          <div class=" inner" style="width:100%;">
+    <div class=" inner" style="width:100%;">
     </div>
     <button class="btn" type="submit" style="border-radius:15px; font-size:18px; background-color: #4a60d4; color: white; width:50%; height:50px;" @click="CompleteFix">수정 완료</button>
-  </router-link>
   <br/>
   <br/>
   <br/>
@@ -234,7 +233,7 @@
   <br/>
   <br/>
   <br/>
-  </template>
+</template>
 
 <script>
 import axios from 'axios'
@@ -261,12 +260,14 @@ export default {
       userDisc: [],
       inputtagtext: '', // 유저태그에 들어갈 텍스트
       inputtagidx: '', // 유저태그에 들어갈 인덱스
-      newinputtag: {}
+      newinputtag: {},
+      file: {}
     }
   },
   methods: {
     changeProfile (p) {
-      this.userImgUrl = p.target.value
+      this.file = p.target.files[0]
+      this.userImgUrl = URL.createObjectURL(this.file)
     },
     changeName (n) {
       this.userName = n.target.value
@@ -310,7 +311,7 @@ export default {
     },
     getuserinfodata () {
       axios
-        .get('http://prod.inpro-server.shop:9000/app/profiles', { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
+        .get(process.env.VUE_APP_API_BASE_URL + '/app/profiles', { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
         .then(res => {
           this.userTags = res.data.result.userTags
           this.userName = res.data.result.nickName
@@ -335,10 +336,21 @@ export default {
           console.log(err)
         })
     },
-    patchuserinfodata () {
-      // 수정완료버튼 누르면 패치 구현필요 (api)
-      axios
-        .patch('http://prod.inpro-server.shop:9000/app/profiles', { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
+    async patchuserinfodata () {
+      const formData = new FormData()
+      const patchUserReq = {
+        nickName: this.userName,
+        comment: this.comment,
+        region: this.region,
+        occupation: this.occupation,
+        interests: this.interests
+      }
+      const json = JSON.stringify(patchUserReq)
+      const blob = new Blob([json], { type: 'application/json' })
+      formData.append('profileImg', this.file)
+      formData.append('patchUserReq', blob)
+      await axios
+        .patch(process.env.VUE_APP_API_BASE_URL + '/app/profiles', formData, { headers: { 'Content-Type': 'multipart/form-data', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
         .then(res => {
           console.log(res)
         })
@@ -346,9 +358,9 @@ export default {
           console.log(err)
         })
     },
-    CompleteFix () {
-      this.userinfo = { ageRange: this.ageRange, comment: this.comment, discFeatures: this.discFeatures, gender: this.gender, interests: this.interests, nickName: this.userName, occupation: this.occupation, region: this.region, repPortfolio: this.repPortfolio, searchDisc: this.searchDisc, userDisc: this.userDisc, userImgUrl: this.userImgUrl, userTags: this.userTags }
-      console.log(this.userinfo)
+    async CompleteFix () {
+      await this.patchuserinfodata()
+      this.$router.push({ name: 'userinfo' })
     }
   },
   created () {

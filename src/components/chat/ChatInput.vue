@@ -24,7 +24,7 @@ export default {
   },
   methods: {
     sendMessage () {
-      this.stompClient.send('/app/chat/message', JSON.stringify({ type: 'TALK', roomId: this.roomId, sender: this.userId, message: this.message }), { Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' })
+      this.stompClient.send('/app/chat/message', JSON.stringify({ type: 'TALK', roomId: this.roomId, sender: this.userId, message: this.message }), { Authorization: process.env.VUE_APP_ACCESS_TOKEN })
       this.message = ''
     }
   }

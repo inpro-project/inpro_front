@@ -41,7 +41,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "disctest" */ '../views/DisctestView.vue')
   },
   {
-    path: '/chatRoom/list',
+    path: '/chatlist',
     name: 'ChatRoomListView',
     component: () => import(/* webpackChunkName: "ChatRoomList" */ '../views/chat/ChatRoomListView.vue')
   },
@@ -66,7 +66,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "fixuserinfo" */ '../views/FixUserInfoView.vue')
   },
   {
-    path: '/disctestresult',
+    path: '/disctestresult/:userDiscIdx',
     name: 'disctestresult',
     component: () => import(/* webpackChunkName: "disctestresult" */ '../views/DisctestResultView.vue')
   },
