@@ -18,18 +18,16 @@
   <path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5zm1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0zM1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5z"/>
 </svg></div>
    </div>
-
    <div>
-    <div v-for="(portfolio, i) in portfolios.filter( (p) => p.isRepPortfolio === 'Y')" :key='i' style="border-style:solid; border-width:1px; border-color:gray; border-radius:20px; width: 90%; margin-left:5%; margin-bottom:30px;" @click="deleteRepportfolio(i)">
-      <div style="border:solid; border-radius:10px; border-width:1px; position:relative; left:30px; top:5px; text-align:left; background-color: gray; color:white; width:100px; font-size: 12px;">&nbsp;&nbsp;&nbsp;&nbsp;대표에서 삭제</div>
+    <div v-for="(repportfolio, i) in repportfolios" :key='i' style="border-style:solid; border-width:1px; border-color:gray; border-radius:20px; width: 90%; margin-left:5%; margin-bottom:30px;">
     <div class="repworklist" style="position: relative; top:10px; line-height:40px; left:5%; text-align:center; border-radius: 10px; width:90%; height:40px; background-color:#c0c0c0; font-size:16px; margin-bottom:15px;">
-    {{this.portfolios[i].title}}
+    {{this.repportfolios[i].title}}
    </div>
    <div class="repworklist" style="position: relative; top:10px; line-height:40px; left:5%; text-align:center; border-radius: 10px; width:90%; height:80px; background-color:#c0c0c0; font-size:14px; margin-bottom:15px;">
-    {{this.portfolios[i].content}}
+    {{this.repportfolios[i].content}}
    </div>
    <div class="repworklist" style="position: relative; top:10px; line-height:40px; left:5%; text-align:center; border-radius: 10px; width:90%; height:80px; background-color:#c0c0c0; font-size:14px; margin-bottom:20px;">
-    {{this.portfolios[i].url}}
+    {{this.repportfolios[i].url}}
    </div>
   </div>
    </div>
@@ -93,6 +91,7 @@ import axios from 'axios'
 export default {
   data () {
     return {
+      repportfolios: [],
       portfolios: [],
       isRepPortfolio: [],
       portfolioIdx: '',
@@ -117,6 +116,8 @@ export default {
           }
           console.log(res.data.result)
           console.log(this.isRepPortfolio)
+          this.repportfolios = this.portfolios.filter((p) => { return p.isRepPortfolio === 'Y' })
+          console.log(this.repportfolios)
         })
         .catch(err => {
           console.log(err)
@@ -139,12 +140,17 @@ export default {
       this.newinputworklist = { portfolioIdx: '', title: this.inputportfoliotitles, content: this.inputportfoliocontents, url: this.inputportfoliourls, isRepPortfolio: 'N' }
       this.portfolios.push(this.newinputworklist)
     },
-    deleteRepportfolio (i) {
-      this.portfolios[i].isRepPortfolio = 'N'
-      console.log(this.portfolios)
+    deleteRepportfolio () {
+      for (let j = 0; j < this.portfolios.length; j++) {
+        this.portfolios[j].isRepPortfolio = 'N'
+      }
+      this.repportfolios.splice(0)
     },
     setRepportfolio (i) {
+      this.deleteRepportfolio()
       this.portfolios[i].isRepPortfolio = 'Y'
+      this.repportfolios.push(this.portfolios[i])
+      console.log(this.repportfolios)
       console.log(this.portfolios)
     },
     patchportfolio () {

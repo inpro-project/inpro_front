@@ -20,13 +20,12 @@
    </div>
 
    <div>
-    <div v-for="(portfolio, i) in portfolios.filter( (p) => p.isRepPortfolio === 'Y')" :key='i' style="border-style:solid; border-width:1px; border-color:gray; border-radius:20px; width: 90%; margin-left:5%; margin-bottom:30px;" @click="deleteRepportfolio(i)">
-      <div style="border:solid; border-radius:10px; border-width:1px; position:relative; left:30px; top:5px; text-align:left; background-color: gray; color:white; width:100px; font-size: 12px;">&nbsp;&nbsp;&nbsp;&nbsp;대표에서 삭제</div>
+    <div v-for="(repportfolio, i) in repportfolios.filter( (p) => p.isRepPortfolio === 'Y')" :key='i' style="border-style:solid; border-width:1px; border-color:gray; border-radius:20px; width: 90%; margin-left:5%; margin-bottom:30px;">
     <div class="repworklist" style="position: relative; top:10px; line-height:40px; left:5%; text-align:center; border-radius: 10px; width:90%; height:40px; background-color:#c0c0c0; font-size:18px; margin-bottom:15px;">
-    {{this.portfolios[i].title}}
+    {{this.repportfolios[i].title}}
    </div>
    <div class="repworklist" style="position: relative; top:10px; line-height:40px; left:5%; text-align:center; border-radius: 10px; width:90%; height:40px; background-color:#c0c0c0; font-size:18px; margin-bottom:15px;">
-    {{this.portfolios[i].content}}
+    {{this.repportfolios[i].content}}
    </div>
   </div>
    </div>
@@ -84,6 +83,7 @@ import axios from 'axios'
 export default {
   data () {
     return {
+      repportfolios: [],
       portfolios: [],
       isRepPortfolio: [],
       portfolioIdx: '',
@@ -107,6 +107,8 @@ export default {
           }
           console.log(res.data.result)
           console.log(this.isRepPortfolio)
+          this.repportfolios = this.portfolios.filter((p) => { return p.isRepPortfolio === 'Y' })
+          console.log(this.repportfolios)
         })
         .catch(err => {
           console.log(err)
@@ -126,12 +128,17 @@ export default {
       this.newinputworklist = { portfolioIdx: '', title: this.inputportfoliotitles, content: this.inputportfoliocontents, isRepPortfolio: 'N' }
       this.portfolios.push(this.newinputworklist)
     },
-    deleteRepportfolio (i) {
-      this.portfolios[i].isRepPortfolio = 'N'
-      console.log(this.portfolios)
+    deleteRepportfolio () {
+      for (let j = 0; j < this.portfolios.length; j++) {
+        this.portfolios[j].isRepPortfolio = 'N'
+      }
+      this.repportfolios.splice(0)
     },
     setRepportfolio (i) {
+      this.deleteRepportfolio()
       this.portfolios[i].isRepPortfolio = 'Y'
+      this.repportfolios.push(this.portfolios[i])
+      console.log(this.repportfolios)
       console.log(this.portfolios)
     },
     patchportfolio () {

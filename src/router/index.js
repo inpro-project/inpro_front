@@ -31,6 +31,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "userinfo" */ '../views/UserinfoView.vue')
   },
   {
+    path: '/otheruserinfo',
+    name: 'otheruserinfo',
+    component: () => import(/* webpackChunkName: "userinfo" */ '../views/OtherUserinfoView.vue')
+  },
+  {
     path: '/disctest',
     name: 'disctest',
     component: () => import(/* webpackChunkName: "disctest" */ '../views/DisctestView.vue')
@@ -84,6 +89,21 @@ const routes = [
     path: '/urllist',
     name: 'urllist',
     component: () => import(/* webpackChunkName: "fixurllist" */ '../views/UrlListView.vue')
+  },
+  {
+    path: '/filtering',
+    name: 'filtering',
+    component: () => import(/* webpackChunkName: "fixurllist" */ '../views/FilteringView.vue')
+  },
+  {
+    path: '/showperson',
+    name: 'showperson',
+    component: () => import(/* webpackChunkName: "fixurllist" */ '../views/ShowPersonView.vue')
+  },
+  {
+    path: '/showteam',
+    name: 'showteam',
+    component: () => import(/* webpackChunkName: "fixurllist" */ '../views/ShowTeamView.vue')
   }
 
 ]
