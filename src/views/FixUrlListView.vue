@@ -110,7 +110,7 @@ export default {
     getportfolioinfodata () {
       axios
       // get 속 링크의 useridx값은 카카오 로그인 후 부여받는 useridx 고유값 => http://prod.inpro-server.shop:9000/app/portfolios/:userIdx/:portfoliCategoryIdx
-        .get(process.env.VUE_APP_API_BASE_URL + '/app/portfolios/1/3', { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .get(process.env.VUE_APP_API_BASE_URL + '/app/portfolios/' + process.env.VUE_APP_USER_ID + '/3', { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
         .then(res => {
           this.portfolios = res.data.result
           for (let i = 0; i < res.data.result.length; i++) {

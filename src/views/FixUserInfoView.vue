@@ -234,7 +234,7 @@
   <br/>
   <br/>
   <br/>
-  </template>
+</template>
 
 <script>
 import axios from 'axios'
