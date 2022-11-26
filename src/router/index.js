@@ -31,6 +31,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "userinfo" */ '../views/UserinfoView.vue')
   },
   {
+    path: '/teaminfo',
+    name: 'teaminfo',
+    component: () => import(/* webpackChunkName: "userinfo" */ '../views/TeaminfoView.vue')
+  },
+  {
     path: '/otheruserinfo',
     name: 'otheruserinfo',
     component: () => import(/* webpackChunkName: "userinfo" */ '../views/OtherUserinfoView.vue')
@@ -114,8 +119,48 @@ const routes = [
     path: '/showteam',
     name: 'showteam',
     component: () => import(/* webpackChunkName: "fixurllist" */ '../views/ShowTeamView.vue')
+  },
+  {
+    path: '/memberbox',
+    name: 'memberbox',
+    component: () => import(/* webpackChunkName: "memberbox" */ '../components/layout/MemberBox.vue')
+    // 임시 테스트용 멤버 박스
+  },
+  {
+    path: '/melikeuser',
+    name: 'melikeuser',
+    component: () => import(/* webpackChunkName: "likeinfo" */ '../views/likeinfo/MeLikeUserView.vue')
+  },
+  {
+    path: '/userlikeme',
+    name: 'userlikeinfo',
+    component: () => import(/* webpackChunkName: "likeinfo" */ '../views/likeinfo/UserLikeMeView.vue')
+  },
+  {
+    path: '/matcheduser',
+    name: 'matcheduser',
+    component: () => import(/* webpackChunkName: "likeinfo" */ '../views/likeinfo/MatchedUserView.vue')
+  },
+  {
+    path: '/meliketeam',
+    name: 'meliketeam',
+    component: () => import(/* webpackChunkName: "likeinfo" */ '../views/likeinfo/MeLikeTeamView.vue')
+  },
+  {
+    path: '/matchedteam',
+    name: 'matchedteam',
+    component: () => import(/* webpackChunkName: "likeinfo" */ '../views/likeinfo/MatchedTeamView.vue')
+  },
+  {
+    path: '/teamimade',
+    name: 'teamimade',
+    component: () => import(/* webpackChunkName: "likeinfo" */ '../views/likeinfo/TeamImadeView.vue')
+  },
+  {
+    path: '/maketeam',
+    name: 'maketeam',
+    component: () => import(/* webpackChunkName: "maketeam" */ '../views//MakeTeamView.vue')
   }
-
 ]
 
 const router = createRouter({

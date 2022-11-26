@@ -15,7 +15,6 @@
 </div>
   </div>
 
-  <!--프로필이미지(api)-->
   <div
     v-if="userImgUrl.length==0"
     class="border10 me-2" style="margin-left:10px">
@@ -33,14 +32,14 @@
   <div v-else>
     <img class="border10 me-2" style="margin-left:10px" :src="userImgUrl">
   </div>
-
+  
   <!--disc좌표평면(구현아직X)(api)-->
   <div class="border10">
   </div>
 
   <!--3가지성향대표키워드(api)-->
   <div class="discFeature" v-for="(discFeature, idx) in discFeatures" :key="{idx}">
-  <div class="mytag" style="margin-left:10px">
+  <div class="mytag" style="margin-left:5px; margin-right:5px">
         {{discFeature.feature}}
       </div>
 </div>
@@ -187,7 +186,7 @@
 
 <!--세부 분야 태그 (api)-->
 <div class="userTag" v-for="(userTag, idx) in userTags" :key="{idx}">
-  <div class="usertag" style="margin-left:10px">
+  <div class="usertag" style="margin-left:5px; margin-right:5px">
         {{userTag.name}}
       </div>
 </div>
@@ -232,6 +231,7 @@ export default {
       axios
         .get(process.env.VUE_APP_API_BASE_URL + '/app/profiles', { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
         .then(res => {
+          console.log(res.data)
           this.userTags = res.data.result.userTags
           this.userName = res.data.result.nickName
           this.gender = res.data.result.gender
@@ -246,7 +246,6 @@ export default {
           this.title1 = this.repPortfolio[0].title
           this.title2 = this.repPortfolio[1].title
           this.title3 = this.repPortfolio[2].title
-          console.log(res.data)
         })
         .catch(err => {
           console.log(err)
