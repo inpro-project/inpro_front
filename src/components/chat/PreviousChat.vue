@@ -1,62 +1,97 @@
 <template lang="">
-  <div>
-    <button @click="getPreviousChat()">more message</button>
-    <div>
-      <button @click="getPreviousChat()">more message</button>
+  <div class="chat-messages">
+    <div
+      v-if="chatMessages.length>0"
+    >
+      <button class="more-message-button" @click="getMorePreviousChat">더보기</button>
     </div>
     <div
-      v-for="chat,idx in getChats"
+      v-for="chat,idx in chatMessages"
       :key="idx"
     >
       <div
-        v-if="getUserId==chat.USER_ID"
+        v-if="idx==0"
+      >
+        <div class="print-time">
+          {{chat.createdAt.getFullYear()}}년 {{chat.createdAt.getMonth() + 1}}월 {{chat.createdAt.getDate()}}일 {{days[chat.createdAt.getDay()]}}
+        </div>
+        <div
+          v-if="getUserId!=chat.userIdx"
+          class="user-box">
+          <span class="box">
+            <img
+              class="profile"
+              :src="this.roomMembers[chat.userIdx].img"
+              alt="img"
+            >
+          </span>
+          <p class="name">{{ roomMembers[chat.userIdx].name }}</p>
+        </div>
+      </div>
+      <div
+        v-else
+      >
+        <div
+          v-if="chatMessages[idx - 1].createdAt.getFullYear()!=chat.createdAt.getFullYear() || chatMessages[idx - 1].createdAt.getMonth()!=chat.createdAt.getMonth() || chatMessages[idx - 1].createdAt.getDate()!=chat.createdAt.getDate()"
+          class="print-time"
+        >
+          {{chat.createdAt.getFullYear()}}년 {{chat.createdAt.getMonth() + 1}}월 {{chat.createdAt.getDate()}}일 {{days[chat.createdAt.getDay()]}}
+        </div>
+        <div
+          v-if="chatMessages[idx - 1].userIdx!=chat.userIdx"
+        >
+          <div
+            v-if="getUserId!=chat.userIdx"
+            class="user-box">
+            <span class="box">
+              <img
+                class="profile"
+                :src="this.roomMembers[chat.userIdx].img"
+                alt="img"
+              >
+            </span>
+            <p class="name">{{ roomMembers[chat.userIdx].name }}</p>
+          </div>
+        </div>
+      </div>
+      <div
+        v-if="getUserId==chat.userIdx"
         class="my-msg-created-and-isread"
       >
-        <!-- 삭제 보류 -->
-        <!-- <input
-          v-if="chat.DELETED == 0"
-          type="checkbox"
-          class="checkBoxes dpnone"
-          @change="selectedToDelete(chat.CHAT_ID)"
-        > -->
         <div
-          v-if="chat.IS_READ != '' "
-          class="my-msg-isread"
-        />
-        <div
-          v-if="chat.CREATED_AT != '' "
+          v-if="chat.createdAt != '' "
           class="my-msg-created"
         >
-          {{ chat.CREATED_AT }}
+          {{ chat.createdAt.getHours() }}:{{ chat.createdAt.getMinutes() }}
         </div>
         <div
           v-if="chat.MEDIA==0"
           class="my-msg"
         >
           <span>
-            {{ chat.MESSAGE }}
+            {{ chat.message }}
           </span>
         </div>
         <div v-else-if="chat.MEDIA==1">
-          <ChatImages :images="chat.MESSAGE" />
+          <ChatImages :images="chat.message" />
         </div>
         <div v-else-if="chat.MEDIA==2">
           <video
 
             style="width:300px"
-            :src="chat.MESSAGE"
+            :src="chat.message"
             alt=""
             controls
           />
         </div>
       </div>
       <div
-        v-else-if="chat.USER_ID == 'system'"
+        v-else-if="chat.userIdx == 'system'"
         class="system-msg-box"
       >
         <div class="system-msg-divider" />
         <div class="system-msg">
-          {{ chat.MESSAGE }}
+          {{ chat.message }}
         </div>
         <div class="system-msg-divider" />
       </div>
@@ -81,24 +116,23 @@
                 class="opponent-msg"
               >
                 <span>
-                  {{ chat.MESSAGE }}
+                  {{ chat.message }}
                 </span>
               </div>
               <div v-else-if="chat.MEDIA==1">
-                <ChatImages :images="chat.MESSAGE" />
+                <ChatImages :images="chat.message" />
               </div>
               <div v-else-if="chat.MEDIA==2">
                 <video
 
                   style="width:300px"
-                  :src="chat.MESSAGE"
+                  :src="chat.message"
                   alt=""
                   controls
                 />
               </div>
-
               <div class="opponent-msg-created">
-                {{ chat.CREATED_AT }}
+                {{ chat.createdAt.getHours() }}:{{ chat.createdAt.getMinutes() }}
               </div>
             </div>
           </div>
@@ -110,23 +144,24 @@
               class="opponent-msg"
             >
               <span>
-                {{ chat.MESSAGE }}
+                {{ chat.message }}
               </span>
             </div>
             <div v-else-if="chat.MEDIA==1">
-              <ChatImages :images="chat.MESSAGE" />
+              <ChatImages :images="chat.message" />
             </div>
             <div v-else-if="chat.MEDIA==2">
               <video
 
                 style="width:300px"
-                :src="chat.MESSAGE"
+                :src="chat.message"
                 alt=""
                 controls
               />
             </div>
+
             <div class="opponent-msg-created">
-              {{ chat.CREATED_AT }}
+              {{ chat.createdAt.getHours() }}:{{ chat.createdAt.getMinutes() }}
             </div>
           </div>
         </div>
@@ -135,14 +170,16 @@
   </div>
 </template>
 <script>
-// import ChatImages from "@/components/chat/ChatImage.vue"
-// import {mapGetters,mapMutations} from "vuex"
 import axios from 'axios'
+
 export default {
+  name: 'PreviousChat',
+  props: ['userId', 'roomMembers', 'roomId'],
   data () {
     return {
-      getUserId: 1,
-      getChats: []
+      getUserId: this.userId,
+      chatMessages: [],
+      days: ['일', '월', '화', '수', '목', '금', '토']
     }
   },
 
@@ -153,69 +190,56 @@ export default {
   methods: {
     getPreviousChat () {
       axios
-        .get(process.env.VUE_APP_API_BASE_URL + '/chat/room/enter/1/0', { headers: { Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
+        .get(process.env.VUE_APP_API_BASE_URL + '/chat/room/enter/' + this.roomId + '/' + String(0), { headers: { Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
         .then(res => {
-          for (const curRes of res.data.result) {
-            const curChat = {
-              USER_ID: curRes.userIdx,
-              USER_NAME: curRes.nickName,
-              MessageIdx: curRes.chatMessageIdx,
+          const previousChatMessages = []
+          for (const curResponse of res.data.result) {
+            const createdAt = new Date(curResponse.createdAt)
+            const curChatMessage = {
+              userIdx: curResponse.userIdx,
+              name: curResponse.nickName,
+              messageIdx: curResponse.chatMessageIdx,
               IS_READ: 0,
-              CREATED_AT: '01:11',
+              createdAt: createdAt,
               MEDIA: 0,
-              MESSAGE: curRes.chatMessage
+              message: curResponse.chatMessage
             }
-            this.getChats.push(curChat)
+            previousChatMessages.push(curChatMessage)
           }
+          this.chatMessages = previousChatMessages.concat(this.chatMessages)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    getMorePreviousChat () {
+      axios
+        .get(process.env.VUE_APP_API_BASE_URL + '/chat/room/enter/' + this.roomId + '/' + String(this.chatMessages[0].messageIdx), { headers: { Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .then(res => {
+          const previousChatMessages = []
+          for (const curResponse of res.data.result) {
+            const createdAt = new Date(curResponse.createdAt)
+            const curChatMessage = {
+              userIdx: curResponse.userIdx,
+              name: curResponse.nickName,
+              messageIdx: curResponse.chatMessageIdx,
+              IS_READ: 0,
+              createdAt: createdAt,
+              MEDIA: 0,
+              message: curResponse.chatMessage
+            }
+            previousChatMessages.push(curChatMessage)
+          }
+          this.chatMessages = previousChatMessages.concat(this.chatMessages)
         })
         .catch(err => {
           console.log(err)
         })
     }
-
-    // getMorePreviousChat () {
-    //   morePreviousChats = get
-    //   this.getChats = morePreviousChats.concat(this.getChats)
-    // }
   }
-
-  // components : {
-  //   ChatImages
-  // },
-  // computed : {
-  // ...mapGetters('Chat',['getChats','getUserId','getNewChats','getDelChatList','getOpponentAvatar','getOpponentSiteName']),
-  // },
-
-  // methods : {
-  //   ...mapMutations('Chat',['addDelChatList']),
-  //   selectedToDelete(chatId){
-  //     const index = this.getDelChatList.indexOf(chatId)
-  //     if (index != -1){
-  //       this.getDelChatList.splice(index,1)
-  //     } else {
-  //       this.addDelChatList(chatId)
-  //     }
-  //   },
-  //   showSystemDay(day){
-
-  //     var week = [
-  //       '일요일',
-  //       '월요일',
-  //       '화요일',
-  //       '수요일',
-  //       '목요일',
-  //       '금요일',
-  //       '토요일'
-  //       ];
-  //     var dayOfWeek = week[new Date(day).getDay()];
-  //     return `${day.slice(0,4)}년 ${day.slice(5,7)}월 ${day.slice(8,10)}일 ${dayOfWeek}`;
-  //   }
-  // },
-
 }
 </script>
 <style lang="scss" scoped>
-
 .dpnone {
   display: none;
 }
@@ -235,6 +259,45 @@ export default {
     font-size : 12px;
     color : #737373;
   }
+}
+.more-message-button{
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+  padding: 0.5rem 1rem;
+
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 0.5rem;
+  font-weight: 400;
+  text-align: center;
+  text-decoration: none;
+
+  display: inline-block;
+  width: auto;
+
+  border: none;
+  border-radius: 4px;
+}
+
+.print-time{
+  display: flex;
+  flex-basis: 100%;
+  align-items: center;
+  color: rgba(0, 0, 0, 0.35);
+  font-size: 12px;
+  margin: 8px 0px;
+}
+
+.print-time::before,
+.print-time::after {
+  content: "";
+  flex-grow: 1;
+  background: rgba(0, 0, 0, 0.35);
+  height: 1px;
+  font-size: 0px;
+  line-height: 0px;
+  margin: 0px 16px;
 }
 
 .opponent-first-msg-box{
@@ -308,6 +371,10 @@ export default {
     color : white;
     background-color: #00B286;
     border-radius: 8px;
+  }
+  .img-box{
+    width: 10px;
+    height: 10px;
   }
 }
 </style>

@@ -1,43 +1,31 @@
 <template lang="">
-  <div class="input-box">
-    <v-icon
-      class="image-icon"
-      @click="imgBtnClick"
-    >
-      mdi-tooltip-image-outline
-    </v-icon>
-    <div class="for-right-icon-div">
-      <input
-        v-model="text"
-        class="text-input"
-        @keyup.enter="sendText"
-        @input="writing"
-        @focus="gogo"
-      >
-      <v-icon
-        class="search-icon"
-        @click="sendText"
-      >
-        mdi-arrow-up-thin-circle-outline
-      </v-icon>
+  <div>
+    <div class="input-group">
+      <input type="text" class="form-control" v-model="message" v-on:keypress.enter="sendMessage">
+      <div class="input-group-append">
+        <button class="btn btn-primary" type="button" @click="sendMessage">보내기</button>
+      </div>
     </div>
-    <v-file-input
-      id="img"
-      multiple
-      accept="image/jpeg,image/jpg,image/png"
-      style="display : none"
-      @change="uploadImg"
-    />
   </div>
 </template>
 
 <script>
-// import axios from "axios"
-// import {mapGetters,mapActions} from "vuex"
 export default {
+  name: 'ChatInput',
+  props: ['stompClient', 'userId', 'roomId'],
+
   data () {
     return {
-      text: ''
+      socket: null,
+      uid: '',
+      message: '',
+      receivedMessage: []
+    }
+  },
+  methods: {
+    sendMessage () {
+      this.stompClient.send('/app/chat/message', JSON.stringify({ type: 'TALK', roomId: this.roomId, sender: this.userId, message: this.message }), { Authorization: process.env.VUE_APP_ACCESS_TOKEN })
+      this.message = ''
     }
   }
   //   computed : {
@@ -178,10 +166,6 @@ export default {
 
 }
 .search-icon {
-  position: absolute;
-  top : 50%;
-  right : 2%;
-  transform: translateY(-50%);
 }
 
 </style>

@@ -2,20 +2,19 @@
   <br/>
       <div class="inner" style="width: 80%">
       <p style="text-align:left; font-size:20px;">
-        나의 DISC는? {{ userDiscIdx }}
+        나의 DISC는?
       </p>
       </div>
       <hr style="border:solid 1px gray">
     <br/>
     <div class= test>
-      {{userDiscIdx}}
     </div>
     <div class="progressFull">
       <div class="progress">
-  <div class="progress-bar" role="progressbar" style="background-color: #e93423; width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">D</div>
-  <div class="progress-bar" role="progressbar" style="background-color: #ed8232; width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">I</div>
-  <div class="progress-bar" role="progressbar" style="background-color: #e9ee4c; color: black; width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">S</div>
-  <div class="progress-bar" role="progressbar" style="background-color: #76f64b; color:black; width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">C</div>
+  <div class="progress-bar" role="progressbar" :style="setDPercent" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">D</div>
+  <div class="progress-bar" role="progressbar" :style="setIPercent" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">I</div>
+  <div class="progress-bar" role="progressbar" :style="setSPercent" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">S</div>
+  <div class="progress-bar" role="progressbar" :style="setCPercent" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">C</div>
 </div>
     </div>
     <br/>
@@ -25,7 +24,7 @@
       </div>
       <div class="progressD">
         <div class="progress">
-  <div class="progress-bar" role="progressbar" style=" background-color: #e93423; width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+  <div class="progress-bar" role="progressbar" :style="setDPercent" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{discTestResult.dpercent}}%</div>
 </div>
       </div>
       <div class="D">
@@ -43,7 +42,7 @@
       </div>
       <div class="progressI">
         <div class="progress">
-  <div class="progress-bar" role="progressbar" style="background-color: #ed8232; width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+  <div class="progress-bar" role="progressbar" :style="setIPercent" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{discTestResult.ipercent}}%</div>
 </div>
       </div>
       <div class="I">
@@ -61,7 +60,7 @@
       </div>
       <div class="progressS">
         <div class="progress">
-  <div class="progress-bar" role="progressbar" style="background-color: #e9ee4c; color: black; width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+  <div class="progress-bar" role="progressbar" :style="setSPercent" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{discTestResult.spercent}}%</div>
 </div>
       </div>
       <div class="S">
@@ -79,7 +78,7 @@
       </div>
       <div class="progressC">
         <div class="progress">
-  <div class="progress-bar" role="progressbar" style=" background-color: #76f64b; color:black; width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+  <div class="progress-bar" role="progressbar" :style="setCPercent" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{discTestResult.cpercent}}%</div>
 </div>
       </div>
       <div class="C">
@@ -109,19 +108,50 @@ import axios from 'axios'
 export default {
   data () {
     return {
+      discTestResult: {}
     }
   },
   methods: {
     getData () {
+      const userDiscIdx = this.$route.params.userDiscIdx
       axios
-        .get('http://prod.inpro-server.shop:9000/app/user-discs', { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
+        .get(process.env.VUE_APP_API_BASE_URL + '/app/user-discs/' + userDiscIdx, { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
         .then(res => {
-          this.discs = res.data
-          console.log(res)
+          this.discTestResult = res.data.result
         })
         .catch(err => {
           console.log(err)
         })
+    }
+  },
+  computed: {
+    setDPercent () {
+      return {
+        'background-color': '#e93423',
+        color: 'black',
+        width: String(this.discTestResult.dpercent) + '%'
+      }
+    },
+    setIPercent () {
+      return {
+        'background-color': '#ed8232',
+        color: 'black',
+        width: String(this.discTestResult.ipercent) + '%'
+      }
+    },
+    setSPercent () {
+      return {
+        'background-color': '#e9ee4c',
+        color: 'black',
+        width: String(this.discTestResult.spercent) + '%'
+      }
+    },
+    setCPercent () {
+      return {
+        'background-color': '#76f64b',
+        color: 'black',
+        width: String(this.discTestResult.cpercent) + '%'
+      }
     }
   },
   created () {

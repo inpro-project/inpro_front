@@ -15,11 +15,24 @@
 </div>
   </div>
 
-  <!--프로필이미지(api)-->
-  <div>
-   <img class="border10 me-2" :src= "userImgUrl" style="margin-left:10px">
+  <div
+    v-if="userImgUrl.length==0"
+    class="border10 me-2" style="margin-left:10px">
+    <div class="profileicon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="gray" class="bi bi-person-bounding-box" viewBox="0 0 16 16">
+        <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z"/>
+        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+      </svg>
+    </div>
+    <div class="profileicontext">
+      프로필 사진 업로드
+    </div>
   </div>
 
+  <div v-else>
+    <img class="border10 me-2" style="margin-left:10px" :src="userImgUrl">
+  </div>
+  
   <!--disc좌표평면(구현아직X)(api)-->
   <div class="border10">
   </div>
@@ -216,7 +229,7 @@ export default {
   methods: {
     getuserinfodata () {
       axios
-        .get('http://prod.inpro-server.shop:9000/app/profiles', { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
+        .get(process.env.VUE_APP_API_BASE_URL + '/app/profiles', { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
         .then(res => {
           console.log(res.data)
           this.userTags = res.data.result.userTags
