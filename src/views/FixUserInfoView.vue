@@ -110,7 +110,6 @@
     <option value="부산">부산</option>
     <option value="제주">제주</option>
   </select>
-
 </div>
 </div>
 
@@ -208,7 +207,7 @@
 
   <!--유저태그삭제-->
 
-  <button class="usertag" v-for="(userTag, idx) in userTags" :key="{idx}" type="button" style="float:left; margin-left:8px; height:38.8px" @click="deletetag(idx)">
+  <button class="usertag" v-for="(userTag, idx) in userTags" :key="{idx}" type="button" style="float:left; margin-left:5px; margin-right:5px; height:38.8px" @click="deletetag(idx)">
     <div style="position:relative; top:3px; width:90%; font-size:14px;">{{userTags[idx].name}}</div>
     <div style="position:relative; width:10%; bottom:22px; float:right">x</div>
   </button>
