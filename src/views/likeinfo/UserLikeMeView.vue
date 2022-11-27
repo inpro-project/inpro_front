@@ -1,4 +1,18 @@
 <template>
+  <div class="outer ms-3">
+  <div class=" inner" style="width: 90%">
+    <div class="text-wrap me-2 mt-2">
+      <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="gray" class="bi bi-person-fill" viewBox="0 0 16 16">
+  <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+</svg>
+  </div>
+  <div class="text-wrap">
+    <p style="text-align:left; position:relative; top:4px; left:4px; font-size:20px;  color:gray">
+ 나를 Like한 유저
+  </p>
+  </div>
+</div>
+  </div>
   <div v-for="(liking, idx) in likings" :key="idx">
     <router-link to="/otheruserinfo">
     <button type="button" style="margin-top:10px; margin-bottom:10px; border-style:solid; border-radius:10px; background-color:#c0c0c0; border-width:0px; height:80px; width:90%" @click="gotoprofile">
@@ -77,6 +91,15 @@ export default {
 </script>
 
 <style scoped>
+.outer{
+  text-align: left;
+}
+.inner{
+  display: inline-block;
+}
+.text-wrap{
+  display: inline-block;
+}
 .upperitems{
   text-align: center;
   margin-inline: 5px;

@@ -1,4 +1,20 @@
 <template>
+  <div class="outer ms-3 mt-2">
+  <div class=" inner" style="width: 90%">
+    <div class="text-wrap me-2 mt-2">
+      <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="gray" class="bi bi-people-fill" viewBox="0 0 16 16">
+  <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+  <path fill-rule="evenodd" d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z"/>
+  <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
+</svg>
+  </div>
+  <div class="text-wrap">
+    <p style="text-align:left; position:relative; top:4px; left:4px; font-size:20px;  color:gray">
+ 매칭된 팀
+  </p>
+  </div>
+</div>
+  </div>
   <div v-for="(liking, idx) in likings" :key="idx">
     <router-link to="/otherteaminfo">
     <button type="button" style="margin-top:10px; margin-bottom:10px; border-style:solid; border-radius:10px; background-color:#c0c0c0; border-width:0px; height:80px; width:90%">
@@ -70,6 +86,15 @@ export default {
 </script>
 
 <style scoped>
+.outer{
+  text-align: left;
+}
+.inner{
+  display: inline-block;
+}
+.text-wrap{
+  display: inline-block;
+}
 .upperitems{
   text-align: center;
   margin-inline: 5px;

@@ -140,9 +140,10 @@ export default {
     postnewcomment () { // 새로운 댓글 입력 + 나의 정보 입력
       const date = new Date()
       this.year = date.getFullYear() - 2000
-      this.hour = date.getHours() - 12
+      this.hour = date.getHours()
       if (date.getHours() >= 12) {
         this.ampm = '오후'
+        this.hour = date.getHours() - 12
       }
       this.now = this.year + '.' + date.getMonth() + '.' + date.getDate() + ' ' + this.ampm + ' ' + this.hour + ':' + date.getMinutes()
       this.mycomment = { commentIdx: this.commentCount + 1, content: this.content, userIdx: '나의useridx', nickName: this.userName, replys: '', userImgUrl: this.userImgUrl, createdAt: this.now }
@@ -154,9 +155,10 @@ export default {
     postnewreply (idx) { // 새로운 댓글 입력 + 나의 정보 입력
       const date = new Date()
       this.year = date.getFullYear() - 2000
-      this.hour = date.getHours() - 12
+      this.hour = date.getHours()
       if (date.getHours() >= 12) {
         this.ampm = '오후'
+        this.hour = date.getHours() - 12
       }
       this.now = this.year + '.' + date.getMonth() + '.' + date.getDate() + ' ' + this.ampm + ' ' + this.hour + ':' + date.getMinutes()
       this.myreply = { commentIdx: this.commentCount + 1, content: this.content, userIdx: '나의useridx', nickName: this.userName, replys: '', userImgUrl: this.userImgUrl, createdAt: this.now }
