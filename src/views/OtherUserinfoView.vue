@@ -9,7 +9,7 @@
   </div>
   <div class="text-wrap">
     <p style="text-align:left; position:relative; top:4px; left:4px; font-size:20px;  color:gray">
- 나의 프로필
+ 상세 프로필
   </p>
   </div>
 </div>
@@ -187,7 +187,7 @@
 
 <!--세부 분야 태그 (api)-->
 <div class="userTag" v-for="(userTag, idx) in userTags" :key="{idx}">
-  <div class="usertag" style="margin-left:10px">
+  <div class="usertag" style="margin-left:5px; margin-right:5px">
         {{userTag.name}}
       </div>
 </div>
