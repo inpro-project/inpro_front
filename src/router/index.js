@@ -36,6 +36,16 @@ const routes = [
     component: () => import(/* webpackChunkName: "userinfo" */ '../views/TeaminfoView.vue')
   },
   {
+    path: '/otherteaminfo',
+    name: 'otherteaminfo',
+    component: () => import(/* webpackChunkName: "userinfo" */ '../views/OtherTeaminfoView.vue')
+  },
+  {
+    path: '/teamcomment',
+    name: 'teamcomment',
+    component: () => import(/* webpackChunkName: "userinfo" */ '../views/TeamCommentView.vue')
+  },
+  {
     path: '/otheruserinfo',
     name: 'otheruserinfo',
     component: () => import(/* webpackChunkName: "userinfo" */ '../views/OtherUserinfoView.vue')

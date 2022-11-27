@@ -192,11 +192,6 @@
       </div>
 </div>
 
-      <router-link to="/fixuserinfo">
-        <div class=" inner" style="width:100%;">
-  </div>
-  <button class="btn" type="submit" style="border-radius:15px; font-size:18px; background-color: #4a60d4; color: white; width:50%; height:50px;">정보 수정하기</button>
-</router-link>
 <br/>
 <br/>
 <br/>

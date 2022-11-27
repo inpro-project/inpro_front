@@ -525,12 +525,9 @@
     <br/>
     <br/>
     <br/>
-    <router-link to="/disctestresult">
   <button class="btn" type="submit" style="background-color: #4a60d4; color: white;" @click='pushItem()'>결과 확인하러 가기</button>
-</router-link>
     <br/>
     <br/>
-    <button class="btn" type="submit" style="background-color: #4a60d4; color: white;" @click='fixIdx'>데이터바꾸기</button>
     <br/>
     <br/>
     <hr style="border:solid 1px gray">

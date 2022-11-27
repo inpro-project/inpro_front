@@ -16,7 +16,7 @@
   </div>
 
   <div>
- <!--유형, 분야, 모집중-->
+ <!--유형, 분야-->
  <div class="discFeature">
     <div class="mytag" style="margin-left:5px; margin-right:5px">
         {{type}}
@@ -150,13 +150,6 @@
 </button>
 </router-link>
 </div>
-      <br/>
-
-      <router-link to="/fixuserinfo">
-        <div class=" inner" style="width:100%;">
-  </div>
-  <button class="btn" type="submit" style="border-radius:15px; font-size:18px; background-color: #4a60d4; color: white; width:50%; height:50px;" @click="postnewteam">정보 수정하기</button>
-</router-link>
 <br/>
 <br/>
 <br/>
@@ -200,7 +193,7 @@ export default {
       axios
         .get('http://prod.inpro-server.shop:9000/app/teams/1', { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
         .then(res => {
-          console.log(res.data)
+          console.log(res.data.result)
           this.teamportfolio = res.data.result[0]
           this.commentCount = this.teamportfolio.commentCount
           this.content = this.teamportfolio.content

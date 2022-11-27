@@ -1,5 +1,6 @@
 <template>
   <div v-for="(liking, idx) in likings" :key="idx">
+    <router-link to="/otheruserinfo">
     <button type="button" style="margin-top:10px; margin-bottom:10px; border-style:solid; border-radius:10px; background-color:#c0c0c0; border-width:0px; height:80px; width:90%" @click="gotoprofile">
       <img :src= "memberimgurl[idx]" style="float:left; border-style:solid; border-radius: 10px; background-color: gray; border-width:0px; height:70px; width:70px; position:relative; left:5px;">
   <div style="float:left; position:relative; left:20px;line-height:35px;">
@@ -15,6 +16,7 @@
     </div>
   </div>
   </button>
+</router-link>
   </div>
 
   </template>

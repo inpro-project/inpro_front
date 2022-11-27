@@ -32,7 +32,6 @@
   <div v-else>
     <img class="border10 me-2" style="margin-left:10px" :src="userImgUrl">
   </div>
-  
   <!--disc좌표평면(구현아직X)(api)-->
   <div class="border10">
   </div>

@@ -4,11 +4,8 @@
   <br/>
   <br/>
   <router-view/>
+  <GoBackBtn/>
   <Bottom-Menu />
-  <div style="position:fixed; bottom: 80px; left:20px;">
-<GoBackBtn/>
-  </div>
-
 </template>
 
 <script>
