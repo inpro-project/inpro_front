@@ -336,7 +336,6 @@ export default {
         })
     },
     async patchuserinfodata () {
-      const formData = new FormData()
       const patchUserReq = {
         nickName: this.userName,
         comment: this.comment,
@@ -344,12 +343,21 @@ export default {
         occupation: this.occupation,
         interests: this.interests
       }
-      const json = JSON.stringify(patchUserReq)
-      const blob = new Blob([json], { type: 'application/json' })
-      formData.append('profileImg', this.file)
-      formData.append('patchUserReq', blob)
+      console.log(patchUserReq)
       await axios
-        .patch(process.env.VUE_APP_API_BASE_URL + '/app/profiles', formData, { headers: { 'Content-Type': 'multipart/form-data', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .patch(process.env.VUE_APP_API_BASE_URL + '/app/profiles', JSON.stringify(patchUserReq), { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .then(res => {
+          console.log(res)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    async patchUserImg () {
+      const formData = new FormData()
+      formData.append('profileImg', this.file)
+      await axios
+        .patch(process.env.VUE_APP_API_BASE_URL + '/app/profile-imgs', formData, { headers: { 'Content-Type': 'multipart/form-data', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
         .then(res => {
           console.log(res)
         })
@@ -358,6 +366,9 @@ export default {
         })
     },
     async CompleteFix () {
+      if (this.file != null) {
+        await this.patchUserImg()
+      }
       await this.patchuserinfodata()
       this.$router.push({ name: 'userinfo' })
     }
