@@ -168,7 +168,7 @@
 </div>
       <br/>
 
-      <router-link to="/fixuserinfo">
+      <router-link to="/teamimade">
         <div class=" inner" style="width:100%;">
   </div>
   <button class="btn" type="submit" style="border-radius:15px; font-size:18px; background-color: #4a60d4; color: white; width:50%; height:50px;" @click="postteaminfo">팀 생성하기</button>
