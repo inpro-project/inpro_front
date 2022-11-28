@@ -294,19 +294,27 @@ export default {
       this.newinputtag = { userTagIdx: this.inputtagidx, name: this.inputtagtext }
     },
     posttag () {
-      this.userTags.push(this.newinputtag)
-      console.log(this.userTags)
-      // input 값을 넣어준 inputtagtext를 넣어주기
-      // 버튼 눌렀을 때 태그 추가
-      // tag 등록 (api) 해결 필요
+      const name = this.newinputtag.name
+      axios
+        .post(process.env.VUE_APP_API_BASE_URL + '/app/usertags', null, { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN }, params: { name: name } })
+        .then(res => {
+          this.userTags.push(this.newinputtag)
+          console.log(res)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
     deletetag (idx) {
-      console.log(idx)
-      this.userTags.splice(idx, 1)
-      console.log(this.userTags)
-      // 태그 새로 등록할 때 userTagIdx와 이름을 어떻게 전달하는지 물어볼 필요 O
-      // 삭제할 때 마지막 콘솔 창에 오류 존재 --> 해결 필요
-      // 태그 삭제 (api) 추가 필요
+      axios
+        .delete(process.env.VUE_APP_API_BASE_URL + '/app/usertags/' + this.userTags[idx].userTagIdx, { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .then(res => {
+          this.userTags.splice(idx, 1)
+          console.log(res)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
     getuserinfodata () {
       axios
