@@ -225,11 +225,9 @@
   </button>
 </div>
 <br/>
-      <router-link to="/mainmenu">
           <div class=" inner" style="width:100%;">
     </div>
     <button class="btn" type="submit" style="border-radius:15px; font-size:18px; background-color: #4a60d4; color: white; width:50%; height:50px;" @click="GotoFiltering">선택 완료</button>
-  </router-link>
   <div class=" inner" style="width:100%; height:20px">
     </div>
       <br/>
@@ -237,7 +235,7 @@
       <br/>
       <br/>
       <br/>
-  </template>
+</template>
 
 <script>
 import axios from 'axios'
@@ -401,11 +399,33 @@ export default {
       }
       console.log(this.teaminterestslist)
     },
-    GotoFiltering () {
+    async GotoFiltering () {
       this.inputPersonFilter = { ageRange: toRaw(this.ageRangelist), region: toRaw(this.regionlist), occupation: toRaw(this.occupationlist), interests: toRaw(this.interestslist) }
       console.log(this.inputPersonFilter)
       this.inputTeamFilter = { type: toRaw(this.teamtypelist), region: toRaw(this.teamregionlist), interests: toRaw(this.teaminterestslist) }
       console.log(this.inputPersonFilter)
+
+      await this.updateUserFilters()
+      await this.updateTeamFilters()
+      this.$router.push({ name: 'mainmenu' })
+    },
+    async updateUserFilters () {
+      await axios
+        .post(process.env.VUE_APP_API_BASE_URL + '/app/user-filters', JSON.stringify(this.inputPersonFilter), { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .then(res => {
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    async updateTeamFilters () {
+      await axios
+        .post(process.env.VUE_APP_API_BASE_URL + '/app/team-filters', JSON.stringify(this.inputTeamFilter), { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .then(res => {
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
     deleteage (idx) {
       this.ageRangelist.splice(idx, 1)
