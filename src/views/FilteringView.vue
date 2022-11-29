@@ -240,6 +240,8 @@
 <script>
 import axios from 'axios'
 import { toRaw } from 'vue'
+import VueCookies from 'vue-cookies'
+
 export default {
   data () {
     return {
@@ -264,7 +266,7 @@ export default {
   methods: {
     getpersonfilteringdata () {
       axios
-        .get(process.env.VUE_APP_API_BASE_URL + '/app/user-filters', { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .get(process.env.VUE_APP_API_BASE_URL + '/app/user-filters', { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           console.log(res.data)
           this.getageRangelist = res.data.result.filter((p) => { return p.category === 1 })
@@ -301,7 +303,7 @@ export default {
     },
     getteamfilteringdata () {
       axios
-        .get(process.env.VUE_APP_API_BASE_URL + '/app/team-filters', { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .get(process.env.VUE_APP_API_BASE_URL + '/app/team-filters', { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           console.log(res.data)
           this.getteamtypelist = res.data.result.filter((p) => { return p.category === 1 })
