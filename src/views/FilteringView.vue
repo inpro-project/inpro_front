@@ -279,6 +279,7 @@ export default {
         .get(process.env.VUE_APP_API_BASE_URL + '/app/user-filters', { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
         .then(res => {
           const filters = res.data.result
+          console.log(filters)
           for (const filter of filters) {
             if (filter.category === 1) {
               this.filters.user.age.push(filter)
@@ -300,6 +301,7 @@ export default {
         .get(process.env.VUE_APP_API_BASE_URL + '/app/team-filters', { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
         .then(res => {
           const filters = res.data.result
+          console.log(filters)
           for (const filter of filters) {
             if (filter.category === 1) {
               this.filters.team.type.push(filter)
@@ -364,54 +366,133 @@ export default {
     async GotoFiltering () {
       await this.updateUserFilters()
       await this.updateTeamFilters()
-      this.$router.push({ name: 'mainmenu' })
+      // this.$router.push({ name: 'mainmenu' })
     },
     async updateUserFilters () {
+      const userFilters = {
+        ageRangeDelete: [],
+        ageRangeInsert: [],
+        interestsDelete: [],
+        interestsInsert: [],
+        occupationDelete: [],
+        occupationInsert: [],
+        regionDelete: [],
+        regionInsert: []
+      }
+      for (const curFilter of this.filters.user.age) {
+        if (curFilter.userFilterIdx === undefined) {
+          userFilters.ageRangeInsert.push(curFilter.name)
+        }
+      }
+      for (const curFilter of this.filters.user.interests) {
+        if (curFilter.userFilterIdx === undefined) {
+          userFilters.interestsInsert.push(curFilter.name)
+        }
+      }
+      for (const curFilter of this.filters.user.occupation) {
+        if (curFilter.userFilterIdx === undefined) {
+          userFilters.occupationInsert.push(curFilter.name)
+        }
+      }
+      for (const curFilter of this.filters.user.region) {
+        if (curFilter.userFilterIdx === undefined) {
+          userFilters.regionInsert.push(curFilter.name)
+        }
+      }
+      for (const curFilter of this.deletedFilters.user.age) {
+        userFilters.ageRangeDelete.push(curFilter.userFilterIdx)
+      }
+      for (const curFilter of this.deletedFilters.user.interests) {
+        userFilters.interestsDelete.push(curFilter.userFilterIdx)
+      }
+      for (const curFilter of this.deletedFilters.user.occupation) {
+        userFilters.occupationDelete.push(curFilter.userFilterIdx)
+      }
+      for (const curFilter of this.deletedFilters.user.region) {
+        userFilters.regionDelete.push(curFilter.userFilterIdx)
+      }
+      console.log(userFilters)
       await axios
-        .post(process.env.VUE_APP_API_BASE_URL + '/app/user-filters', JSON.stringify(this.inputPersonFilter), { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .post(process.env.VUE_APP_API_BASE_URL + '/app/user-filters', JSON.stringify(userFilters), { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
         .then(res => {
+          console.log(res)
         })
         .catch(err => {
           console.log(err)
         })
     },
     async updateTeamFilters () {
+      const teamFilters = {
+        typeInsert: [],
+        typeDelete: [],
+        regionInsert: [],
+        regionDelete: [],
+        interestsInsert: [],
+        interestsDelete: []
+      }
+      for (const curFilter of this.filters.team.type) {
+        if (curFilter.teamFilterIdx === undefined) {
+          teamFilters.typeInsert.push(curFilter.name)
+        }
+      }
+      for (const curFilter of this.deletedFilters.team.type) {
+        teamFilters.typeDelete.push(curFilter.teamFilterIdx)
+      }
+
+      for (const curFilter of this.filters.team.region) {
+        if (curFilter.teamFilterIdx === undefined) {
+          teamFilters.regionInsert.push(curFilter.name)
+        }
+      }
+      for (const curFilter of this.deletedFilters.team.region) {
+        teamFilters.regionDelete.push(curFilter.teamFilterIdx)
+      }
+
+      for (const curFilter of this.filters.team.interests) {
+        if (curFilter.teamFilterIdx === undefined) {
+          teamFilters.interestsInsert.push(curFilter.name)
+        }
+      }
+      for (const curFilter of this.deletedFilters.team.interests) {
+        teamFilters.interestsDelete.push(curFilter.teamFilterIdx)
+      }
+
       await axios
-        .post(process.env.VUE_APP_API_BASE_URL + '/app/team-filters', JSON.stringify(this.inputTeamFilter), { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .post(process.env.VUE_APP_API_BASE_URL + '/app/team-filters', JSON.stringify(teamFilters), { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
         .then(res => {
+          console.log(res)
         })
         .catch(err => {
           console.log(err)
         })
     },
+    deleteFilter (matchType, filterType, idx) {
+      const curFilter = this.filters[matchType][filterType][idx]
+      if (curFilter.userFilterIdx !== undefined) {
+        this.deletedFilters[matchType][filterType].push(curFilter)
+      }
+      this.filters[matchType][filterType].splice(idx, 1)
+    },
     deleteage (idx) {
-      this.ageRangelist.splice(idx, 1)
-      console.log(this.ageRangelist)
+      this.deleteFilter('user', 'age', idx)
     },
     deleteoccupation (idx) {
-      console.log(idx)
-      this.occupationlist.splice(idx, 1)
-      console.log(this.occupationlist)
+      this.deleteFilter('user', 'occupation', idx)
     },
     deleteregion (idx) {
-      this.regionlist.splice(idx, 1)
-      console.log(this.regionlist)
+      this.deleteFilter('user', 'region', idx)
     },
     deleteinterests (idx) {
-      this.interestslist.splice(idx, 1)
-      console.log(this.interestslist)
+      this.deleteFilter('user', 'interests', idx)
     },
     deleteteamtype (idx) {
-      this.teamtypelist.splice(idx, 1)
-      console.log(this.teamtypelist)
+      this.deleteFilter('team', 'type', idx)
     },
     deleteteamregion (idx) {
-      this.teamregionlist.splice(idx, 1)
-      console.log(this.teamregionlist)
+      this.deleteFilter('team', 'region', idx)
     },
     deleteteaminterests (idx) {
-      this.teaminterestslist.splice(idx, 1)
-      console.log(this.teaminterestslist)
+      this.deleteFilter('team', 'interests', idx)
     }
   },
   created () {
