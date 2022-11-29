@@ -103,8 +103,8 @@
 </template>
 
 <script>
-
 import axios from 'axios'
+import VueCookies from 'vue-cookies'
 
 export default {
   data () {
@@ -116,7 +116,7 @@ export default {
     getData () {
       const userDiscIdx = this.$route.params.userDiscIdx
       axios
-        .get(process.env.VUE_APP_API_BASE_URL + '/app/user-discs/' + userDiscIdx, { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .get(process.env.VUE_APP_API_BASE_URL + '/app/user-discs/' + userDiscIdx, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           this.discTestResult = res.data.result
         })

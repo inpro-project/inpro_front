@@ -32,6 +32,6 @@ export default {
   color: #2c3e50;
   margin:0;
   width:390px;
-  height:844px;
+  max-height:844px;
 }
 </style>

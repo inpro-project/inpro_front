@@ -206,6 +206,8 @@
 
 <script>
 import axios from 'axios'
+import VueCookies from 'vue-cookies'
+
 export default {
   data () {
     return {
@@ -227,11 +229,12 @@ export default {
   },
   methods: {
     getuserinfodata () {
+      console.log(VueCookies.get('Authorization'))
       axios
-        .get(process.env.VUE_APP_API_BASE_URL + '/app/profiles', { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .get(process.env.VUE_APP_API_BASE_URL + '/app/profiles', { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           console.log(res.data)
-          this.userTags = res.data.result.userTags
+          this.userTags = res.data.result.userTags ? res.data.result.userTags : []
           this.userName = res.data.result.nickName
           this.gender = res.data.result.gender
           this.ageRange = res.data.result.ageRange

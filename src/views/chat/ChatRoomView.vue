@@ -4,10 +4,12 @@
       <div>
         <div class="chat-messages" ref="chatMessage"
         >
+        <div>
           <PreviousChat v-bind:userId="userId" v-bind:roomMembers="roomMembers" v-bind:roomId="roomId" />
           <PresentChat v-bind:newMessages="newMessages" v-bind:userId="userId" v-bind:roomMembers="roomMembers" v-bind:roomId="roomId" />
+          </div>
         </div>
-        <div>
+        <div class="chat-input">
           <ChatInput v-bind:stompClient="stompClient" v-bind:userId="userId" v-bind:roomId="roomId" />
         </div>
       </div>
@@ -21,6 +23,7 @@ import ChatInput from '@/components/chat/ChatInput.vue'
 import Stomp from 'webstomp-client'
 import SockJS from 'sockjs-client'
 import axios from 'axios'
+import VueCookies from 'vue-cookies'
 
 export default {
   components: {
@@ -31,7 +34,7 @@ export default {
     return {
       socket: null,
       stompClient: null,
-      userId: '1',
+      userId: VueCookies.get('userIdx'),
       newMessages: [],
       roomId: '',
       roomMembers: {}
@@ -43,7 +46,7 @@ export default {
     console.log('roomId : ', this.roomId)
     this.socket = new SockJS(process.env.VUE_APP_API_BASE_URL + '/ws/chat')
     this.stompClient = Stomp.over(this.socket)
-    this.stompClient.connect({ Authorization: process.env.VUE_APP_ACCESS_TOKEN }, this.onConnected, this.onError)
+    this.stompClient.connect({ Authorization: VueCookies.get('Authorization') }, this.onConnected, this.onError)
     this.getRoomMembers()
   },
 
@@ -61,16 +64,16 @@ export default {
           MEDIA: 0,
           message: parsedMessage.message
         })
-        this.$refs.chatMessage.scrollTo({ top: this.$refs.chatMessage.scrollHeight + 100, behavior: 'smooth' })
+        setTimeout(() => this.$refs.chatMessage.scrollTo({ top: this.$refs.chatMessage.scrollHeight, behavior: 'smooth' }), 100)
       })
-      this.stompClient.send('/app/chat/message', JSON.stringify({ type: 'ENTER', roomId: this.roomId, sender: this.userId, message: this.message }), { Authorization: process.env.VUE_APP_ACCESS_TOKEN })
+      this.stompClient.send('/app/chat/message', JSON.stringify({ type: 'ENTER', roomId: this.roomId, sender: this.userId, message: this.message }), { Authorization: VueCookies.get('Authorization') })
     },
     onError () {
       console.log('error!')
     },
     getRoomMembers () {
       axios
-        .get(process.env.VUE_APP_API_BASE_URL + '/chat/room/' + this.roomId + '/member', { headers: { Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .get(process.env.VUE_APP_API_BASE_URL + '/chat/room/' + this.roomId + '/member', { headers: { Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           for (const curRes of res.data.result) {
             const roomMember = {
@@ -93,7 +96,8 @@ export default {
 </script>
 <style  scoped>
   .chat-messages {
-    max-height: 670px;
+    position: static;
+    max-height: 385px;
     overflow: auto;
   }
   .chat-wrapper{
@@ -101,5 +105,11 @@ export default {
   }
   .dpnone {
     display: none;
+  }
+  .chat-input {
+    position: absolute;
+    right: 0px;
+    left: 0px;
+    bottom: 70px;
   }
 </style>

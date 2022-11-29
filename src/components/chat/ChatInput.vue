@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import VueCookies from 'vue-cookies'
 export default {
   name: 'ChatInput',
   props: ['stompClient', 'userId', 'roomId'],
@@ -24,7 +25,7 @@ export default {
   },
   methods: {
     sendMessage () {
-      this.stompClient.send('/app/chat/message', JSON.stringify({ type: 'TALK', roomId: this.roomId, sender: this.userId, message: this.message }), { Authorization: process.env.VUE_APP_ACCESS_TOKEN })
+      this.stompClient.send('/app/chat/message', JSON.stringify({ type: 'TALK', roomId: this.roomId, sender: this.userId, message: this.message }), { Authorization: VueCookies.get('Authorization') })
       this.message = ''
     }
   }

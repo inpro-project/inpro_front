@@ -561,10 +561,11 @@
     <br/>
     <br/>
     <br/>
-   </template>
+</template>
 
 <script>
 import axios from 'axios'
+import VueCookies from 'vue-cookies'
 
 export default {
   data () {
@@ -598,7 +599,7 @@ export default {
       const data = { goodList: this.goodList, badList: this.badList }
       console.log(data)
       axios
-        .post(process.env.VUE_APP_API_BASE_URL + '/app/user-discs', JSON.stringify(data), { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .post(process.env.VUE_APP_API_BASE_URL + '/app/user-discs', JSON.stringify(data), { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           const userDiscIdx = res.data.result.userDiscIdx
           this.$router.push({ name: 'disctestresult', params: { userDiscIdx: userDiscIdx } })
