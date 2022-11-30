@@ -28,7 +28,8 @@ export default {
       axios
         .get(process.env.VUE_APP_API_BASE_URL + '/oauth/kakao', { headers: { Authorization: accessToken } })
         .then(res => {
-          VueCookies.set('Authorization', accessToken)
+          VueCookies.set('userIdx', res.data.result.userIdx)
+          VueCookies.set('Authorization', res.data.result.jwt)
         })
         .catch(err => {
           console.log(err)

@@ -24,15 +24,15 @@
       <div class="mytag" style="margin-left:5px; margin-right:5px">
         {{interests}}
       </div>
-      <div class="mytag" style="margin-left:5px; margin-right:5px">
+      <div class="mytag" type="button" style="margin-left:5px; margin-right:5px" @click="changestatus">
         {{status}}
       </div>
 </div>
   </div>
 
-  <!--프로필이미지-->
-  <div class="container2" @drop="onDrop($event)" @dragenter.prevent @dragover.prevent>
-   <img class="border10 me-2" :src= "teamRepUrl" style="margin-left:10px">
+  <!--프로필이미지(api)-->
+  <div>
+   <img class="border10 me-2" :src= "teamImgUrl" style="margin-left:10px">
   </div>
 
   <!--disc좌표평면(구현아직X)(api)-->
@@ -46,15 +46,6 @@
     <div class="input-group" style="width:92%; margin-bottom:20px">
   <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" style="position:relative; left:4%;" @change="changeProfile">
 </div>
-
- <!--등록한 프로필이미지-->
- <div class="container1" v-for="(img, idx) in teamImgUrl" :key="idx" type="button" @click="deleteimg(idx)">
-   <img class="border12" :src= "teamImgUrl[idx]" style="margin-left:7px; margin-bottom: 7px;" draggable="true" @dragstart="startDrag($event, idx)">
-  </div>
-
-  <div class=" inner" style="width:100%; height:10px">
-  </div>
-
      <!-- 이름수정 -->
      <div class="fixname" style="height:30px; margin-bottom: 20px;">
           <div class="name" style="float:left; position: relative; top:5px; left:20px; margin-right: 35px; margin-top: 20px; font-size: 16px; color:gray;">
@@ -67,13 +58,13 @@
         </div>
   <div class=" inner" style="width:100%; height:10px">
   </div>
-        <!--유형수정 -->
+        <!-- 관심분야수정 -->
         <div class="fixinsterest" style="height:30px; margin-bottom: 20px;">
           <div class="interest" style="float:left; position: relative; left:20px; margin-right: 35px; font-size: 16px; color:gray; margin-top: 25px;">
           유형
         </div>
         <div class="input-group" style="float:center; position: relative; left:5px; width:75%;">
-  <select class="form-select" id="interestinputGroupSelect" aria-label="Example select with button addon" style="margin-top: 20px;"  @change="changeType">
+  <select class="form-select" id="interestinputGroupSelect" aria-label="Example select with button addon" style="margin-top: 20px;"  @change="changetype">
     <option selected>{{type}}</option>
     <option value="프로젝트">프로젝트</option>
     <option value="스터디">스터디</option>
@@ -93,7 +84,7 @@
           분야
         </div>
         <div class="input-group" style="float:center; position: relative; left:5px; width:75%;">
-  <select class="form-select" id="interestinputGroupSelect" aria-label="Example select with button addon" style="margin-top: 20px;"  @change="changeInterest">
+  <select class="form-select" id="interestinputGroupSelect" aria-label="Example select with button addon" style="margin-top: 20px;"  @change="changeteaminterests">
     <option selected>{{interests}}</option>
     <option value="경영/사무">경영/사무</option>
     <option value="마케팅/광고/홍보">마케팅/광고/홍보</option>
@@ -152,7 +143,7 @@
           &nbsp;&nbsp;&nbsp;&nbsp;소개
         </div>
         <div class="input-group" style="position:relative; width:90%; margin-top:10px;">
-<textarea class="form-control" aria-label="With textarea" style="height:50px; position:relative; left:20px;" @change="changeComment"></textarea>
+<textarea class="form-control" aria-label="With textarea" style="height:50px; position:relative; left:20px;" @change="changeContent"></textarea>
 </div>
         <br/>
          <!--멤버-->
@@ -201,8 +192,7 @@ export default {
       content: '내용',
       region: '지역',
       status: 'active',
-      teamImgUrl: [], // 초기 이미지 업로드는 방장 사진
-      teamRepUrl: '',
+      teamImgUrl: '', // 초기 이미지 업로드는 방장 사진
       title: '제목',
       type: '유형',
       interests: '분야',
@@ -213,23 +203,16 @@ export default {
       memberagerange: '',
       memberregion: '',
       memberinterests: '',
-      memberoccupation: '',
-      memberuseridx: '',
-      memberx: '',
-      membery: ''
+      memberoccupation: ''
     }
   },
   methods: {
-    getstatusinfo () {
-      this.status = '모집중'
-    },
     getmyinfo () {
-      axios // 멤버에 내 프로필 등록
-        .get('http://prod.inpro-server.shop:9000/app/profiles', { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
+      axios
+        .get(process.env.VUE_APP_API_BASE_URL + '/app/profiles', { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
         .then(res => {
           console.log(res.data)
-          this.teamImgUrl.push(res.data.result.userImgUrl)
-          this.teamRepUrl = this.teamImgUrl[0]
+          this.teamImgUrl = res.data.result.userImgUrl
           this.memberimgurl = res.data.result.userImgUrl
           this.memberagerange = res.data.result.ageRange
           this.memberinterests = res.data.result.interests
@@ -237,9 +220,7 @@ export default {
           this.memberoccupation = res.data.result.occupation
           this.memberregion = res.data.result.region
           this.memberrole = '리더'
-          this.memberx = res.data.result.userDisc[0].x
-          this.membery = res.data.result.userDisc[0].y
-          this.newmembers = { ageRange: this.memberagerange, interests: this.memberinterests, nickName: this.membernickname, occupation: this.memberoccupation, region: this.memberregion, role: this.memberrole, userIdx: '1', userImgUrl: this.memberimgurl, x: this.memberx, y: this.membery }
+          this.newmembers = { ageRange: this.memberagerange, interests: this.memberinterests, nickName: this.membernickname, occupation: this.memberoccupation, region: this.memberregion, role: this.memberrole, userImgUrl: this.memberimgurl }
           this.members.push(this.newmembers)
           console.log(this.members)
           console.log(this.teamImgUrl)
@@ -248,10 +229,43 @@ export default {
           console.log(err)
         })
     },
+    getteaminfo () {
+      const teamIdx = this.$route.params.teamIdx
+      axios
+        .get(process.env.VUE_APP_API_BASE_URL + '/app/teams/' + teamIdx, { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
+        .then(res => {
+          console.log(res.data.result)
+          this.teamportfolio = res.data.result[0]
+          this.commentCount = this.teamportfolio.commentCount
+          this.content = this.teamportfolio.content
+          this.interests = this.teamportfolio.interests
+          this.likeCount = this.teamportfolio.likeCount
+          this.memberCount = this.teamportfolio.memberCount
+          this.members = this.teamportfolio.members
+          this.region = this.teamportfolio.region
+          this.staus = this.teamportfolio.staus
+          this.teamImgUrl = this.teamportfolio.teamImgUrl
+          this.title = this.teamportfolio.title
+          this.type = this.teamportfolio.type
+          this.status = this.teamportfolio.status
+          if (this.status === 'active') {
+            this.status = '모집중'
+          } else if (this.status === 'inactive') {
+            this.status = '모집완료'
+          } else if (this.status === 'finish') {
+            this.status = '활동종료'
+          }
+          console.log(res.data)
+          console.log(this.teamportfolio)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
     changetitle (t) {
       this.title = t.target.value
     },
-    changeType (ty) {
+    changetype (ty) {
       this.type = ty.target.value
     },
     changeOccupation (o) {
@@ -263,37 +277,26 @@ export default {
     changeInterest (i) {
       this.interests = i.target.value
     },
-    changeComment (c) {
-      this.comment = c.target.value
+    changeContentent (c) {
+      this.content = c.target.value
     },
-    changeProfile (p) {
-      this.file = p.target.files[0]
-      this.teamImgUrl.push(URL.createObjectURL(this.file))
+    changeProfile (p) { // 이미지 수정 시 생기는 오류 해결 필요
+      this.teamImgUrl = p.target.value
     },
-    deleteimg (idx) {
-      this.teamImgUrl.splice(idx, 1)
+    changestatus () {
     },
-    postteaminfo () { // 생성하고 post api 들어갈 함수
-      this.newteamportfolio = { title: this.title, type: this.type, content: this.content, interests: this.interests, region: this.region, teamImgUrl: this.teamImgUrl }
+    postimg () {
+      // 이미지 첨부
+    },
+    postteaminfo () {
+      this.newteamportfolio = { commentCount: 0, content: this.content, interests: this.interests, leaderIdx: 1, likeCount: 0, memberCount: 0, members: this.members, region: this.region, status: this.status, teamImgUrl: this.teamImgUrl, title: this.title, type: this.type }
       this.teamportfolio.push(this.newteamportfolio)
       console.log(this.teamportfolio)
-    },
-    startDrag (event, idx) {
-      event.dataTransfer.dropEffect = 'move'
-      event.dataTransfer.effectAllowed = 'move'
-      event.dataTransfer.setData('selectItem', this.teamImgUrl[idx])
-    },
-    onDrop (event) {
-      event.preventDefault()
-      const selectItem = event.dataTransfer.getData('selectItem') // 드래그앤 드롭한 아이템
-      this.teamRepUrl = selectItem
-      console.log(this.teamRepUrl)
     }
   },
   created () {
     // 미리 api에서 조회 데이터 가져옴
     this.getmyinfo()
-    this.getstatusinfo()
   }
 }
 
@@ -322,23 +325,6 @@ export default {
   height: 180px;
 }
 
-.border12{
-  float: left;
-  position: relative;
-  border-style: solid;
-  border-radius: 20px;
-  border-color: #c0c0c0;
-  background-color: #c0c0c0;
-  border-width: 1px;
-  width: 120px;
-  height: 120px;
-  cursor: move;
-}
-
-.nas{
-float:left;
-position: relative;
-}
 .mytag{
     border-style: solid;
   border-radius: 20px;
@@ -354,13 +340,8 @@ position: relative;
   color:white;
 }
 
-.middata{
-  width:30%;
-}
-.middataitem{
-  display: inline-block;
-}
 .upperitems{
   margin-left: 10px;
 }
+
 </style>

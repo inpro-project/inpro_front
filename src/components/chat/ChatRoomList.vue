@@ -48,6 +48,7 @@
 </template>
 <script>
 import axios from 'axios'
+import VueCookies from 'vue-cookies'
 export default {
   data () {
     return {
@@ -62,7 +63,7 @@ export default {
   methods: {
     getChatRooms () {
       axios
-        .get(process.env.VUE_APP_API_BASE_URL + '/chat/rooms', { headers: { Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .get(process.env.VUE_APP_API_BASE_URL + '/chat/rooms', { headers: { Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           console.log(res.data.result)
           console.log(res.data)
@@ -72,7 +73,7 @@ export default {
               IM_ON: false,
               AVATAR_PATH: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/1200px-Vue.js_Logo_2.svg.png',
               SITE_NAME: roomInfo.name,
-              MESSAGE: roomInfo.message,
+              MESSAGE: roomInfo.message ? roomInfo.message : '',
               CREATED_AT: roomInfo.createdAt,
               UNREAD: '0'
             }

@@ -236,6 +236,7 @@
 
 <script>
 import axios from 'axios'
+import VueCookies from 'vue-cookies'
 
 export default {
   data () {
@@ -260,7 +261,7 @@ export default {
       inputtagtext: '', // 유저태그에 들어갈 텍스트
       inputtagidx: '', // 유저태그에 들어갈 인덱스
       newinputtag: {},
-      file: {}
+      file: null
     }
   },
   methods: {
@@ -318,7 +319,7 @@ export default {
     },
     getuserinfodata () {
       axios
-        .get(process.env.VUE_APP_API_BASE_URL + '/app/profiles', { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .get(process.env.VUE_APP_API_BASE_URL + '/app/profiles', { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           this.userTags = res.data.result.userTags
           this.userName = res.data.result.nickName
@@ -353,7 +354,7 @@ export default {
       }
       console.log(patchUserReq)
       await axios
-        .patch(process.env.VUE_APP_API_BASE_URL + '/app/profiles', JSON.stringify(patchUserReq), { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .patch(process.env.VUE_APP_API_BASE_URL + '/app/profiles', JSON.stringify(patchUserReq), { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           console.log(res)
         })
@@ -365,7 +366,7 @@ export default {
       const formData = new FormData()
       formData.append('profileImg', this.file)
       await axios
-        .patch(process.env.VUE_APP_API_BASE_URL + '/app/profile-imgs', formData, { headers: { 'Content-Type': 'multipart/form-data', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .patch(process.env.VUE_APP_API_BASE_URL + '/app/profile-imgs', formData, { headers: { 'Content-Type': 'multipart/form-data', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           console.log(res)
         })

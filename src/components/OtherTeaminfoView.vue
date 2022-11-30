@@ -31,8 +31,21 @@
   </div>
 
   <!--프로필이미지(api)-->
-  <div>
-   <img class="border10 me-2" :src= "teamImgUrl" style="margin-left:10px">
+  <div
+    v-if="teamImgUrl==0"
+    class="border10 me-2" style="margin-left:10px">
+    <div class="profileicon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="gray" class="bi bi-person-bounding-box" viewBox="0 0 16 16">
+        <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z"/>
+        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+      </svg>
+    </div>
+    <div class="profileicontext">
+    </div>
+  </div>
+
+  <div v-else>
+    <img class="border10 me-2" style="margin-left:10px" :src="teamImgUrl">
   </div>
 
   <!--disc좌표평면(구현아직X)(api)-->
@@ -40,7 +53,7 @@
   </div>
 
   <!--이름-->
-      <div class="nas" style="height:30px; margin-top: 20px;">
+      <div class="nas" style="height:max-content; margin-top: 20px;">
         <div class="username fw-bold" style="position: relative; left:20px; margin-right: 35px; font-size: 28px;">
         {{title}}
       </div>
@@ -67,8 +80,7 @@
 
   <!--댓글-->
   <div class="middata">
-    <router-link to="/teamcomment">
-        <div class="middataitem">
+        <div class="middataitem" type="button" @click="gotocomment">
         <div class="location">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="gray" class="bi bi-chat-left-text-fill" viewBox="0 0 16 16">
   <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793V2zm3.5 1a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 2.5a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 2.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5z"/>
@@ -80,7 +92,6 @@
           {{commentCount}}
         </div>
       </div>
-    </router-link>
       </div>
 
        <!--지역-->
@@ -132,8 +143,7 @@
         &nbsp;&nbsp;&nbsp;&nbsp;멤버
       </div>
       <div v-for="(member, idx) in members" :key="idx">
-        <router-link to="/otheruserinfo">
-  <button type="button" style="margin-top:10px; margin-bottom:10px; border-style:solid; border-radius:10px; background-color:#c0c0c0; border-width:0px; height:80px; width:90%" @click="gotoprofile">
+  <button type="button" style="margin-top:10px; margin-bottom:10px; border-style:solid; border-radius:10px; background-color:#c0c0c0; border-width:0px; height:80px; width:90%" @click="gotoprofile(idx)">
     <img :src= "memberimgurl[idx]" style="float:left; border-style:solid; border-radius: 10px; background-color: gray; border-width:0px; height:70px; width:70px; position:relative; left:5px;">
 <div style="float:left; position:relative; left:20px;line-height:35px;">
   <div class="memberitem" style="display:flex;">
@@ -148,7 +158,6 @@
   </div>
 </div>
 </button>
-</router-link>
 </div>
 <br/>
 <br/>
@@ -162,6 +171,7 @@
 <script>
 import axios from 'axios'
 export default {
+  name: 'OtherTeaminfo',
   data () {
     return {
       teamportfolio: [],
@@ -174,7 +184,6 @@ export default {
       memberCount: '',
       members: [],
       region: '',
-      staus: '',
       teamImgUrl: '',
       title: '',
       type: '',
@@ -190,8 +199,9 @@ export default {
   },
   methods: {
     getuserinfodata () {
+      const teamIdx = this.$route.params.teamIdx
       axios
-        .get('http://prod.inpro-server.shop:9000/app/teams/1', { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
+        .get(process.env.VUE_APP_API_BASE_URL + '/app/teams/' + teamIdx, { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
         .then(res => {
           console.log(res.data.result)
           this.teamportfolio = res.data.result[0]
@@ -211,6 +221,8 @@ export default {
             this.status = '모집중'
           } else if (this.status === 'inactive') {
             this.status = '모집완료'
+          } else if (this.status === 'finish') {
+            this.status = '활동종료'
           }
           for (let i = 0; i < this.members.length; i++) {
             this.memberimgurl.push(this.members[i].userImgUrl)
@@ -237,11 +249,17 @@ export default {
           console.log(err)
         })
     },
-    postnewteam () {
-
+    gotoprofile (idx) {
+      const userIdx = this.memberuseridx[idx]
+      this.$router.push({ name: 'otheruserinfo', params: { userIdx: userIdx } })
+    },
+    gotocomment () {
+      const teamIdx = this.$route.params.teamIdx
+      this.$router.push({ name: 'teamcomment', params: { teamIdx: teamIdx } })
     }
   },
   created () {
+    console.log(this.$route)
     // 미리 api에서 조회 데이터 가져옴
     this.getuserinfodata()
   }
@@ -250,6 +268,10 @@ export default {
 </script>
 
 <style scoped>
+.profileicon{
+  position: relative;
+  top:30%;
+}
 .outer{
   text-align: left;
 }
