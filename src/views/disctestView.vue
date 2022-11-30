@@ -597,7 +597,6 @@ export default {
       this.goodList.sort((a, b) => (parseInt(a.discFeatureIdx) > parseInt(b.discFeatureIdx)) ? 1 : -1)
       this.badList.sort((a, b) => (parseInt(a.discFeatureIdx) > parseInt(b.discFeatureIdx)) ? 1 : -1)
       const data = { goodList: this.goodList, badList: this.badList }
-      console.log(data)
       axios
         .post(process.env.VUE_APP_API_BASE_URL + '/app/user-discs', JSON.stringify(data), { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
