@@ -5,7 +5,7 @@
   <div class="about">
     <img src = "@/assets/kakao_login_medium_narrow.png" @click= "login()" />
     <br />
-  </div>
+  </button>
 </template>
 
 <script>

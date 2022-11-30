@@ -15,24 +15,23 @@
 </div>
   </div>
 
-  <!--프로필이미지(api)-->
-  <div class="border10 me-2" style="margin-left:10px">
+  <div
+    v-if="userImgUrl.length==0"
+    class="border10 me-2" style="margin-left:10px">
     <div class="profileicon">
       <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="gray" class="bi bi-person-bounding-box" viewBox="0 0 16 16">
-  <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z"/>
-  <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-</svg>
+        <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z"/>
+        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+      </svg>
     </div>
     <div class="profileicontext">
       프로필 사진 업로드
     </div>
   </div>
 
- <!--프로필이미지(api) 이부분이 오류가 생겨 해결 필요-->
- <!--<div class="border10 me-2" style="margin-left:10px">
-<img src="{{userImgUrl}}">
-</div>
--->
+  <div v-else>
+    <img class="border10 me-2" style="margin-left:10px" :src="userImgUrl">
+  </div>
 
   <!--disc좌표평면(구현아직X)(api)-->
   <div class="border10">
@@ -226,10 +225,12 @@ export default {
   },
   methods: {
     getuserinfodata () {
+      const userIdx = this.$route.params.userIdx
       axios
       // get api 뒤에 useridx 값은 나중에 조회할 user의 idx값을 삽입해야함 --> /user-profile/:userIdx
         .get(process.env.VUE_APP_API_BASE_URL + '/app/user-profiles/' + VueCookies.get('userIdx'), { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
+          console.log(res.data)
           this.userTags = res.data.result.userTags
           this.userName = res.data.result.nickName
           this.gender = res.data.result.gender
@@ -244,7 +245,6 @@ export default {
           this.title1 = this.repPortfolio[0].title
           this.title2 = this.repPortfolio[1].title
           this.title3 = this.repPortfolio[2].title
-          console.log(res.data)
         })
         .catch(err => {
           console.log(err)
@@ -252,6 +252,7 @@ export default {
     }
   },
   created () {
+    console.log(this.$route)
     // 미리 api에서 조회 데이터 가져옴
     this.getuserinfodata()
   }
