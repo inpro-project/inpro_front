@@ -413,7 +413,7 @@ export default {
       }
       console.log(userFilters)
       await axios
-        .post(process.env.VUE_APP_API_BASE_URL + '/app/user-filters', JSON.stringify(userFilters), { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .patch(process.env.VUE_APP_API_BASE_URL + '/app/user-filters', JSON.stringify(userFilters), { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
         .then(res => {
           console.log(res)
         })
@@ -458,7 +458,7 @@ export default {
       }
 
       await axios
-        .post(process.env.VUE_APP_API_BASE_URL + '/app/team-filters', JSON.stringify(teamFilters), { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .patch(process.env.VUE_APP_API_BASE_URL + '/app/team-filters', JSON.stringify(teamFilters), { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
         .then(res => {
           console.log(res)
         })
