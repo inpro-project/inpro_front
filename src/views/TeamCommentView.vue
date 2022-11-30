@@ -18,7 +18,7 @@
     <!--댓글-->
 <div class="accordion" style=" border: solid; border-width:0px;" :id="this.comments[idx].commentIdx">
   <div class="accordion-item" style=" border: solid; border-width:0px">
-    <h2 class="accordion-header" :id="this.comments[idx].commentIdx"> <!--대댓글 data-bd-target="#collapsOne" 분류 작업 필요 => # comments[idx].commentIdx 로 대입 핑요-->
+    <h2 class="accordion-header" :id="this.comments[idx].commentIdx">
         <button class="accordion-button" type="button" data-bs-toggle="collapse" :data-bs-target= "`#collapse${idx}`" aria-expanded="false" aria-controls="collapseOne" style="margin-top:10px; margin-bottom:10px; margin-left:1%; border-style:solid; border-radius:10px; background-color:white; border-width:0px; height:fit-content; width:98%">
             <img :src= "comments[idx].userImgUrl" style="float:left; border-style:solid; border-radius: 30px; background-color: gray; border-width:0px; height:50px; width:50px; position:relative; top:5px; left:10px;">
 <div style="float:left; position:relative; left:20px;line-height:35px;">
@@ -100,13 +100,17 @@ export default {
       now: '',
       ampm: '오전',
       year: '',
-      hour: ''
+      hour: '',
+      mynewcomment: {},
+      parentIdx: '',
+      childTdx: ''
     }
   },
   methods: {
     getcommentinfodata () {
-      axios // 이 부분도 각각 teamidx에 해당하는 댓글 조회가 필요하므로 comments/:teamidx로 값을 넘겨줘야함
-        .get('http://prod.inpro-server.shop:9000/app/comments/1', { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
+      const teamIdx = this.$route.params.teamIdx
+      axios
+        .get(process.env.VUE_APP_API_BASE_URL + '/app/comments/' + teamIdx, { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
         .then(res => {
           console.log(res.data)
           this.comments = res.data.result
@@ -137,7 +141,10 @@ export default {
     inputcomment (p) {
       this.content = p.target.value
     },
-    postnewcomment () { // 새로운 댓글 입력 + 나의 정보 입력
+    async postnewcomment () { // 새로운 댓글 입력
+      const teamIdx = this.$route.params.teamIdx
+      this.parentIdx = 0
+      const mynewcomment = { content: this.content, parentIdx: this.parentIdx, teamIdx: teamIdx }
       const date = new Date()
       this.year = date.getFullYear() - 2000
       this.hour = date.getHours()
@@ -146,13 +153,24 @@ export default {
         this.hour = date.getHours() - 12
       }
       this.now = this.year + '.' + date.getMonth() + '.' + date.getDate() + ' ' + this.ampm + ' ' + this.hour + ':' + date.getMinutes()
-      this.mycomment = { commentIdx: this.commentCount + 1, content: this.content, userIdx: '나의useridx', nickName: this.userName, replys: '', userImgUrl: this.userImgUrl, createdAt: this.now }
+      this.mycomment = { content: this.content, nickName: this.userName, userImgUrl: this.userImgUrl, createdAt: this.now }
       this.comments.push(this.mycomment)
+      await axios
+        .post(process.env.VUE_APP_API_BASE_URL + '/app/comments/', mynewcomment, { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
+        .then(res => {
+          console.log(res.data)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
     inputreply (p) {
       this.content = p.target.value
     },
-    postnewreply (idx) { // 새로운 댓글 입력 + 나의 정보 입력
+    async postnewreply (idx) { // 새로운 대댓글 입력
+      const teamIdx = this.$route.params.teamIdx
+      this.parentIdx = this.comments[idx].commentIdx
+      const mynewcomment = { content: this.content, parentIdx: this.parentIdx, teamIdx: teamIdx }
       const date = new Date()
       this.year = date.getFullYear() - 2000
       this.hour = date.getHours()
@@ -161,8 +179,15 @@ export default {
         this.hour = date.getHours() - 12
       }
       this.now = this.year + '.' + date.getMonth() + '.' + date.getDate() + ' ' + this.ampm + ' ' + this.hour + ':' + date.getMinutes()
-      this.myreply = { commentIdx: this.commentCount + 1, content: this.content, userIdx: '나의useridx', nickName: this.userName, replys: '', userImgUrl: this.userImgUrl, createdAt: this.now }
+      this.myreply = { content: this.content, nickName: this.userName, userImgUrl: this.userImgUrl, createdAt: this.now }
       this.comments[idx].replys.push(this.myreply)
+      await axios
+        .post(process.env.VUE_APP_API_BASE_URL + '/app/comments/', mynewcomment, { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
+        .then(res => {
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   },
   created () {

@@ -1,18 +1,18 @@
 <template>
+    <div id="emptylayout">
   <router-view/>
+</div>
 </template>
 
 <script>
 
 export default {
-  name: 'App',
-  components: {
-  }
+  name: 'App'
 }
 </script>
 
 <style>
-#app {
+.emptylayout {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

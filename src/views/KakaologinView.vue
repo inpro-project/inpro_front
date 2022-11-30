@@ -2,10 +2,10 @@
   <br />
   <br />
   <br />
-  <div class="about">
+  <button type="button" style="border-width:0px; background-color:white; ">
     <img src = "@/assets/kakao_login_medium_narrow.png" @click= "Kakaologin()" />
     <br />
-  </div>
+  </button>
 </template>
 
 <script>

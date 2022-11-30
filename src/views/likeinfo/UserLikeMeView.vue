@@ -14,8 +14,7 @@
 </div>
   </div>
   <div v-for="(liking, idx) in likings" :key="idx">
-    <router-link to="/otheruserinfo">
-    <button type="button" style="margin-top:10px; margin-bottom:10px; border-style:solid; border-radius:10px; background-color:#c0c0c0; border-width:0px; height:80px; width:90%" @click="gotoprofile">
+    <button type="button" style="margin-top:10px; margin-bottom:10px; border-style:solid; border-radius:10px; background-color:#c0c0c0; border-width:0px; height:80px; width:90%" @click="gotoprofile(idx)">
       <img :src= "memberimgurl[idx]" style="float:left; border-style:solid; border-radius: 10px; background-color: gray; border-width:0px; height:70px; width:70px; position:relative; left:5px;">
   <div style="float:left; position:relative; left:20px;line-height:35px;">
     <div class="memberitem" style="display:flex;">
@@ -30,7 +29,6 @@
     </div>
   </div>
   </button>
-</router-link>
   </div>
 
   </template>
@@ -55,7 +53,7 @@ export default {
   methods: {
     getuserinfodata () {
       axios
-        .get('http://prod.inpro-server.shop:9000/app/user-likers', { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
+        .get(process.env.VUE_APP_API_BASE_URL + '/app/user-likers', { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
         .then(res => {
           this.likings = res.data.result
           console.log(this.likings)
@@ -67,7 +65,7 @@ export default {
             this.memberoccupation.push(this.likings[i].occupation)
             this.memberregion.push(this.likings[i].region)
             this.membergender.push(this.likings[i].gender)
-            this.memberlikingidx.push(this.likings[i].likingIdx)
+            this.memberlikingidx.push(this.likings[i].likerIdx)
           }
           console.log(this.memberagerange)
           console.log(this.memberinterests)
@@ -81,6 +79,10 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    gotoprofile (idx) {
+      const userIdx = this.memberlikingidx[idx]
+      this.$router.push({ name: 'userlikemeinfo', params: { userIdx: userIdx } })
     }
   },
   created () {
