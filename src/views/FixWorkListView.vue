@@ -26,7 +26,7 @@
    <div class="repworklist" style="position: relative; top:10px; line-height:40px; left:5%; text-align:center; border-radius: 10px; width:90%; height:80px; background-color:#c0c0c0; font-size:14px; margin-bottom:15px;">
     {{this.repportfolios[i].content}}
    </div>
-   <div class="repworklist" style="position: relative; top:10px; line-height:40px; left:5%; text-align:center; border-radius: 10px; width:90%; height:80px; background-color:#c0c0c0; font-size:14px; margin-bottom:20px;">
+   <div v-if="this.repportfolios[i].url !== ''"  class="repworklist" style="position: relative; top:10px; line-height:40px; left:5%; text-align:center; border-radius: 10px; width:90%; height:80px; background-color:#c0c0c0; font-size:14px; margin-bottom:20px;">
     {{this.repportfolios[i].url}}
    </div>
   </div>
@@ -39,8 +39,8 @@
 <div>
     <div v-for="(portfolio, i) in portfolios" :key='i' style="border-style:solid; border-width:1px; border-color:gray; border-radius:20px; width: 90%; margin-left:5%; margin-bottom:30px;">
       <div style="text-align:start;">
-        <div style="display: inline-block; border:solid; border-radius:10px; border-width:1px; position:relative; left:30px; top:5px; text-align:left; background-color: gray; color:white; width:50px; font-size: 12px;"  @click="deleteportfolio(i)">&nbsp;&nbsp;&nbsp;&nbsp;삭제</div>
-      <div style="display: inline-block; border:solid; border-radius:10px; border-width:1px; position:relative; left:30px; top:5px; text-align:left; background-color: gray; color:white; width:90px; font-size: 12px; margin-left:155px"  @click="setRepportfolio(i)">&nbsp;&nbsp;&nbsp;&nbsp;대표로 설정</div>
+        <div style="display: inline-block; border:solid; border-radius:10px; border-width:1px; position:relative; left:30px; top:5px; text-align:left; background-color: gray; color:white; width:50px; font-size: 12px;"  @click="removePortfolio(portfolio)">&nbsp;&nbsp;&nbsp;&nbsp;삭제</div>
+      <div style="display: inline-block; border:solid; border-radius:10px; border-width:1px; position:relative; left:30px; top:5px; text-align:left; background-color: gray; color:white; width:90px; font-size: 12px; margin-left:155px"  @click="setRepportfolio(portfolio)">&nbsp;&nbsp;&nbsp;&nbsp;대표로 설정</div>
       </div>
     <div class="repworklist" style="position: relative; top:10px; line-height:40px; left:5%; text-align:center; border-radius: 10px; width:90%; height:40px; background-color:#c0c0c0; font-size:16px; margin-bottom:15px;">
     {{this.portfolios[i].title}}
@@ -48,7 +48,7 @@
    <div class="repworklist" style="position: relative; top:10px; line-height:40px; left:5%; text-align:center; border-radius: 10px; width:90%; height:80px; background-color:#c0c0c0; font-size:14px; margin-bottom:15px;">
     {{this.portfolios[i].content}}
    </div>
-   <div class="repworklist" style="position: relative; top:10px; line-height:40px; left:5%; text-align:center; border-radius: 10px; width:90%; height:80px; background-color:#c0c0c0; font-size:14px; margin-bottom:20px;">
+   <div v-if="this.portfolios[i].url !== ''" class="repworklist" style="position: relative; top:10px; line-height:40px; left:5%; text-align:center; border-radius: 10px; width:90%; height:80px; background-color:#c0c0c0; font-size:14px; margin-bottom:20px;">
     {{this.portfolios[i].url}}
    </div>
   </div>
@@ -69,7 +69,7 @@
 <div class="input-group mb-3" style="width:80%">
   <input type="text1" class="form-control" placeholder="url" aria-label="portfoliourl" aria-describedby="button-addon2" style="position:relative; left:45px;" @change="inputportfoliourl">
 </div>
-<button style="border:solid; border-radius:10px; border-width:0px; background-color:gray; color:white; width:50%; height:30px" @click="postportfolio">URL 등록</button>
+<button style="border:solid; border-radius:10px; border-width:0px; background-color:gray; color:white; width:50%; height:30px" @click="addPortfolio">URL 등록</button>
 
         </div>
 
@@ -88,6 +88,8 @@
 
 <script>
 import axios from 'axios'
+import VueCookies from 'vue-cookies'
+
 export default {
   data () {
     return {
@@ -108,24 +110,24 @@ export default {
     getportfolioinfodata () {
       axios
       // get 속 링크의 useridx값은 카카오 로그인 후 부여받는 useridx 고유값 => http://prod.inpro-server.shop:9000/app/portfolios/:userIdx/:portfoliCategoryIdx
-        .get(process.env.VUE_APP_API_BASE_URL + '/app/portfolios/' + process.env.VUE_APP_USER_ID + '/1', { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .get(process.env.VUE_APP_API_BASE_URL + '/app/portfolios/' + VueCookies.get('userIdx') + '/1', { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           this.portfolios = res.data.result
-          for (let i = 0; i < res.data.result.length; i++) {
-            this.isRepPortfolio[i] = res.data.result[i].isRepPortfolio
+          console.log(this.portfolios)
+          for (let i = 0; i < this.portfolios.length; i++) {
+            if (this.portfolios[i].isRepPortfolio === 'Y') {
+              this.repportfolios.push(this.portfolios[i])
+            }
           }
-          console.log(res.data.result)
-          console.log(this.isRepPortfolio)
-          this.repportfolios = this.portfolios.filter((p) => { return p.isRepPortfolio === 'Y' })
           console.log(this.repportfolios)
         })
         .catch(err => {
           console.log(err)
         })
     },
-    deleteportfolio (i) {
-      this.portfolios.splice(i, 1)
-      console.log(this.portfolios)
+    async removePortfolio (portfolio) {
+      await this.deletePortfolio(portfolio)
+      this.$router.go({ name: 'fixworklist' })
     },
     inputportfoliotitle (t) { // input에 입력된 값을 inputtagtext로 넣어주기
       this.inputportfoliotitles = t.target.value
@@ -136,24 +138,63 @@ export default {
     inputportfoliourl (u) { // input에 입력된 값을 inputtagtext로 넣어주기
       this.inputportfoliourls = u.target.value
     },
-    postportfolio () {
-      this.newinputworklist = { portfolioIdx: '', title: this.inputportfoliotitles, content: this.inputportfoliocontents, url: this.inputportfoliourls, isRepPortfolio: 'N' }
-      this.portfolios.push(this.newinputworklist)
+    async addPortfolio () {
+      const portfolio = { title: this.inputportfoliotitles, content: this.inputportfoliocontents, url: this.inputportfoliourls }
+      await this.postPortfolio(portfolio)
+      this.$router.go({ name: 'fixworklist' })
     },
-    deleteRepportfolio () {
-      for (let j = 0; j < this.portfolios.length; j++) {
-        this.portfolios[j].isRepPortfolio = 'N'
+    async setRepportfolio (portfolio) {
+      if (this.repportfolios.length > 0) {
+        this.repportfolios[0].isRepPortfolio = 'N'
+        await this.patchPortfolio(this.repportfolios[0])
       }
-      this.repportfolios.splice(0)
+      portfolio.isRepPortfolio = 'Y'
+      await this.patchPortfolio(portfolio)
+      this.$router.go({ name: 'fixworklist' })
     },
-    setRepportfolio (i) {
-      this.deleteRepportfolio()
-      this.portfolios[i].isRepPortfolio = 'Y'
-      this.repportfolios.push(this.portfolios[i])
-      console.log(this.repportfolios)
-      console.log(this.portfolios)
+    postPortfolio (portfolio) {
+      const data = {
+        title: portfolio.title,
+        content: portfolio.content,
+        url: portfolio.url
+      }
+      axios
+        .post(process.env.VUE_APP_API_BASE_URL + '/app/portfolios/1', JSON.stringify(data), { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .then(res => {
+          console.log(res)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      // 수정 완료 버튼 누르면 포트폴리오 수정 (패치) --> api 사용
     },
-    patchportfolio () {
+    deletePortfolio (portfolio) {
+      axios
+        .delete(process.env.VUE_APP_API_BASE_URL + '/app/portfolios/' + portfolio.portfolioIdx, { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .then(res => {
+          console.log(res)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      // 수정 완료 버튼 누르면 포트폴리오 수정 (패치) --> api 사용
+    },
+    patchPortfolio (portfolio) {
+      const data = {
+        title: portfolio.title,
+        content: portfolio.content,
+        url: portfolio.url,
+        isRepPortfolio: portfolio.isRepPortfolio
+      }
+      console.log(data)
+      axios
+        .patch(process.env.VUE_APP_API_BASE_URL + '/app/portfolios/' + portfolio.portfolioIdx, JSON.stringify(data), { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .then(res => {
+          console.log(res)
+        })
+        .catch(err => {
+          console.log(err)
+        })
       // 수정 완료 버튼 누르면 포트폴리오 수정 (패치) --> api 사용
     }
   },

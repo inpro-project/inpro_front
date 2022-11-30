@@ -30,9 +30,9 @@
 </div>
   </div>
 
-  <!--프로필이미지(api)-->
-  <div>
-   <img class="border10 me-2" :src= "teamImgUrl" style="margin-left:10px">
+  <!--프로필이미지-->
+  <div class="container2" @drop="onDrop($event)" @dragenter.prevent @dragover.prevent>
+   <img class="border10 me-2" :src= "teamRepUrl" style="margin-left:10px">
   </div>
 
   <!--disc좌표평면(구현아직X)(api)-->
@@ -45,27 +45,35 @@
         </div>
     <div class="input-group" style="width:92%; margin-bottom:20px">
   <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" style="position:relative; left:4%;" @change="changeProfile">
-  <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04"  style="position:relative; left:4%;" @click="postimg()">수정</button>
 </div>
+
+ <!--등록한 프로필이미지-->
+ <div class="container1" v-for="(img, idx) in teamImgUrl" :key="idx" type="button" @click="deleteimg(idx)">
+   <img class="border12" :src= "teamImgUrl[idx]" style="margin-left:7px; margin-bottom: 7px;" draggable="true" @dragstart="startDrag($event, idx)">
+  </div>
+
+  <div class=" inner" style="width:100%; height:10px">
+  </div>
+
      <!-- 이름수정 -->
      <div class="fixname" style="height:30px; margin-bottom: 20px;">
           <div class="name" style="float:left; position: relative; top:5px; left:20px; margin-right: 35px; margin-top: 20px; font-size: 16px; color:gray;">
           제목
         </div>
         <div class="input-group mb-3" style="float:center; position: relative; left:6px; width:75%;">
-  <input type="text" class="form-control" placeholder="제목" aria-label="Recipient's username" aria-describedby="button-addon2" style="margin-top: 20px;" @change="changeName">
+  <input type="text" class="form-control" placeholder="제목" aria-label="Recipient's username" aria-describedby="button-addon2" style="margin-top: 20px;" @change="changetitle">
 
 </div>
         </div>
   <div class=" inner" style="width:100%; height:10px">
   </div>
-        <!-- 관심분야수정 -->
+        <!--유형수정 -->
         <div class="fixinsterest" style="height:30px; margin-bottom: 20px;">
           <div class="interest" style="float:left; position: relative; left:20px; margin-right: 35px; font-size: 16px; color:gray; margin-top: 25px;">
           유형
         </div>
         <div class="input-group" style="float:center; position: relative; left:5px; width:75%;">
-  <select class="form-select" id="interestinputGroupSelect" aria-label="Example select with button addon" style="margin-top: 20px;"  @change="changeteaminterests">
+  <select class="form-select" id="interestinputGroupSelect" aria-label="Example select with button addon" style="margin-top: 20px;"  @change="changeType">
     <option selected>{{type}}</option>
     <option value="프로젝트">프로젝트</option>
     <option value="스터디">스터디</option>
@@ -85,7 +93,7 @@
           분야
         </div>
         <div class="input-group" style="float:center; position: relative; left:5px; width:75%;">
-  <select class="form-select" id="interestinputGroupSelect" aria-label="Example select with button addon" style="margin-top: 20px;"  @change="changeteaminterests">
+  <select class="form-select" id="interestinputGroupSelect" aria-label="Example select with button addon" style="margin-top: 20px;"  @change="changeInterest">
     <option selected>{{interests}}</option>
     <option value="경영/사무">경영/사무</option>
     <option value="마케팅/광고/홍보">마케팅/광고/홍보</option>
@@ -193,7 +201,8 @@ export default {
       content: '내용',
       region: '지역',
       status: 'active',
-      teamImgUrl: '', // 초기 이미지 업로드는 방장 사진
+      teamImgUrl: [], // 초기 이미지 업로드는 방장 사진
+      teamRepUrl: '',
       title: '제목',
       type: '유형',
       interests: '분야',
@@ -211,12 +220,16 @@ export default {
     }
   },
   methods: {
+    getstatusinfo () {
+      this.status = '모집중'
+    },
     getmyinfo () {
-      axios
+      axios // 멤버에 내 프로필 등록
         .get('http://prod.inpro-server.shop:9000/app/profiles', { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
         .then(res => {
           console.log(res.data)
-          this.teamImgUrl = res.data.result.userImgUrl
+          this.teamImgUrl.push(res.data.result.userImgUrl)
+          this.teamRepUrl = this.teamImgUrl[0]
           this.memberimgurl = res.data.result.userImgUrl
           this.memberagerange = res.data.result.ageRange
           this.memberinterests = res.data.result.interests
@@ -228,11 +241,6 @@ export default {
           this.membery = res.data.result.userDisc[0].y
           this.newmembers = { ageRange: this.memberagerange, interests: this.memberinterests, nickName: this.membernickname, occupation: this.memberoccupation, region: this.memberregion, role: this.memberrole, userIdx: '1', userImgUrl: this.memberimgurl, x: this.memberx, y: this.membery }
           this.members.push(this.newmembers)
-          if (this.status === 'active') {
-            this.status = '모집중'
-          } else if (this.status === 'inactive') {
-            this.status = '모집완료'
-          }
           console.log(this.members)
           console.log(this.teamImgUrl)
         })
@@ -242,6 +250,9 @@ export default {
     },
     changetitle (t) {
       this.title = t.target.value
+    },
+    changeType (ty) {
+      this.type = ty.target.value
     },
     changeOccupation (o) {
       this.occupation = o.target.value
@@ -255,21 +266,34 @@ export default {
     changeComment (c) {
       this.comment = c.target.value
     },
-    changeProfile (p) { // 이미지 수정 시 생기는 오류 해결 필요
-      this.teamImgUrl = p.target.value
+    changeProfile (p) {
+      this.file = p.target.files[0]
+      this.teamImgUrl.push(URL.createObjectURL(this.file))
     },
-    postimg () {
-      // 이미지 첨부
+    deleteimg (idx) {
+      this.teamImgUrl.splice(idx, 1)
     },
-    postteaminfo () {
-      this.newteamportfolio = { commentCount: 0, content: this.content, interests: this.interests, leaderIdx: 1, likeCount: 0, memberCount: 0, members: this.members, region: this.region, status: this.status, teamImgUrl: this.teamImgUrl, title: this.title, type: this.type }
+    postteaminfo () { // 생성하고 post api 들어갈 함수
+      this.newteamportfolio = { title: this.title, type: this.type, content: this.content, interests: this.interests, region: this.region, teamImgUrl: this.teamImgUrl }
       this.teamportfolio.push(this.newteamportfolio)
       console.log(this.teamportfolio)
+    },
+    startDrag (event, idx) {
+      event.dataTransfer.dropEffect = 'move'
+      event.dataTransfer.effectAllowed = 'move'
+      event.dataTransfer.setData('selectItem', this.teamImgUrl[idx])
+    },
+    onDrop (event) {
+      event.preventDefault()
+      const selectItem = event.dataTransfer.getData('selectItem') // 드래그앤 드롭한 아이템
+      this.teamRepUrl = selectItem
+      console.log(this.teamRepUrl)
     }
   },
   created () {
     // 미리 api에서 조회 데이터 가져옴
     this.getmyinfo()
+    this.getstatusinfo()
   }
 }
 
@@ -296,6 +320,19 @@ export default {
   border-width: 1px;
   width: 180px;
   height: 180px;
+}
+
+.border12{
+  float: left;
+  position: relative;
+  border-style: solid;
+  border-radius: 20px;
+  border-color: #c0c0c0;
+  background-color: #c0c0c0;
+  border-width: 1px;
+  width: 120px;
+  height: 120px;
+  cursor: move;
 }
 
 .nas{

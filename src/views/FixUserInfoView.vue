@@ -236,6 +236,7 @@
 
 <script>
 import axios from 'axios'
+import VueCookies from 'vue-cookies'
 
 export default {
   data () {
@@ -260,7 +261,7 @@ export default {
       inputtagtext: '', // 유저태그에 들어갈 텍스트
       inputtagidx: '', // 유저태그에 들어갈 인덱스
       newinputtag: {},
-      file: {}
+      file: null
     }
   },
   methods: {
@@ -294,23 +295,31 @@ export default {
       this.newinputtag = { userTagIdx: this.inputtagidx, name: this.inputtagtext }
     },
     posttag () {
-      this.userTags.push(this.newinputtag)
-      console.log(this.userTags)
-      // input 값을 넣어준 inputtagtext를 넣어주기
-      // 버튼 눌렀을 때 태그 추가
-      // tag 등록 (api) 해결 필요
+      const name = this.newinputtag.name
+      axios
+        .post(process.env.VUE_APP_API_BASE_URL + '/app/usertags', null, { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN }, params: { name: name } })
+        .then(res => {
+          this.userTags.push(this.newinputtag)
+          console.log(res)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
     deletetag (idx) {
-      console.log(idx)
-      this.userTags.splice(idx, 1)
-      console.log(this.userTags)
-      // 태그 새로 등록할 때 userTagIdx와 이름을 어떻게 전달하는지 물어볼 필요 O
-      // 삭제할 때 마지막 콘솔 창에 오류 존재 --> 해결 필요
-      // 태그 삭제 (api) 추가 필요
+      axios
+        .delete(process.env.VUE_APP_API_BASE_URL + '/app/usertags/' + this.userTags[idx].userTagIdx, { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .then(res => {
+          this.userTags.splice(idx, 1)
+          console.log(res)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
     getuserinfodata () {
       axios
-        .get(process.env.VUE_APP_API_BASE_URL + '/app/profiles', { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .get(process.env.VUE_APP_API_BASE_URL + '/app/profiles', { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           this.userTags = res.data.result.userTags
           this.userName = res.data.result.nickName
@@ -345,7 +354,7 @@ export default {
       }
       console.log(patchUserReq)
       await axios
-        .patch(process.env.VUE_APP_API_BASE_URL + '/app/profiles', JSON.stringify(patchUserReq), { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .patch(process.env.VUE_APP_API_BASE_URL + '/app/profiles', JSON.stringify(patchUserReq), { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           console.log(res)
         })
@@ -357,7 +366,7 @@ export default {
       const formData = new FormData()
       formData.append('profileImg', this.file)
       await axios
-        .patch(process.env.VUE_APP_API_BASE_URL + '/app/profile-imgs', formData, { headers: { 'Content-Type': 'multipart/form-data', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .patch(process.env.VUE_APP_API_BASE_URL + '/app/profile-imgs', formData, { headers: { 'Content-Type': 'multipart/form-data', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           console.log(res)
         })

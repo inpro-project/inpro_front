@@ -171,6 +171,7 @@
 </template>
 <script>
 import axios from 'axios'
+import VueCookies from 'vue-cookies'
 
 export default {
   name: 'PreviousChat',
@@ -190,7 +191,7 @@ export default {
   methods: {
     getPreviousChat () {
       axios
-        .get(process.env.VUE_APP_API_BASE_URL + '/chat/room/enter/' + this.roomId + '/' + String(0), { headers: { Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .get(process.env.VUE_APP_API_BASE_URL + '/chat/room/enter/' + this.roomId + '/' + String(0), { headers: { Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           const previousChatMessages = []
           for (const curResponse of res.data.result) {
@@ -214,7 +215,7 @@ export default {
     },
     getMorePreviousChat () {
       axios
-        .get(process.env.VUE_APP_API_BASE_URL + '/chat/room/enter/' + this.roomId + '/' + String(this.chatMessages[0].messageIdx), { headers: { Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .get(process.env.VUE_APP_API_BASE_URL + '/chat/room/enter/' + this.roomId + '/' + String(this.chatMessages[0].messageIdx), { headers: { Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           const previousChatMessages = []
           for (const curResponse of res.data.result) {
@@ -240,6 +241,28 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.user-box {
+  align-items : flex-start;
+}
+.box {
+  width: 30px;
+  height: 30px;
+  border-radius: 70%;
+  overflow: hidden;
+  float: left;
+}
+.profile {
+  width: 30px;
+  height: 100%;
+  object-fit: cover;
+}
+.name {
+  position: relative;
+  top: 5px;
+  left: 5px;
+  text-align: left;
+}
+
 .dpnone {
   display: none;
 }

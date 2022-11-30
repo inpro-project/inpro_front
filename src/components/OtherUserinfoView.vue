@@ -202,6 +202,8 @@
 
 <script>
 import axios from 'axios'
+import VueCookies from 'vue-cookies'
+
 export default {
   data () {
     return {
@@ -226,7 +228,7 @@ export default {
       const userIdx = this.$route.params.userIdx
       axios
       // get api 뒤에 useridx 값은 나중에 조회할 user의 idx값을 삽입해야함 --> /user-profile/:userIdx
-        .get(process.env.VUE_APP_API_BASE_URL + '/app/user-profiles/' + userIdx, { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .get(process.env.VUE_APP_API_BASE_URL + '/app/user-profiles/' + VueCookies.get('userIdx'), { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           console.log(res.data)
           this.userTags = res.data.result.userTags

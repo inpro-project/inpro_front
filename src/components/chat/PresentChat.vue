@@ -117,7 +117,7 @@
                 />
               </div>
               <div class="opponent-msg-created">
-                {{ chat.createdAt }}
+                {{ chat.createdAt.getHours() }}:{{ chat.createdAt.getMinutes() }}
               </div>
             </div>
           </div>
@@ -146,7 +146,7 @@
             </div>
 
             <div class="opponent-msg-created">
-              {{ chat.createdAt }}
+              {{ chat.createdAt.getHours() }}:{{ chat.createdAt.getMinutes() }}
             </div>
           </div>
         </div>
