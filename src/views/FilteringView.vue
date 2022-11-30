@@ -33,8 +33,8 @@
 </div>
 
 <div style="height:60px;">
-    <button class="list" v-for="(age, idx) in ageRangelist" :key="{idx}" type="button" style="float:left; margin-left:8px; height:40px" @click="deleteage(idx)">
-    <div style="position:relative; top:3px; width:90%; font-size:14px;">{{ageRangelist[idx]}}</div>
+    <button class="list" v-for="(age, idx) in filters.user.age" :key="{idx}" type="button" style="float:left; margin-left:8px; height:40px" @click="deleteage(idx)">
+    <div style="position:relative; top:3px; width:90%; font-size:14px;">{{age.name}}</div>
     <div style="position:relative; width:10%; bottom:22px; float:right">x</div>
   </button>
 </div>
@@ -55,8 +55,8 @@
  </div>
 
  <div style="height:60px;">
-    <button class="list" v-for="(occupation, idx) in occupationlist" :key="{idx}" type="button" style="float:left; margin-left:8px; height:40px" @click="deleteoccupation(idx)">
-    <div style="position:relative; top:3px; width:90%; font-size:14px;">{{occupationlist[idx]}}</div>
+    <button class="list" v-for="(occupation, idx) in filters.user.occupation" :key="{idx}" type="button" style="float:left; margin-left:8px; height:40px" @click="deleteoccupation(idx)">
+    <div style="position:relative; top:3px; width:90%; font-size:14px;">{{occupation.name}}</div>
     <div style="position:relative; width:10%; bottom:22px; float:right">x</div>
   </button>
 </div>
@@ -90,8 +90,8 @@
 </div>
 
 <div style="height:60px;">
-    <button class="list" v-for="(region, idx) in regionlist" :key="{idx}" type="button" style="float:left; margin-left:8px; height:40px" @click="deleteregion(idx)">
-    <div style="position:relative; top:3px; width:90%; font-size:14px;">{{regionlist[idx]}}</div>
+    <button class="list" v-for="(region, idx) in filters.user.region" :key="{idx}" type="button" style="float:left; margin-left:8px; height:40px" @click="deleteregion(idx)">
+    <div style="position:relative; top:3px; width:90%; font-size:14px;">{{region.name}}</div>
     <div style="position:relative; width:10%; bottom:22px; float:right">x</div>
   </button>
 </div>
@@ -121,8 +121,8 @@
 </div>
 
 <div style="height:60px;">
-    <button class="list" v-for="(interests, idx) in interestslist" :key="{idx}" type="button" style="float:left; margin-left:8px; height:40px" @click="deleteinterests(idx)">
-    <div style="position:relative; top:5px; width:90%; font-size:12px;">{{interestslist[idx]}}</div>
+    <button class="list" v-for="(interests, idx) in filters.user.interests" :key="{idx}" type="button" style="float:left; margin-left:8px; height:40px" @click="deleteinterests(idx)">
+    <div style="position:relative; top:5px; width:90%; font-size:12px;">{{interests.name}}</div>
     <div style="position:relative; width:10%; bottom:17px; float:right">x</div>
   </button>
 </div>
@@ -153,8 +153,8 @@
 </div>
 
 <div style="height:60px;">
-    <button class="list" v-for="(teamtype, idx) in teamtypelist" :key="{idx}" type="button" style="float:left; margin-left:8px; height:40px" @click="deleteteamtype(idx)">
-    <div style="position:relative; top:3px; width:90%; font-size:14px;">{{teamtypelist[idx]}}</div>
+    <button class="list" v-for="(type, idx) in filters.team.type" :key="{idx}" type="button" style="float:left; margin-left:8px; height:40px" @click="deleteteamtype(idx)">
+    <div style="position:relative; top:3px; width:90%; font-size:14px;">{{type.name}}</div>
     <div style="position:relative; width:10%; bottom:22px; float:right">x</div>
   </button>
 </div>
@@ -188,8 +188,8 @@
 </div>
 
 <div style="height:60px;">
-    <button class="list" v-for="(teamregion, idx) in teamregionlist" :key="{idx}" type="button" style="float:left; margin-left:8px; height:40px" @click="deleteteamregion(idx)">
-    <div style="position:relative; top:3px; width:90%; font-size:14px;">{{teamregionlist[idx]}}</div>
+    <button class="list" v-for="(region, idx) in filters.team.region" :key="{idx}" type="button" style="float:left; margin-left:8px; height:40px" @click="deleteteamregion(idx)">
+    <div style="position:relative; top:3px; width:90%; font-size:14px;">{{region.name}}</div>
     <div style="position:relative; width:10%; bottom:22px; float:right">x</div>
   </button>
 </div>
@@ -219,8 +219,8 @@
 </div>
 
 <div style="height:60px;">
-    <button class="list" v-for="(teaminterests, idx) in teaminterestslist" :key="{idx}" type="button" style="float:left; margin-left:8px; height:40px" @click="deleteteaminterests(idx)">
-    <div style="position:relative; top:3px; width:90%; font-size:14px;">{{this.teaminterestslist[idx]}}</div>
+    <button class="list" v-for="(interests, idx) in filters.team.interests" :key="{idx}" type="button" style="float:left; margin-left:8px; height:40px" @click="deleteteaminterests(idx)">
+    <div style="position:relative; top:3px; width:90%; font-size:14px;">{{interests.name}}</div>
     <div style="position:relative; width:10%; bottom:22px; float:right">x</div>
   </button>
 </div>
@@ -239,28 +239,39 @@
 
 <script>
 import axios from 'axios'
-import { toRaw } from 'vue'
 import VueCookies from 'vue-cookies'
 
 export default {
   data () {
     return {
-      getageRangelist: [],
-      getregionlist: [],
-      getoccupationlist: [],
-      getinterestslist: [],
-      getteamtypelist: [],
-      getteamregionlist: [],
-      getteaminterestslist: [],
-      teaminterestslist: [],
-      teamregionlist: [],
-      teamtypelist: [],
-      ageRangelist: [],
-      regionlist: [],
-      occupationlist: [],
-      interestslist: [],
       inputPersonFilter: {},
-      inputTeamFilter: {}
+      inputTeamFilter: {},
+      filters: {
+        user: {
+          age: [],
+          occupation: [],
+          region: [],
+          interests: []
+        },
+        team: {
+          type: [],
+          region: [],
+          interests: []
+        }
+      },
+      deletedFilters: {
+        user: {
+          age: [],
+          occupation: [],
+          region: [],
+          interests: []
+        },
+        team: {
+          type: [],
+          region: [],
+          interests: []
+        }
+      }
     }
   },
   methods: {
@@ -268,34 +279,19 @@ export default {
       axios
         .get(process.env.VUE_APP_API_BASE_URL + '/app/user-filters', { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
-          console.log(res.data)
-          this.getageRangelist = res.data.result.filter((p) => { return p.category === 1 })
-          for (let i = 0; i < this.getageRangelist.length; i++) {
-            this.ageRangelist.push(this.getageRangelist[i].name)
+          const filters = res.data.result
+          console.log(filters)
+          for (const filter of filters) {
+            if (filter.category === 1) {
+              this.filters.user.age.push(filter)
+            } else if (filter.category === 2) {
+              this.filters.user.region.push(filter)
+            } else if (filter.category === 3) {
+              this.filters.user.occupation.push(filter)
+            } else if (filter.category === 4) {
+              this.filters.user.interests.push(filter)
+            }
           }
-          console.log(this.getageRangelist)
-          console.log(this.ageRangelist)
-
-          this.getregionlist = res.data.result.filter((p) => { return p.category === 2 })
-          for (let j = 0; j < this.getregionlist.length; j++) {
-            this.regionlist.push(this.getregionlist[j].name)
-          }
-          console.log(this.getregionlist)
-          console.log(this.regionlist)
-
-          this.getoccupationlist = res.data.result.filter((p) => { return p.category === 3 })
-          for (let k = 0; k < this.getoccupationlist.length; k++) {
-            this.occupationlist.push(this.getoccupationlist[k].name)
-          }
-          console.log(this.getoccupationlist)
-          console.log(this.occupationlist)
-
-          this.getinterestslist = res.data.result.filter((p) => { return p.category === 4 })
-          for (let l = 0; l < this.getinterestslist.length; l++) {
-            this.interestslist.push(this.getinterestslist[l].name)
-          }
-          console.log(this.getinterestslist)
-          console.log(this.interestslist)
         })
         .catch(err => {
           console.log(err)
@@ -305,158 +301,199 @@ export default {
       axios
         .get(process.env.VUE_APP_API_BASE_URL + '/app/team-filters', { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
-          console.log(res.data)
-          this.getteamtypelist = res.data.result.filter((p) => { return p.category === 1 })
-          for (let l = 0; l < this.getteamtypelist.length; l++) {
-            this.teamtypelist.push(this.getteamtypelist[l].name)
+          const filters = res.data.result
+          console.log(filters)
+          for (const filter of filters) {
+            if (filter.category === 1) {
+              this.filters.team.type.push(filter)
+            } else if (filter.category === 2) {
+              this.filters.team.region.push(filter)
+            } else if (filter.category === 3) {
+              this.filters.team.interests.push(filter)
+            }
           }
-          console.log(this.getteamtypelist)
-          console.log(this.teamtypelist)
-
-          this.getteamregionlist = res.data.result.filter((p) => { return p.category === 2 })
-          for (let l = 0; l < this.getteamregionlist.length; l++) {
-            this.teamregionlist.push(this.getteamregionlist[l].name)
-          }
-          console.log(this.getteamregionlist)
-          console.log(this.teamregionlist)
-
-          this.getteaminterestslist = res.data.result.filter((p) => { return p.category === 3 })
-          for (let l = 0; l < this.getteaminterestslist.length; l++) {
-            this.teaminterestslist.push(this.getteaminterestslist[l].name)
-          }
-          console.log(this.getteaminterestslist)
-          console.log(this.teaminterestslist)
         })
         .catch(err => {
           console.log(err)
         })
     },
-    changeAgeRange (a) {
-      this.ageRange = a.target.value
-      if (this.ageRange === '무관') {
-        this.ageRangelist.splice(0)
-        this.ageRangelist.push('무관')
-      } else {
-        this.ageRangelist.push(this.ageRange)
+    changeFilter (matchType, filterType, value) {
+      const filter = {
+        filterType: value,
+        category: 1,
+        userFilterIdx: undefined
       }
-      console.log(this.ageRangelist)
+      for (const curFilter of this.filters[matchType][filterType]) {
+        if (curFilter.name === filter[filterType]) {
+          return
+        }
+      }
+      if (filter.age === '무관') {
+        for (const curFilter of this.filters[matchType][filterType]) {
+          if (curFilter.userFilterIdx !== undefined) {
+            this.deletedFilters[matchType][filterType].push(curFilter)
+          }
+        }
+      }
+      for (const curFilter of this.deletedFilters[matchType][filterType]) {
+        if (curFilter.name === filter[filterType]) {
+          this.filters[matchType][filterType].push(curFilter)
+          return
+        }
+      }
+      this.filters[matchType][filterType].push(filter)
+    },
+    changeAgeRange (a) {
+      this.changeFilter('user', 'age', a.target.value)
     },
     changeOccupation (o) {
-      this.occupation = o.target.value
-      if (this.occupation === '무관') {
-        this.occupationlist.splice(0)
-        this.occupationlist.push('무관')
-      } else {
-        this.occupationlist.push(this.occupation)
-      }
-      console.log(this.occupationlist)
+      this.changeFilter('user', 'occupation', o.target.value)
     },
     changeRegion (r) {
-      this.region = r.target.value
-      if (this.region === '무관') {
-        this.regionlist.splice(0)
-        this.regionlist.push('무관')
-      } else {
-        this.regionlist.push(this.region)
-      }
-      console.log(this.regionlist)
+      this.changeFilter('user', 'region', r.target.value)
     },
     changeInterest (i) {
-      this.interests = i.target.value
-      if (this.interests === '무관') {
-        this.interestslist.splice(0)
-        this.interestslist.push('무관')
-      } else {
-        this.interestslist.push(this.interests)
-      }
-      console.log(this.interestslist)
+      this.changeFilter('user', 'interests', i.target.value)
     },
     changeteamtype (tt) {
-      this.teamtype = tt.target.value
-      if (this.teamtype === '무관') {
-        this.teamtypelist.splice(0)
-        this.teamtypelist.push('무관')
-      } else {
-        this.teamtypelist.push(this.teamtype)
-      }
-      console.log(this.teamtypelist)
+      this.changeFilter('team', 'type', tt.target.value)
     },
     changeteamregion (tr) {
-      this.teamregion = tr.target.value
-      if (this.teamregion === '무관') {
-        this.teamregionlist.splice(0)
-        this.teamregionlist.push('무관')
-      } else {
-        this.teamregionlist.push(this.teamregion)
-      }
-      console.log(this.teamregionlist)
+      this.changeFilter('team', 'region', tr.target.value)
     },
     changeteaminterest (ti) {
-      this.teaminterests = ti.target.value
-      if (this.teaminterests === '무관') {
-        this.teaminterestslist.splice(0)
-        this.teaminterestslist.push('무관')
-      } else {
-        this.teaminterestslist.push(this.teaminterests)
-      }
-      console.log(this.teaminterestslist)
+      this.changeFilter('team', 'interests', ti.target.value)
     },
     async GotoFiltering () {
-      this.inputPersonFilter = { ageRange: toRaw(this.ageRangelist), region: toRaw(this.regionlist), occupation: toRaw(this.occupationlist), interests: toRaw(this.interestslist) }
-      console.log(this.inputPersonFilter)
-      this.inputTeamFilter = { type: toRaw(this.teamtypelist), region: toRaw(this.teamregionlist), interests: toRaw(this.teaminterestslist) }
-      console.log(this.inputPersonFilter)
-
       await this.updateUserFilters()
       await this.updateTeamFilters()
-      this.$router.push({ name: 'mainmenu' })
+      // this.$router.push({ name: 'mainmenu' })
     },
     async updateUserFilters () {
+      const userFilters = {
+        ageRangeDelete: [],
+        ageRangeInsert: [],
+        interestsDelete: [],
+        interestsInsert: [],
+        occupationDelete: [],
+        occupationInsert: [],
+        regionDelete: [],
+        regionInsert: []
+      }
+      for (const curFilter of this.filters.user.age) {
+        if (curFilter.userFilterIdx === undefined) {
+          userFilters.ageRangeInsert.push(curFilter.name)
+        }
+      }
+      for (const curFilter of this.filters.user.interests) {
+        if (curFilter.userFilterIdx === undefined) {
+          userFilters.interestsInsert.push(curFilter.name)
+        }
+      }
+      for (const curFilter of this.filters.user.occupation) {
+        if (curFilter.userFilterIdx === undefined) {
+          userFilters.occupationInsert.push(curFilter.name)
+        }
+      }
+      for (const curFilter of this.filters.user.region) {
+        if (curFilter.userFilterIdx === undefined) {
+          userFilters.regionInsert.push(curFilter.name)
+        }
+      }
+      for (const curFilter of this.deletedFilters.user.age) {
+        userFilters.ageRangeDelete.push(curFilter.userFilterIdx)
+      }
+      for (const curFilter of this.deletedFilters.user.interests) {
+        userFilters.interestsDelete.push(curFilter.userFilterIdx)
+      }
+      for (const curFilter of this.deletedFilters.user.occupation) {
+        userFilters.occupationDelete.push(curFilter.userFilterIdx)
+      }
+      for (const curFilter of this.deletedFilters.user.region) {
+        userFilters.regionDelete.push(curFilter.userFilterIdx)
+      }
+      console.log(userFilters)
       await axios
-        .post(process.env.VUE_APP_API_BASE_URL + '/app/user-filters', JSON.stringify(this.inputPersonFilter), { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .patch(process.env.VUE_APP_API_BASE_URL + '/app/user-filters', JSON.stringify(userFilters), { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
         .then(res => {
+          console.log(res)
         })
         .catch(err => {
           console.log(err)
         })
     },
     async updateTeamFilters () {
+      const teamFilters = {
+        typeInsert: [],
+        typeDelete: [],
+        regionInsert: [],
+        regionDelete: [],
+        interestsInsert: [],
+        interestsDelete: []
+      }
+      for (const curFilter of this.filters.team.type) {
+        if (curFilter.teamFilterIdx === undefined) {
+          teamFilters.typeInsert.push(curFilter.name)
+        }
+      }
+      for (const curFilter of this.deletedFilters.team.type) {
+        teamFilters.typeDelete.push(curFilter.teamFilterIdx)
+      }
+
+      for (const curFilter of this.filters.team.region) {
+        if (curFilter.teamFilterIdx === undefined) {
+          teamFilters.regionInsert.push(curFilter.name)
+        }
+      }
+      for (const curFilter of this.deletedFilters.team.region) {
+        teamFilters.regionDelete.push(curFilter.teamFilterIdx)
+      }
+
+      for (const curFilter of this.filters.team.interests) {
+        if (curFilter.teamFilterIdx === undefined) {
+          teamFilters.interestsInsert.push(curFilter.name)
+        }
+      }
+      for (const curFilter of this.deletedFilters.team.interests) {
+        teamFilters.interestsDelete.push(curFilter.teamFilterIdx)
+      }
+
       await axios
-        .post(process.env.VUE_APP_API_BASE_URL + '/app/team-filters', JSON.stringify(this.inputTeamFilter), { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .patch(process.env.VUE_APP_API_BASE_URL + '/app/team-filters', JSON.stringify(teamFilters), { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
         .then(res => {
+          console.log(res)
         })
         .catch(err => {
           console.log(err)
         })
     },
+    deleteFilter (matchType, filterType, idx) {
+      const curFilter = this.filters[matchType][filterType][idx]
+      if (curFilter.userFilterIdx !== undefined) {
+        this.deletedFilters[matchType][filterType].push(curFilter)
+      }
+      this.filters[matchType][filterType].splice(idx, 1)
+    },
     deleteage (idx) {
-      this.ageRangelist.splice(idx, 1)
-      console.log(this.ageRangelist)
+      this.deleteFilter('user', 'age', idx)
     },
     deleteoccupation (idx) {
-      console.log(idx)
-      this.occupationlist.splice(idx, 1)
-      console.log(this.occupationlist)
+      this.deleteFilter('user', 'occupation', idx)
     },
     deleteregion (idx) {
-      this.regionlist.splice(idx, 1)
-      console.log(this.regionlist)
+      this.deleteFilter('user', 'region', idx)
     },
     deleteinterests (idx) {
-      this.interestslist.splice(idx, 1)
-      console.log(this.interestslist)
+      this.deleteFilter('user', 'interests', idx)
     },
     deleteteamtype (idx) {
-      this.teamtypelist.splice(idx, 1)
-      console.log(this.teamtypelist)
+      this.deleteFilter('team', 'type', idx)
     },
     deleteteamregion (idx) {
-      this.teamregionlist.splice(idx, 1)
-      console.log(this.teamregionlist)
+      this.deleteFilter('team', 'region', idx)
     },
     deleteteaminterests (idx) {
-      this.teaminterestslist.splice(idx, 1)
-      console.log(this.teaminterestslist)
+      this.deleteFilter('team', 'interests', idx)
     }
   },
   created () {
