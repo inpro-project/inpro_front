@@ -319,7 +319,7 @@ export default {
     },
     changeFilter (matchType, filterType, value) {
       const filter = {
-        filterType: value,
+        name: value,
         category: 1,
         userFilterIdx: undefined
       }
@@ -342,6 +342,7 @@ export default {
         }
       }
       this.filters[matchType][filterType].push(filter)
+      console.log(this.filters)
     },
     changeAgeRange (a) {
       this.changeFilter('user', 'age', a.target.value)
@@ -367,7 +368,7 @@ export default {
     async GotoFiltering () {
       await this.updateUserFilters()
       await this.updateTeamFilters()
-      // this.$router.push({ name: 'mainmenu' })
+      this.$router.push({ name: 'mainmenu' })
     },
     async updateUserFilters () {
       const userFilters = {
@@ -414,7 +415,7 @@ export default {
       }
       console.log(userFilters)
       await axios
-        .patch(process.env.VUE_APP_API_BASE_URL + '/app/user-filters', JSON.stringify(userFilters), { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .patch(process.env.VUE_APP_API_BASE_URL + '/app/user-filters', JSON.stringify(userFilters), { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           console.log(res)
         })
@@ -459,7 +460,7 @@ export default {
       }
 
       await axios
-        .patch(process.env.VUE_APP_API_BASE_URL + '/app/team-filters', JSON.stringify(teamFilters), { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .patch(process.env.VUE_APP_API_BASE_URL + '/app/team-filters', JSON.stringify(teamFilters), { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           console.log(res)
         })
