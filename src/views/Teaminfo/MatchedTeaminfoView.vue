@@ -1,5 +1,5 @@
 <template>
-    <OtherTeaminfoViewVue/>
+    <OtherTeaminfoViewVue @setChatRoomIdx="setChatRoomIdx"/>
     <div style="position:fixed; border-style:solid; border-width:0px; border-color: black; width:390px; height:95px; bottom:70px; background-color: white;">
       <div style="float:left; position:relative; top:10px; margin-left:40px" type="button" @click="goBack()">
         <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" fill="#A31FE1" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
@@ -25,10 +25,16 @@
 
 <script>
 import axios from 'axios'
+import VueCookies from 'vue-cookies'
 import OtherTeaminfoViewVue from '@/components/OtherTeaminfoView.vue'
 
 export default {
   components: { OtherTeaminfoViewVue },
+  data () {
+    return {
+      chatRoomIdx: undefined
+    }
+  },
   methods: {
     goBack () {
       this.$router.go(-1)
@@ -36,7 +42,7 @@ export default {
     async deleteLike () { /// 팀 좋아요 취소
       const likingIdx = this.$route.params.teamIdx
       await axios
-        .patch(process.env.VUE_APP_API_BASE_URL + '/app/team-likes/' + likingIdx, likingIdx, { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .patch(process.env.VUE_APP_API_BASE_URL + '/app/team-likes/' + likingIdx, likingIdx, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           console.log(res)
         })
@@ -44,8 +50,13 @@ export default {
           console.log(err)
         })
     },
+    setChatRoomIdx (chatRoomIdx) {
+      this.chatRoomIdx = chatRoomIdx
+    },
     GotoChat () {
-      // 채팅방 생성 및 채팅방 입장 (제작 필요)
+      if (this.chatRoomIdx !== undefined) {
+        this.$router.push({ name: 'ChatRoomView', params: { roomId: this.chatRoomIdx } })
+      }
     }
   }
 }
