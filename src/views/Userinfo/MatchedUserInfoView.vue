@@ -50,9 +50,28 @@ export default {
           console.log(err)
         })
     },
-    async getChatRoomIdx () { /// 유저 좋아요 취소
+    async getChatRoomIdx () {
       await axios
         .get(process.env.VUE_APP_API_BASE_URL + '/chat/room/match/' + this.matchedUserIdx, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
+        .then(async res => {
+          if (res.data.result === undefined) {
+            await this.createChatRoom()
+          } else {
+            this.chatRoomIdx = res.data.result.chatRoomIdx
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    async createChatRoom () {
+      const roomInfo = {
+        matchedUserIdx: parseInt(this.matchedUserIdx),
+        name: '',
+        content: ''
+      }
+      await axios
+        .post(process.env.VUE_APP_API_BASE_URL + '/chat/room/match', JSON.stringify(roomInfo), { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           this.chatRoomIdx = res.data.result.chatRoomIdx
         })
