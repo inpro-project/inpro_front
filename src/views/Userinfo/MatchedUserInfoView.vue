@@ -25,18 +25,24 @@
 
 <script>
 import axios from 'axios'
+import VueCookies from 'vue-cookies'
 import OtherUserinfoViewVue from '@/components/OtherUserinfoView.vue'
 
 export default {
   components: { OtherUserinfoViewVue },
+  data () {
+    return {
+      chatRoomIdx: undefined,
+      matchedUserIdx: this.$route.params.userIdx
+    }
+  },
   methods: {
     goBack () {
       this.$router.go(-1)
     },
-    async deleteLike () { // 유저 좋아요 취소
-      const likingIdx = this.$route.params.userIdx
+    async deleteLike () { /// 유저 좋아요 취소
       await axios
-        .patch(process.env.VUE_APP_API_BASE_URL + '/app/user-likes/' + likingIdx, likingIdx, { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .patch(process.env.VUE_APP_API_BASE_URL + '/app/user-likes/' + this.matchedUserIdx, this.matchedUserIdx, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           console.log(res)
         })
@@ -44,8 +50,42 @@ export default {
           console.log(err)
         })
     },
-    GotoChat () {
-      // 채팅방 생성 및 채팅방 입장 (제작 필요)
+    async getChatRoomIdx () {
+      await axios
+        .get(process.env.VUE_APP_API_BASE_URL + '/chat/room/match/' + this.matchedUserIdx, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
+        .then(async res => {
+          if (res.data.result === undefined) {
+            await this.createChatRoom()
+          } else {
+            this.chatRoomIdx = res.data.result.chatRoomIdx
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    async createChatRoom () {
+      const roomInfo = {
+        matchedUserIdx: parseInt(this.matchedUserIdx),
+        name: '',
+        content: ''
+      }
+      await axios
+        .post(process.env.VUE_APP_API_BASE_URL + '/chat/room/match', JSON.stringify(roomInfo), { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
+        .then(res => {
+          this.chatRoomIdx = res.data.result.chatRoomIdx
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    async GotoChat () {
+      if (this.chatRoomIdx === undefined) {
+        await this.getChatRoomIdx()
+      }
+      if (this.chatRoomIdx !== undefined) {
+        this.$router.push({ name: 'ChatRoomView', params: { roomId: this.chatRoomIdx } })
+      }
     }
   }
 }

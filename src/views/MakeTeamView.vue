@@ -32,7 +32,8 @@
 
   <!--프로필이미지-->
   <div class="container2" @drop="onDrop($event)" @dragenter.prevent @dragover.prevent>
-   <img class="border10 me-2" :src= "teamRepUrl" style="margin-left:10px">
+   <img v-if="repImgIdx!==-1" class="border10 me-2" :src= "teamImgs[repImgIdx].url" style="margin-left:10px">
+   <img v-else class="border10 me-2" style="margin-left:10px">
   </div>
 
   <!--disc좌표평면(구현아직X)(api)-->
@@ -48,8 +49,8 @@
 </div>
 
  <!--등록한 프로필이미지-->
- <div class="container1" v-for="(img, idx) in teamImgUrl" :key="idx" type="button" @click="deleteimg(idx)">
-   <img class="border12" :src= "teamImgUrl[idx]" style="margin-left:7px; margin-bottom: 7px;" draggable="true" @dragstart="startDrag($event, idx)">
+ <div class="container1" v-for="(teamImg, idx) in teamImgs" :key="idx" type="button" @click="deleteimg(idx)">
+   <img class="border12" :src= "teamImg.url" style="margin-left:7px; margin-bottom: 7px;" draggable="true" @dragstart="startDrag($event, idx)">
   </div>
 
   <div class=" inner" style="width:100%; height:10px">
@@ -159,28 +160,25 @@
          <div class='text' style="position:relative; top:10px; margin-bottom:10px; text-align:left; font-size: 18px; color:gray;">
         &nbsp;&nbsp;&nbsp;&nbsp;멤버
       </div>
-  <div style="margin-left:5%; margin-top:20px; margin-bottom:10px; border-style:solid; border-radius:10px; background-color:#c0c0c0; border-width:0px; height:80px; width:90%" @click="gotoprofile">
-    <img :src= "memberimgurl" style="float:left; border-style:solid; border-radius: 10px; background-color: gray; border-width:0px; height:70px; width:70px; position:relative; left:5px; top:5px">
+  <div v-if="members.length > 0" style="margin-left:5%; margin-top:20px; margin-bottom:10px; border-style:solid; border-radius:10px; background-color:#c0c0c0; border-width:0px; height:80px; width:90%" @click="gotoprofile">
+    <img :src= "members[0].userImgUrl?members[0].userImgUrl:''" style="float:left; border-style:solid; border-radius: 10px; background-color: gray; border-width:0px; height:70px; width:70px; position:relative; left:5px; top:5px">
 <div style="float:left; position:relative; left:20px;line-height:35px;top:5px">
   <div class="memberitem" style="display:flex;">
-    <div class="upperitems" style="font-size:18px">{{membernickname}}</div>
-    <div class="upperitems" style="font-size:14px;">{{memberagerange}}</div>
-    <div class="upperitems" style="font-size:14px;">{{memberregion}}</div>
+    <div class="upperitems" style="font-size:18px">{{members[0].nickName}}</div>
+    <div class="upperitems" style="font-size:14px;">{{members[0].agerange}}</div>
+    <div class="upperitems" style="font-size:14px;">{{members[0].region}}</div>
   </div>
   <div class="memberitem" style="display:flex;">
-    <div class="upperitems" style="font-size:14px;">{{memberoccupation}}</div>
-    <div class="upperitems" style="font-size:14px;">{{memberinterests}}</div>
-    <div class="upperitems" style="font-size:14px; ">{{memberrole}}</div>
+    <div class="upperitems" style="font-size:14px;">{{members[0].occupation}}</div>
+    <div class="upperitems" style="font-size:14px;">{{members[0].interests}}</div>
+    <div class="upperitems" style="font-size:14px; ">{{members[0].role}}</div>
   </div>
 </div>
 </div>
       <br/>
-
-      <router-link to="/teamimade">
         <div class=" inner" style="width:100%;">
   </div>
   <button class="btn" type="submit" style="border-radius:15px; font-size:18px; background-color: #4a60d4; color: white; width:80%; height:50px;" @click="postteaminfo">팀 생성하기</button>
-</router-link>
 <br/>
 <br/>
 <br/>
@@ -193,24 +191,20 @@
 <script>
 import axios from 'axios'
 import VueCookies from 'vue-cookies'
+
 export default {
   data () {
     return {
+      members: [],
       content: '내용',
       region: '지역',
       status: 'active',
-      teamImgUrl: [], // 초기 이미지 업로드는 방장 사진
-      teamRepUrl: '',
       title: '제목',
       type: '유형',
       interests: '분야',
-      memberimgurl: '',
-      memberrole: '',
-      membernickname: '',
-      memberagerange: '',
-      memberregion: '',
-      memberinterests: '',
-      memberoccupation: ''
+      teamImgs: [],
+      teamFiles: [],
+      repImgIdx: -1
     }
   },
   methods: {
@@ -218,21 +212,24 @@ export default {
       this.status = '모집중'
     },
     getmyinfo () {
-      console.log(VueCookies.get('Authorization'))
-      axios
+      axios // 멤버에 내 프로필 등록
         .get(process.env.VUE_APP_API_BASE_URL + '/app/profiles', { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           console.log(res.data)
-          this.membernickname = res.data.result.nickName
-          this.gender = res.data.result.gender
-          this.memberagerange = res.data.result.ageRange
-          this.memberregion = res.data.result.region
-          this.memberoccupation = res.data.result.occupation
-          this.memberinterests = res.data.result.interests
-          this.memberimgurl = res.data.result.userImgUrl
-          this.teamImgUrl.push(this.memberimgurl)
-          this.teamRepUrl = this.teamImgUrl
-          this.memberrole = '리더'
+          const result = res.data.result
+          const newMember = {
+            ageRange: result.ageRange,
+            interests: result.interests,
+            nickName: result.nickName,
+            occupation: result.occupation,
+            region: result.region,
+            role: '리더',
+            userIdx: VueCookies.get('userIdx'),
+            userImgUrl: result.userImgUrl,
+            x: result.x,
+            y: result.y
+          }
+          this.members.push(newMember)
         })
         .catch(err => {
           console.log(err)
@@ -254,45 +251,74 @@ export default {
       this.interests = i.target.value
     },
     changeComment (c) {
-      this.comment = c.target.value
+      this.content = c.target.value
     },
     changeProfile (p) {
-      this.file = p.target.files[0]
-      this.teamImgUrl.push(URL.createObjectURL(this.file))
+      for (const file of p.target.files) {
+        const teamImg = {
+          img: file,
+          url: URL.createObjectURL(file)
+        }
+        this.teamImgs.push(teamImg)
+      }
     },
     deleteimg (idx) {
-      this.teamImgUrl.splice(idx, 1)
+      if (this.repImgIdx === idx) {
+        this.repImgIdx = -1
+      }
+      this.teamImgs.splice(idx, 1)
     },
-    async postteaminfo () { // 생성하고 post api 들어갈 함수 --> 수정 필요
-      // const newteamportfolio = { title: this.title, type: this.type, content: this.content, interests: this.interests, region: this.region }
+    async postteaminfo () { // 생성하고 post api 들어갈 함수
       const formData = new FormData()
-      formData.append('repImg', this.teamRepUrl)
-      formData.append('teamImgs', this.teamImgUrl)
-      formData.append('title', this.title)
-      formData.append('type', this.type)
-      formData.append('content', this.content)
-      formData.append('interests', this.interests)
-      formData.append('region', this.region)
-      console.log(VueCookies.get('Authorization'))
+      const postTeamReq = {
+        title: this.title,
+        type: this.type,
+        content: this.content,
+        interests: this.interests,
+        region: this.region
+      }
+      const json = JSON.stringify(postTeamReq)
+      const blob = new Blob([json], {
+        type: 'application/json'
+      })
+      formData.append('postTeamReq', blob)
+
+      if (this.repImgIdx !== -1) {
+        const repImg = this.teamImgs[this.repImgIdx].file
+        formData.append('repImg', repImg)
+      } else {
+        formData.append('repImg', null)
+      }
+
+      const teamImgs = []
+      for (let i = 0; i < this.teamImgs.length; i++) {
+        if (i !== this.repImgIdx) {
+          teamImgs.push(this.teamImgs[i].file)
+        }
+      }
+      formData.append('teamImgs', teamImgs)
+
+      const teamFiles = []
+      formData.append('teamFiles', teamFiles)
+
       await axios
-        .post(process.env.VUE_APP_API_BASE_URL + '/app/teams', formData, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
+        .post(process.env.VUE_APP_API_BASE_URL + '/app/teams', formData, { headers: { 'Content-Type': 'multipart/form-data', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
-          console.log(res.data)
+          console.log(res)
         })
         .catch(err => {
           console.log(err)
         })
+      this.$router.push({ name: 'teamimade' })
     },
     startDrag (event, idx) {
       event.dataTransfer.dropEffect = 'move'
       event.dataTransfer.effectAllowed = 'move'
-      event.dataTransfer.setData('selectItem', this.teamImgUrl[idx])
+      event.dataTransfer.setData('idx', idx)
     },
     onDrop (event) {
       event.preventDefault()
-      const selectItem = event.dataTransfer.getData('selectItem') // 드래그앤 드롭한 아이템
-      this.teamRepUrl = selectItem
-      console.log(this.teamRepUrl)
+      this.repImgIdx = parseInt(event.dataTransfer.getData('idx'))
     }
   },
   created () {

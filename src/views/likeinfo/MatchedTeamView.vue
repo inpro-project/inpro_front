@@ -17,7 +17,8 @@
   </div>
   <div v-for="(liking, idx) in likings" :key="idx">
     <button type="button" style="margin-top:10px; margin-bottom:10px; border-style:solid; border-radius:10px; background-color:#c0c0c0; border-width:0px; height:80px; width:90%" @click="gotoprofile(idx)">
-      <img :src= "teamimgurl[idx]" style="float:left; border-style:solid; border-radius: 10px; background-color: gray; border-width:0px; height:70px; width:70px; position:relative; left:5px;">
+      <img v-if="teamimgurl[idx] !== '0'" :src= "teamimgurl[idx]" style="float:left; border-style:solid; border-radius: 10px; background-color: gray; border-width:0px; height:70px; width:70px; position:relative; left:5px;">
+      <img v-else style="float:left; border-style:solid; border-radius: 10px; background-color: gray; border-width:0px; height:70px; width:70px; position:relative; left:5px;">
   <div style="float:left; position:relative; left:20px;line-height:35px;">
     <div class="memberitem" style="display:flex;">
       <div class="upperitems" style="font-size:18px">{{teamtitle[idx]}}</div>
@@ -38,6 +39,8 @@
 
 <script>
 import axios from 'axios'
+import VueCookies from 'vue-cookies'
+
 export default {
   name: 'MemberBox',
   data () {
@@ -56,7 +59,7 @@ export default {
   methods: {
     getuserinfodata () {
       axios
-        .get(process.env.VUE_APP_API_BASE_URL + '/app/matched-teams', { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
+        .get(process.env.VUE_APP_API_BASE_URL + '/app/matched-teams', { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           this.likings = res.data.result
           console.log(this.likings)

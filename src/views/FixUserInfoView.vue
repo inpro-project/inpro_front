@@ -272,6 +272,8 @@ export default {
     changeProfile (p) {
       this.file = p.target.files[0]
       this.userImgUrl = URL.createObjectURL(this.file)
+      console.log(this.file)
+      console.log(this.userImgUrl)
     },
     changeName (n) {
       this.userName = n.target.value
