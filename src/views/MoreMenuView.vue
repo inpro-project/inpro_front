@@ -22,8 +22,24 @@
 </template>
 
 <script>
-export default {
+import VueCookies from 'vue-cookies'
 
+export default {
+  data () {
+    return {
+    }
+  },
+  setup () {},
+  created () {},
+  mounted () {},
+  unmounted () {},
+  methods: {
+    async logOut () {
+      await VueCookies.remove('Authorization')
+      await VueCookies.remove('userIdx')
+      this.$router.push({ name: 'kakaologin' })
+    }
+  }
 }
 </script>
 
