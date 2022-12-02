@@ -11,7 +11,7 @@
     <br/>
      <div class="inner" style="width: 80%">
         <p style="text-align:left; font-size:18px; color:gray;">
-          팀원 매칭
+          &nbsp;&nbsp;&nbsp;팀원 매칭
         </p>
         </div>
         <hr style="border:solid; border-width: 1px; border-color: gray; background-color: gray; margin-top: 10px;">
@@ -103,7 +103,7 @@
   <select class="form-select" id="interestinputGroupSelect" aria-label="multiple select with button addon" style="border-radius:10px;" @change="changeInterest">
     <option selected>분야</option>
     <option value="경영/사무">경영/사무</option>
-    <option value="마케팅/광고/홍보">마케팅/광고/홍보</option>
+    <option value="마케팅/광고">마케팅/광고</option>
     <option value="IT/인터넷">IT/인터넷</option>
     <option value="디자인">디자인</option>
     <option value="무역/유통">무역/유통</option>
@@ -225,8 +225,9 @@
   </button>
 </div>
 <br/>
-          <div class=" inner" style="width:100%;">
-    </div>
+
+<div class=" inner" style="width:100%; height:10px">
+  </div>
     <button class="btn" type="submit" style="border-radius:15px; font-size:18px; background-color: #4a60d4; color: white; width:50%; height:50px;" @click="GotoFiltering">선택 완료</button>
   <div class=" inner" style="width:100%; height:20px">
     </div>

@@ -178,7 +178,7 @@
       <br/>
         <div class=" inner" style="width:100%;">
   </div>
-  <button class="btn" type="submit" style="border-radius:15px; font-size:18px; background-color: #4a60d4; color: white; width:50%; height:50px;" @click="postteaminfo">팀 생성하기</button>
+  <button class="btn" type="submit" style="border-radius:15px; font-size:18px; background-color: #4a60d4; color: white; width:80%; height:50px;" @click="postteaminfo">팀 생성하기</button>
 <br/>
 <br/>
 <br/>
@@ -365,11 +365,6 @@ export default {
   height: 120px;
   cursor: move;
 }
-
-.nas{
-float:left;
-position: relative;
-}
 .mytag{
     border-style: solid;
   border-radius: 20px;
@@ -383,13 +378,6 @@ position: relative;
   margin-top: 15px;
   margin-bottom:15px;
   color:white;
-}
-
-.middata{
-  width:30%;
-}
-.middataitem{
-  display: inline-block;
 }
 .upperitems{
   margin-left: 10px;

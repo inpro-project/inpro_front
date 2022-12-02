@@ -31,8 +31,11 @@
   </div>
   </button>
   </div>
-
-</template>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  </template>
 
 <script>
 import axios from 'axios'

@@ -35,8 +35,14 @@
     <router-link to="/maketeam">
         <div class=" inner" style="width:100%;">
   </div>
-  <button class="btn" type="submit" style="border-radius:15px; font-size:18px; background-color: #4a60d4; color: white; width:50%; height:50px;">팀 새로 만들기</button>
+  <button class="btn" type="submit" style="border-radius:15px; font-size:18px; background-color: #4a60d4; color: white; width:80%; height:50px;">팀 새로 만들기</button>
 </router-link>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 </template>
 
 <script>
@@ -45,14 +51,24 @@ export default {
   name: 'MemberBox',
   data () {
     return {
+      teams: [],
       likings: [],
+      likers: [],
       teamimgurl: [],
       teamtitle: [],
       teamtype: [],
       teamregion: [],
       teaminterests: [],
       teamIdx: [],
-      userIdx: []
+      userIdx: [],
+      memberimgurl: [],
+      membergender: [],
+      membernickname: [],
+      memberagerange: [],
+      memberregion: [],
+      memberinterests: [],
+      memberoccupation: [],
+      memberuseridx: []
     }
   },
   methods: {
@@ -60,15 +76,15 @@ export default {
       axios
         .get(process.env.VUE_APP_API_BASE_URL + '/app/teams', { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
         .then(res => {
-          this.likings = res.data.result
-          console.log(this.likings)
-          for (let i = 0; i < this.likings.length; i++) {
-            this.teamimgurl.push(this.likings[i].teamRepUrl)
-            this.teaminterests.push(this.likings[i].interests)
-            this.teamtitle.push(this.likings[i].title)
-            this.teamregion.push(this.likings[i].region)
-            this.teamtype.push(this.likings[i].type)
-            this.teamIdx.push(this.likings[i].teamIdx)
+          this.teams = res.data.result
+          console.log(this.teams)
+          for (let i = 0; i < this.teams.length; i++) {
+            this.teamimgurl.push(this.teams[i].teamRepUrl)
+            this.teaminterests.push(this.teams[i].interests)
+            this.teamtitle.push(this.teams[i].title)
+            this.teamregion.push(this.teams[i].region)
+            this.teamtype.push(this.teams[i].type)
+            this.teamIdx.push(this.teams[i].teamIdx)
           }
           console.log(this.teaminterests)
           console.log(this.teamimgurl)
@@ -76,6 +92,36 @@ export default {
           console.log(this.teamtitle)
           console.log(this.teamtype)
           console.log(this.teamIdx)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    getteamlikers () {
+      axios
+        .get(process.env.VUE_APP_API_BASE_URL + '/app/team-likers', { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
+        .then(res => {
+          this.likings = res.data.result
+          console.log(this.likings)
+          for (let i = 0; i < this.likings.length; i++) {
+            // this.likers.push(this.likings[i].likers)
+          /* this.memberimgurl.push(this.likings[i].userImgUrl)
+            this.memberagerange.push(this.likings[i].ageRange)
+            this.memberinterests.push(this.likings[i].interests)
+            this.membernickname.push(this.likings[i].nickName)
+            this.memberoccupation.push(this.likings[i].occupation)
+            this.memberregion.push(this.likings[i].region)
+            this.membergender.push(this.likings[i].gender)
+            this.memberidx.push(this.likings[i].userIdx) */
+          }
+          console.log(this.memberagerange)
+          console.log(this.memberinterests)
+          console.log(this.membernickname)
+          console.log(this.memberoccupation)
+          console.log(this.memberregion)
+          console.log(this.memberimgurl)
+          console.log(this.membergender)
+          console.log(this.memberidx)
         })
         .catch(err => {
           console.log(err)
@@ -89,6 +135,7 @@ export default {
   created () {
     // 미리 api에서 조회 데이터 가져옴
     this.getuserinfodata()
+    this.getteamlikers()
   }
 }
 </script>
