@@ -138,6 +138,16 @@ const routes = [
         component: () => import(/* webpackChunkName: "likeinfo" */ '../views/likeinfo/UserLikeMeView.vue')
       },
       {
+        path: '/userliketeam',
+        name: 'userliketeam',
+        component: () => import(/* webpackChunkName: "likeinfo" */ '../views/likeinfo/UserLikeTeamView.vue')
+      },
+      {
+        path: '/userliketeaminfo/:userIdx',
+        name: 'userliketeaminfo',
+        component: () => import(/* webpackChunkName: "likeinfo" */ '../views/Teaminfo/UserLikeTeamInfoView.vue')
+      },
+      {
         path: '/userlikemeinfo/:userIdx',
         name: 'userlikemeinfo',
         component: () => import(/* webpackChunkName: "likeinfo" */ '../views/Userinfo/UserLikeMeInfoView.vue')
@@ -191,6 +201,16 @@ const routes = [
         path: '/fixteaminfo/:teamIdx',
         name: 'fixteaminfo',
         component: () => import(/* webpackChunkName: "maketeam" */ '../views/FixTeaminfoView.vue')
+      },
+      {
+        path: '/teamreview/:teamIdx',
+        name: 'teamreview',
+        component: () => import(/* webpackChunkName: "teamreview" */ '../views/TeamReviewView.vue')
+      },
+      {
+        path: '/review/:userIdx',
+        name: 'review',
+        component: () => import(/* webpackChunkName: "review" */ '../views/ReviewView.vue')
       }
     ]
   },

@@ -179,7 +179,7 @@
       <router-link to="/teamimade">
         <div class=" inner" style="width:100%;">
   </div>
-  <button class="btn" type="submit" style="border-radius:15px; font-size:18px; background-color: #4a60d4; color: white; width:50%; height:50px;" @click="postteaminfo">팀 생성하기</button>
+  <button class="btn" type="submit" style="border-radius:15px; font-size:18px; background-color: #4a60d4; color: white; width:80%; height:50px;" @click="postteaminfo">팀 생성하기</button>
 </router-link>
 <br/>
 <br/>
@@ -192,12 +192,10 @@
 
 <script>
 import axios from 'axios'
+import VueCookies from 'vue-cookies'
 export default {
   data () {
     return {
-      newteamportfolio: {},
-      teamportfolio: [],
-      members: [],
       content: '내용',
       region: '지역',
       status: 'active',
@@ -206,17 +204,13 @@ export default {
       title: '제목',
       type: '유형',
       interests: '분야',
-      newmembers: {},
       memberimgurl: '',
       memberrole: '',
       membernickname: '',
       memberagerange: '',
       memberregion: '',
       memberinterests: '',
-      memberoccupation: '',
-      memberuseridx: '',
-      memberx: '',
-      membery: ''
+      memberoccupation: ''
     }
   },
   methods: {
@@ -224,25 +218,21 @@ export default {
       this.status = '모집중'
     },
     getmyinfo () {
-      axios // 멤버에 내 프로필 등록
-        .get('http://prod.inpro-server.shop:9000/app/profiles', { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
+      console.log(VueCookies.get('Authorization'))
+      axios
+        .get(process.env.VUE_APP_API_BASE_URL + '/app/profiles', { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           console.log(res.data)
-          this.teamImgUrl.push(res.data.result.userImgUrl)
-          this.teamRepUrl = this.teamImgUrl[0]
-          this.memberimgurl = res.data.result.userImgUrl
-          this.memberagerange = res.data.result.ageRange
-          this.memberinterests = res.data.result.interests
           this.membernickname = res.data.result.nickName
-          this.memberoccupation = res.data.result.occupation
+          this.gender = res.data.result.gender
+          this.memberagerange = res.data.result.ageRange
           this.memberregion = res.data.result.region
+          this.memberoccupation = res.data.result.occupation
+          this.memberinterests = res.data.result.interests
+          this.memberimgurl = res.data.result.userImgUrl
+          this.teamImgUrl.push(this.memberimgurl)
+          this.teamRepUrl = this.teamImgUrl
           this.memberrole = '리더'
-          this.memberx = res.data.result.userDisc[0].x
-          this.membery = res.data.result.userDisc[0].y
-          this.newmembers = { ageRange: this.memberagerange, interests: this.memberinterests, nickName: this.membernickname, occupation: this.memberoccupation, region: this.memberregion, role: this.memberrole, userIdx: '1', userImgUrl: this.memberimgurl, x: this.memberx, y: this.membery }
-          this.members.push(this.newmembers)
-          console.log(this.members)
-          console.log(this.teamImgUrl)
         })
         .catch(err => {
           console.log(err)
@@ -273,10 +263,25 @@ export default {
     deleteimg (idx) {
       this.teamImgUrl.splice(idx, 1)
     },
-    postteaminfo () { // 생성하고 post api 들어갈 함수
-      this.newteamportfolio = { title: this.title, type: this.type, content: this.content, interests: this.interests, region: this.region, teamImgUrl: this.teamImgUrl }
-      this.teamportfolio.push(this.newteamportfolio)
-      console.log(this.teamportfolio)
+    async postteaminfo () { // 생성하고 post api 들어갈 함수 --> 수정 필요
+      // const newteamportfolio = { title: this.title, type: this.type, content: this.content, interests: this.interests, region: this.region }
+      const formData = new FormData()
+      formData.append('repImg', this.teamRepUrl)
+      formData.append('teamImgs', this.teamImgUrl)
+      formData.append('title', this.title)
+      formData.append('type', this.type)
+      formData.append('content', this.content)
+      formData.append('interests', this.interests)
+      formData.append('region', this.region)
+      console.log(VueCookies.get('Authorization'))
+      await axios
+        .post(process.env.VUE_APP_API_BASE_URL + '/app/teams', formData, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
+        .then(res => {
+          console.log(res.data)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
     startDrag (event, idx) {
       event.dataTransfer.dropEffect = 'move'
@@ -334,11 +339,6 @@ export default {
   height: 120px;
   cursor: move;
 }
-
-.nas{
-float:left;
-position: relative;
-}
 .mytag{
     border-style: solid;
   border-radius: 20px;
@@ -352,13 +352,6 @@ position: relative;
   margin-top: 15px;
   margin-bottom:15px;
   color:white;
-}
-
-.middata{
-  width:30%;
-}
-.middataitem{
-  display: inline-block;
 }
 .upperitems{
   margin-left: 10px;

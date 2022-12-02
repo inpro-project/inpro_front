@@ -8,7 +8,7 @@
   </div>
   <div class="text-wrap">
     <p style="text-align:left; position:relative; top:4px; left:4px; font-size:20px;  color:gray">
- 매칭된 유저
+ 내 팀에 Like한 유저
   </p>
   </div>
 </div>
@@ -56,7 +56,7 @@ export default {
   methods: {
     getuserinfodata () {
       axios
-        .get(process.env.VUE_APP_API_BASE_URL + '/app/matched-users', { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
+        .get(process.env.VUE_APP_API_BASE_URL + '/app/team-likers', { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
         .then(res => {
           this.likings = res.data.result
           console.log(this.likings)
@@ -68,7 +68,7 @@ export default {
             this.memberoccupation.push(this.likings[i].occupation)
             this.memberregion.push(this.likings[i].region)
             this.membergender.push(this.likings[i].gender)
-            this.memberlikingidx.push(this.likings[i].matchedUserIdx)
+            this.memberlikingidx.push(this.likings[i].likerIdx)
           }
           console.log(this.memberagerange)
           console.log(this.memberinterests)
@@ -85,7 +85,7 @@ export default {
     },
     gotoprofile (idx) {
       const userIdx = this.memberlikingidx[idx]
-      this.$router.push({ name: 'matcheduserinfo', params: { userIdx: userIdx } })
+      this.$router.push({ name: 'userlikemeinfo', params: { userIdx: userIdx } })
     }
   },
   created () {
@@ -105,7 +105,6 @@ export default {
 .text-wrap{
   display: inline-block;
 }
-
 .upperitems{
   text-align: center;
   margin-inline: 5px;

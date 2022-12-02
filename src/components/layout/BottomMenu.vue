@@ -53,7 +53,9 @@ export default {
 </script>
 <style scoped>
 .nav {
-    width:390px;
-    height:70px;
+    width: 100%;
+    height:8.3%;
+    min-height:70px;
+    min-width: 390px;
 }
 </style>
