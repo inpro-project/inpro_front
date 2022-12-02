@@ -270,10 +270,7 @@ export default {
   },
   methods: {
     changeProfile (p) {
-      this.file = p.target.files[0]
-      this.userImgUrl = URL.createObjectURL(this.file)
-      console.log(this.file)
-      console.log(this.userImgUrl)
+      this.userImgClustering(p.target.files[0])
     },
     changeName (n) {
       this.userName = n.target.value
@@ -379,6 +376,25 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    async userImgClustering (file) {
+      const formData = new FormData()
+      formData.append('file', file)
+      await axios
+        .post(process.env.VUE_APP_API_BASE_URL + '/predict/image', formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+        .then(res => {
+          if (res.data.is_valid === true) {
+            this.file = file
+            this.userImgUrl = URL.createObjectURL(file)
+          } else {
+            this.invalidImg()
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    invalidImg () {
     },
     async CompleteFix () {
       if (this.file != null) {

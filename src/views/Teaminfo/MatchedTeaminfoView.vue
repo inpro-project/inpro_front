@@ -59,10 +59,10 @@ export default {
       // 채팅방 생성 및 채팅방 입장 (제작 필요)
       if (this.chatRoomIdx !== undefined) {
         this.$router.push({ name: 'ChatRoomView', params: { roomId: this.chatRoomIdx } })
+      }
     },
     deletelike () {
       // 좋아요 삭제 기능 (구현 필요?)
-      }
     }
   }
 }
