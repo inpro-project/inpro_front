@@ -381,9 +381,15 @@ export default {
           break
       }
       console.log('상태:' + this.status)
+    },
+    checkLogin () {
+      if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {
+        this.$router.push({ name: 'kakaologin' })
+      }
     }
   },
   created () {
+    this.checkLogin()
     // 미리 api에서 조회 데이터 가져옴
     this.getteaminfodata()
   }

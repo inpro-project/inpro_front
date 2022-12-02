@@ -23,6 +23,7 @@
 
 <script>
 import axios from 'axios'
+import VueCookies from 'vue-cookies'
 import OtherUserinfoViewVue from '@/components/OtherUserinfoView.vue'
 
 export default {
@@ -34,14 +35,22 @@ export default {
     async deleteLike () { // 유저 좋아요 취소
       const likingIdx = this.$route.params.userIdx
       await axios
-        .patch(process.env.VUE_APP_API_BASE_URL + '/app/user-likes/' + likingIdx, likingIdx, { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .patch(process.env.VUE_APP_API_BASE_URL + '/app/user-likes/' + likingIdx, likingIdx, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           console.log(res)
         })
         .catch(err => {
           console.log(err)
         })
+    },
+    checkLogin () {
+      if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {
+        this.$router.push({ name: 'kakaologin' })
+      }
     }
+  },
+  created () {
+    this.checkLogin()
   }
 }
 </script>

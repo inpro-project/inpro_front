@@ -496,9 +496,15 @@ export default {
     },
     deleteteaminterests (idx) {
       this.deleteFilter('team', 'interests', idx)
+    },
+    checkLogin () {
+      if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {
+        this.$router.push({ name: 'kakaologin' })
+      }
     }
   },
   created () {
+    this.checkLogin()
     this.getpersonfilteringdata()
     this.getteamfilteringdata()
   }

@@ -31,7 +31,15 @@ export default {
       } else if (process.env.NODE_ENV === 'production') {
         this.kakaoLogin()
       }
+    },
+    checkLogin () {
+      if (VueCookies.get('Authorization') !== null && VueCookies.get('userIdx') !== null) {
+        this.$router.push({ name: 'mainmenu' })
+      }
     }
+  },
+  created () {
+    this.checkLogin()
   }
 }
 </script>

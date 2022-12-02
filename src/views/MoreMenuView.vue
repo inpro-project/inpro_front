@@ -30,7 +30,9 @@ export default {
     }
   },
   setup () {},
-  created () {},
+  created () {
+    this.checkLogin()
+  },
   mounted () {},
   unmounted () {},
   methods: {
@@ -38,6 +40,11 @@ export default {
       await VueCookies.remove('Authorization')
       await VueCookies.remove('userIdx')
       this.$router.push({ name: 'kakaologin' })
+    },
+    checkLogin () {
+      if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {
+        this.$router.push({ name: 'kakaologin' })
+      }
     }
   }
 }

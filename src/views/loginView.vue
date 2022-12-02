@@ -18,6 +18,7 @@ export default {
   },
   setup () {},
   created () {
+    this.checkLogin()
     this.codes = this.$route.query.code
     this.getToken()
   },
@@ -45,6 +46,11 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    checkLogin () {
+      if (VueCookies.get('Authorization') !== null && VueCookies.get('userIdx') !== null) {
+        this.$router.push({ name: 'mainmenu' })
+      }
     }
 
   }

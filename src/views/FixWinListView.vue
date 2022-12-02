@@ -196,9 +196,15 @@ export default {
           console.log(err)
         })
       // 수정 완료 버튼 누르면 포트폴리오 수정 (패치) --> api 사용
+    },
+    checkLogin () {
+      if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {
+        this.$router.push({ name: 'kakaologin' })
+      }
     }
   },
   created () {
+    this.checkLogin()
     // 미리 api에서 조회 데이터 가져옴
     this.getportfolioinfodata()
   }

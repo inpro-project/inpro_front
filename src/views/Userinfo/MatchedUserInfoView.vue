@@ -86,7 +86,15 @@ export default {
       if (this.chatRoomIdx !== undefined) {
         this.$router.push({ name: 'ChatRoomView', params: { roomId: this.chatRoomIdx } })
       }
+    },
+    checkLogin () {
+      if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {
+        this.$router.push({ name: 'kakaologin' })
+      }
     }
+  },
+  created () {
+    this.checkLogin()
   }
 }
 </script>

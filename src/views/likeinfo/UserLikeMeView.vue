@@ -34,10 +34,12 @@
   <br/>
   <br/>
   <br/>
-  </template>
+</template>
 
 <script>
 import axios from 'axios'
+import VueCookies from 'vue-cookies'
+
 export default {
   name: 'MemberBox',
   data () {
@@ -56,7 +58,7 @@ export default {
   methods: {
     getuserinfodata () {
       axios
-        .get(process.env.VUE_APP_API_BASE_URL + '/app/user-likers', { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
+        .get(process.env.VUE_APP_API_BASE_URL + '/app/user-likers', { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           this.likings = res.data.result
           console.log(this.likings)
@@ -86,9 +88,15 @@ export default {
     gotoprofile (idx) {
       const userIdx = this.memberlikingidx[idx]
       this.$router.push({ name: 'userlikemeinfo', params: { userIdx: userIdx } })
+    },
+    checkLogin () {
+      if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {
+        this.$router.push({ name: 'kakaologin' })
+      }
     }
   },
   created () {
+    this.checkLogin()
     // 미리 api에서 조회 데이터 가져옴
     this.getuserinfodata()
   }
