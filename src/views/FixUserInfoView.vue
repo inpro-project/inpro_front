@@ -402,10 +402,16 @@ export default {
       }
       await this.patchuserinfodata()
       this.$router.push({ name: 'userinfo' })
+    },
+    checkLogin () {
+      if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {
+        this.$router.push({ name: 'kakaologin' })
+      }
     }
   },
   created () {
     // 미리 정보 가져옴
+    this.checkLogin()
     this.getuserinfodata()
   }
 }

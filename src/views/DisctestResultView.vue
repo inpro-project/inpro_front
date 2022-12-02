@@ -123,6 +123,11 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    checkLogin () {
+      if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {
+        this.$router.push({ name: 'kakaologin' })
+      }
     }
   },
   computed: {
@@ -156,6 +161,7 @@ export default {
     }
   },
   created () {
+    this.checkLogin()
     this.getData()
   }
 }

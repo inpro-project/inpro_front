@@ -339,9 +339,15 @@ export default {
     onDrop (event) {
       event.preventDefault()
       this.repImgIdx = parseInt(event.dataTransfer.getData('idx'))
+    },
+    checkLogin () {
+      if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {
+        this.$router.push({ name: 'kakaologin' })
+      }
     }
   },
   created () {
+    this.checkLogin()
     // 미리 api에서 조회 데이터 가져옴
     this.getmyinfo()
     this.getstatusinfo()

@@ -63,7 +63,15 @@ export default {
     },
     deletelike () {
       // 좋아요 삭제 기능 (구현 필요?)
+    },
+    checkLogin () {
+      if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {
+        this.$router.push({ name: 'kakaologin' })
+      }
     }
+  },
+  created () {
+    this.checkLogin()
   }
 }
 </script>

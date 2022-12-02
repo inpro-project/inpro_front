@@ -258,10 +258,16 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    checkLogin () {
+      if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {
+        this.$router.push({ name: 'kakaologin' })
+      }
     }
   },
   created () {
     // 미리 api에서 조회 데이터 가져옴
+    this.checkLogin()
     this.getuserinfodata()
   }
 }

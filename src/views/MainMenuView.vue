@@ -119,13 +119,30 @@
     <br/>
     <br/>
 </template>
-
 <script>
-export default {
+import VueCookies from 'vue-cookies'
 
+export default {
+  components: {},
+  data () {
+    return {
+    }
+  },
+  setup () {},
+  created () {
+    this.checkLogin()
+  },
+  mounted () {},
+  unmounted () {},
+  methods: {
+    checkLogin () {
+      if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {
+        this.$router.push({ name: 'kakaologin' })
+      }
+    }
+  }
 }
 </script>
-
 <style scoped>
 .wraps{
   text-align: left;

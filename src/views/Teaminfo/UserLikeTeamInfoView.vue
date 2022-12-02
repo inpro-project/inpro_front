@@ -25,6 +25,7 @@
 
 <script>
 import axios from 'axios'
+import VueCookies from 'vue-cookies'
 import OtherUserinfoViewVue from '@/components/OtherUserinfoView.vue'
 
 export default {
@@ -54,7 +55,15 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    checkLogin () {
+      if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {
+        this.$router.push({ name: 'kakaologin' })
+      }
     }
+  },
+  created () {
+    this.checkLogin()
   }
 }
 </script>
