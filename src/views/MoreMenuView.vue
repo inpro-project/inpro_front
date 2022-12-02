@@ -16,7 +16,7 @@
       </button>
     </router-link>
     </div>
-    <button style=" width:80%; height:50px; line-height:50px; border-style:solid; border-radius: 10px; border-width:0px; background-color:#c0c0c0; font-size:20px; margin-bottom:30px;">
+    <button @click="logOut" style=" width:80%; height:50px; line-height:50px; border-style:solid; border-radius: 10px; border-width:0px; background-color:#c0c0c0; font-size:20px; margin-bottom:30px;">
 로그 아웃
       </button>
 </template>
