@@ -155,12 +155,14 @@
   </div>
 </template>
 <script>
+import VueCookies from 'vue-cookies'
+
 export default {
-  name: 'ChatInput',
-  props: ['newMessages', 'userId', 'roomMembers', 'roomId'],
+  name: 'PresentChat',
+  props: ['newMessages', 'roomMembers', 'roomId'],
   data () {
     return {
-      getUserId: this.userId,
+      getUserId: VueCookies.get('userIdx'),
       chatMessages: this.newMessages
     }
   }

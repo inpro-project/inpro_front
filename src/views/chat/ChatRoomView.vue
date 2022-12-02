@@ -4,9 +4,8 @@
       <div>
         <div class="chat-messages" ref="chatMessage"
         >
-        <div>
-          <PreviousChat v-bind:userId="userId" v-bind:roomMembers="roomMembers" v-bind:roomId="roomId" />
-          <PresentChat v-bind:newMessages="newMessages" v-bind:userId="userId" v-bind:roomMembers="roomMembers" v-bind:roomId="roomId" />
+          <div>
+          <ChatMessage  v-bind:roomId="roomId" v-bind:newMessages="newMessages"/>
           </div>
         </div>
         <div class="chat-input">
@@ -17,8 +16,7 @@
   </div>
 </template>
 <script>
-import PreviousChat from '@/components/chat/PreviousChat.vue'
-import PresentChat from '@/components/chat/PresentChat.vue'
+import ChatMessage from '@/components/chat/ChatMessage.vue'
 import ChatInput from '@/components/chat/ChatInput.vue'
 import Stomp from 'webstomp-client'
 import SockJS from 'sockjs-client'
@@ -27,7 +25,7 @@ import VueCookies from 'vue-cookies'
 
 export default {
   components: {
-    PreviousChat, PresentChat, ChatInput
+    ChatMessage, ChatInput
   },
 
   data () {
@@ -47,7 +45,6 @@ export default {
     this.socket = new SockJS(process.env.VUE_APP_API_BASE_URL + '/ws/chat')
     this.stompClient = Stomp.over(this.socket)
     this.stompClient.connect({ Authorization: VueCookies.get('Authorization') }, this.onConnected, this.onError)
-    this.getRoomMembers()
   },
 
   methods: {

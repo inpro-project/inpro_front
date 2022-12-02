@@ -175,10 +175,10 @@ import VueCookies from 'vue-cookies'
 
 export default {
   name: 'PreviousChat',
-  props: ['userId', 'roomMembers', 'roomId'],
+  props: ['roomMembers', 'roomId'],
   data () {
     return {
-      getUserId: this.userId,
+      getUserId: VueCookies.get('userIdx'),
       chatMessages: [],
       days: ['일', '월', '화', '수', '목', '금', '토']
     }
