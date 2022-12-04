@@ -74,7 +74,7 @@ export default {
       if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {
         this.$router.push({ name: 'kakaologin' })
       }
-  },
+    },
     inputrole (r) {
       this.role = r.target.value
     }

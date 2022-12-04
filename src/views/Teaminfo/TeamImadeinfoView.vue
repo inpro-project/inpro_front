@@ -118,10 +118,8 @@ export default {
     }
   },
   created () {
-    this.getteamlikers()
-  },
-  created () {
     this.checkLogin()
+    this.getteamlikers()
   }
 }
 </script>
