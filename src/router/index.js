@@ -138,12 +138,7 @@ const routes = [
         component: () => import(/* webpackChunkName: "likeinfo" */ '../views/likeinfo/UserLikeMeView.vue')
       },
       {
-        path: '/userliketeam',
-        name: 'userliketeam',
-        component: () => import(/* webpackChunkName: "likeinfo" */ '../views/likeinfo/UserLikeTeamView.vue')
-      },
-      {
-        path: '/userliketeaminfo/:userIdx',
+        path: '/userliketeaminfo/:userIdx/:teamIdx',
         name: 'userliketeaminfo',
         component: () => import(/* webpackChunkName: "likeinfo" */ '../views/Teaminfo/UserLikeTeamInfoView.vue')
       },
@@ -208,7 +203,7 @@ const routes = [
         component: () => import(/* webpackChunkName: "teamreview" */ '../views/TeamReviewView.vue')
       },
       {
-        path: '/review/:userIdx',
+        path: '/review/:teamIdx/:userIdx',
         name: 'review',
         component: () => import(/* webpackChunkName: "review" */ '../views/ReviewView.vue')
       }

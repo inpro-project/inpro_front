@@ -4,7 +4,7 @@
         &nbsp;&nbsp;&nbsp;&nbsp;팀원 리뷰
       </div>
       <div v-for="(member, idx) in members" :key="idx">
-  <button v-if="member.memberreview != 0" type="button" style="margin-top:10px; margin-bottom:10px; border-style:solid; border-radius:10px; background-color:#c0c0c0; border-width:0px; height:80px; width:90%" @click="gotoreview(idx)">
+  <button v-if="(memberreview[idx] === 0)" type="button" style="margin-top:10px; margin-bottom:10px; border-style:solid; border-radius:10px; background-color:#c0c0c0; border-width:0px; height:80px; width:90%" @click="gotoreview(idx)">
     <img :src= "memberimgurl[idx]" style="float:left; border-style:solid; border-radius: 10px; background-color: gray; border-width:0px; height:70px; width:70px; position:relative; left:5px;">
 <div style="float:left; position:relative; left:20px;line-height:35px;">
   <div class="memberitem" style="display:flex;">
@@ -84,7 +84,8 @@ export default {
     },
     gotoreview (idx) {
       const userIdx = this.memberuseridx[idx]
-      this.$router.push({ name: 'review', params: { userIdx: userIdx } })
+      const teamIdx = this.$route.params.teamIdx
+      this.$router.push({ name: 'review', params: { userIdx: userIdx, teamIdx: teamIdx } })
     },
     checkLogin () {
       if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {
