@@ -235,6 +235,30 @@ export default {
           console.log(err)
         })
     },
+    async userImgClustering (file) {
+      const formData = new FormData()
+      formData.append('file', file)
+      await axios
+        .post(process.env.VUE_APP_API_BASE_URL + '/predict/image', formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+        .then(res => {
+          console.log(res)
+          if (res.data.is_valid === true) {
+            const teamImg = {
+              img: file,
+              url: URL.createObjectURL(file)
+            }
+            this.teamImgs.push(teamImg)
+          } else {
+            this.invalidImg()
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    invalidImg () {
+      // 유해이미지로 판단 되었을때 로직
+    },
     changetitle (t) {
       this.title = t.target.value
     },
@@ -253,13 +277,9 @@ export default {
     changeComment (c) {
       this.content = c.target.value
     },
-    changeProfile (p) {
+    async changeProfile (p) {
       for (const file of p.target.files) {
-        const teamImg = {
-          img: file,
-          url: URL.createObjectURL(file)
-        }
-        this.teamImgs.push(teamImg)
+        await this.userImgClustering(file)
       }
     },
     deleteimg (idx) {
@@ -319,9 +339,15 @@ export default {
     onDrop (event) {
       event.preventDefault()
       this.repImgIdx = parseInt(event.dataTransfer.getData('idx'))
+    },
+    checkLogin () {
+      if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {
+        this.$router.push({ name: 'kakaologin' })
+      }
     }
   },
   created () {
+    this.checkLogin()
     // 미리 api에서 조회 데이터 가져옴
     this.getmyinfo()
     this.getstatusinfo()

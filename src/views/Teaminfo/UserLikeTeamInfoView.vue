@@ -30,6 +30,7 @@
 
 <script>
 import axios from 'axios'
+import VueCookies from 'vue-cookies'
 import OtherUserinfoViewVue from '@/components/OtherUserinfoView.vue'
 
 export default {
@@ -58,9 +59,28 @@ export default {
         })
       this.$router.go(-1)
     },
+    async passLike () { // 유저 좋아요 넘기기
+      const userpassIdx = this.$route.params.userIdx
+      await axios
+        .post(process.env.VUE_APP_API_BASE_URL + '/app/user-passes/' + userpassIdx, userpassIdx, { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .then(res => {
+          console.log(res)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    checkLogin () {
+      if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {
+        this.$router.push({ name: 'kakaologin' })
+      }
+  },
     inputrole (r) {
       this.role = r.target.value
     }
+  },
+  created () {
+    this.checkLogin()
   }
 }
 </script>

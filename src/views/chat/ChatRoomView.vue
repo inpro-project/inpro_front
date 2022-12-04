@@ -40,6 +40,7 @@ export default {
   },
 
   created () {
+    this.checkLogin()
     this.roomId = String(this.$route.params.roomId)
     console.log('roomId : ', this.roomId)
     this.socket = new SockJS(process.env.VUE_APP_API_BASE_URL + '/ws/chat')
@@ -87,6 +88,11 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    checkLogin () {
+      if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {
+        this.$router.push({ name: 'kakaologin' })
+      }
     }
   }
 }

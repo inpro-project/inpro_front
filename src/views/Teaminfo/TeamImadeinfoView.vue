@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import VueCookies from 'vue-cookies'
 import OtherTeaminfoViewVue from '@/components/OtherTeaminfoView.vue'
 import axios from 'axios'
 
@@ -109,10 +110,18 @@ export default {
     gotoprofile (idx) {
       const userIdx = this.memberuseridx[idx]
       this.$router.push({ name: 'userliketeaminfo', params: { userIdx: userIdx, teamIdx: this.teamIdx } })
+    },
+    checkLogin () {
+      if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {
+        this.$router.push({ name: 'kakaologin' })
+      }
     }
   },
   created () {
     this.getteamlikers()
+  },
+  created () {
+    this.checkLogin()
   }
 }
 </script>

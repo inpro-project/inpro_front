@@ -31,6 +31,8 @@
 
 <script>
 import axios from 'axios'
+import VueCookies from 'vue-cookies'
+
 export default {
   data () {
     return {
@@ -50,7 +52,7 @@ export default {
     getuserinfodata () {
       const teamIdx = this.$route.params.teamIdx
       axios
-        .get(process.env.VUE_APP_API_BASE_URL + '/app/teams/' + teamIdx, { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
+        .get(process.env.VUE_APP_API_BASE_URL + '/app/teams/' + teamIdx, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           console.log(res.data.result)
           this.teamportfolio = res.data.result[0]
@@ -84,9 +86,15 @@ export default {
       const userIdx = this.memberuseridx[idx]
       const teamIdx = this.$route.params.teamIdx
       this.$router.push({ name: 'review', params: { userIdx: userIdx, teamIdx: teamIdx } })
+    },
+    checkLogin () {
+      if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {
+        this.$router.push({ name: 'kakaologin' })
+      }
     }
   },
   created () {
+    this.checkLogin()
     this.getuserinfodata()
   }
 

@@ -35,7 +35,7 @@
   <br/>
   <br/>
   <br/>
-  </template>
+</template>
 
 <script>
 import axios from 'axios'
@@ -87,9 +87,15 @@ export default {
     gotoprofile (idx) {
       const teamIdx = this.teamIdx[idx]
       this.$router.push({ name: 'matchedteaminfo', params: { teamIdx: teamIdx } })
+    },
+    checkLogin () {
+      if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {
+        this.$router.push({ name: 'kakaologin' })
+      }
     }
   },
   created () {
+    this.checkLogin()
     // 미리 api에서 조회 데이터 가져옴
     this.getuserinfodata()
   }

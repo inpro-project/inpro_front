@@ -1,11 +1,13 @@
 <template>
+  <div>
   <br />
   <br />
   <br />
 <button class="about" style="border-width:0px; background-color:white">
     <img src = "@/assets/kakao_login_medium_narrow.png" @click= "login()" />
     <br />
-</button>
+    </button>
+  </div>
 </template>
 
 <script>
@@ -29,7 +31,15 @@ export default {
       } else if (process.env.NODE_ENV === 'production') {
         this.kakaoLogin()
       }
+    },
+    checkLogin () {
+      if (VueCookies.get('Authorization') !== null && VueCookies.get('userIdx') !== null) {
+        this.$router.push({ name: 'mainmenu' })
+      }
     }
+  },
+  created () {
+    this.checkLogin()
   }
 }
 </script>

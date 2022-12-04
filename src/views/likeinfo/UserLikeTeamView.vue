@@ -1,5 +1,5 @@
 <template>
-    <div class="outer ms-3">
+  <div class="outer ms-3">
   <div class=" inner" style="width: 90%">
     <div class="text-wrap me-2 mt-2">
       <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="gray" class="bi bi-person-fill" viewBox="0 0 16 16">
@@ -8,7 +8,7 @@
   </div>
   <div class="text-wrap">
     <p style="text-align:left; position:relative; top:4px; left:4px; font-size:20px;  color:gray">
- 내가 Like한 유저
+ 내 팀에 Like한 유저
   </p>
   </div>
 </div>
@@ -58,7 +58,7 @@ export default {
   methods: {
     getuserinfodata () {
       axios
-        .get(process.env.VUE_APP_API_BASE_URL + '/app/user-likings', { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
+        .get(process.env.VUE_APP_API_BASE_URL + '/app/team-likers', { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           this.likings = res.data.result
           console.log(this.likings)
@@ -70,7 +70,7 @@ export default {
             this.memberoccupation.push(this.likings[i].occupation)
             this.memberregion.push(this.likings[i].region)
             this.membergender.push(this.likings[i].gender)
-            this.memberlikingidx.push(this.likings[i].likingIdx)
+            this.memberlikingidx.push(this.likings[i].likerIdx)
           }
           console.log(this.memberagerange)
           console.log(this.memberinterests)
@@ -87,7 +87,7 @@ export default {
     },
     gotoprofile (idx) {
       const userIdx = this.memberlikingidx[idx]
-      this.$router.push({ name: 'melikeuserinfo', params: { userIdx: userIdx } })
+      this.$router.push({ name: 'userlikemeinfo', params: { userIdx: userIdx } })
     },
     checkLogin () {
       if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {

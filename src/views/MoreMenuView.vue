@@ -16,14 +16,37 @@
       </button>
     </router-link>
     </div>
-    <button style=" width:80%; height:50px; line-height:50px; border-style:solid; border-radius: 10px; border-width:0px; background-color:#c0c0c0; font-size:20px; margin-bottom:30px;">
+    <button @click="logOut" style=" width:80%; height:50px; line-height:50px; border-style:solid; border-radius: 10px; border-width:0px; background-color:#c0c0c0; font-size:20px; margin-bottom:30px;">
 로그 아웃
       </button>
 </template>
 
 <script>
-export default {
+import VueCookies from 'vue-cookies'
 
+export default {
+  data () {
+    return {
+    }
+  },
+  setup () {},
+  created () {
+    this.checkLogin()
+  },
+  mounted () {},
+  unmounted () {},
+  methods: {
+    async logOut () {
+      await VueCookies.remove('Authorization')
+      await VueCookies.remove('userIdx')
+      this.$router.push({ name: 'kakaologin' })
+    },
+    checkLogin () {
+      if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {
+        this.$router.push({ name: 'kakaologin' })
+      }
+    }
+  }
 }
 </script>
 
