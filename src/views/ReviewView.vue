@@ -53,7 +53,6 @@ export default {
   },
   methods: {
     getreviewinfodata () {
-      console.log(VueCookies.get('Authorization'))
       axios
         .get(process.env.VUE_APP_API_BASE_URL + '/app/reviews', { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
@@ -96,10 +95,16 @@ export default {
       this.selectfeature.splice(idx, 1)
       this.newreviews.splice(idx, 1)
       console.log(this.newreviews)
+    },
+    checkLogin () {
+      if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {
+        this.$router.push({ name: 'kakaologin' })
+      }
     }
   },
   created () {
     // 미리 api에서 조회 데이터 가져옴
+    this.checkLogin()
     this.getreviewinfodata()
   }
 }
