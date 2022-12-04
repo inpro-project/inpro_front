@@ -15,17 +15,21 @@
   </div>
 </div>
   </div>
-    <div v-for="(liking, idx) in likings" :key="idx">
-      <button type="button" style="margin-top:10px; margin-bottom:10px; border-style:solid; border-radius:10px; background-color:#c0c0c0; border-width:0px; height:80px; width:90%" @click="gotoprofile(idx)">
+  <!--팀 간편 프로필-->
+    <div v-for="(team, idx) in teams" :key="idx">
+      <button class="btn btn-primary position-relative" type="button" style="margin-top:10px; margin-bottom:10px; border-style:solid; border-radius:10px; background-color:#c0c0c0; border-width:0px; height:80px; width:90%" @click="gotoprofile(idx)">
+        <span v-if="liketeamIdx.includes(teamIdx[idx])" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+          {{likings.filter((team) => team.teamIdx === teamIdx[idx])[0].likers.length}} <!--해당 팀에 지원자가 몇 명 있는지 배지로 보여줌-->
+  </span>
         <img :src= "teamimgurl[idx]" style="float:left; border-style:solid; border-radius: 10px; background-color: gray; border-width:0px; height:70px; width:70px; position:relative; left:5px;">
     <div style="float:left; position:relative; left:20px;line-height:35px;">
       <div class="memberitem" style="display:flex;">
-        <div class="upperitems" style="font-size:18px">{{teamtitle[idx]}}</div>
+        <div class="upperitems" style="font-size:18px; color:black">{{teamtitle[idx]}}</div>
       </div>
       <div class="memberitem" style="display:flex;">
-        <div class="upperitems" style="font-size:14px;">{{teamtype[idx]}}</div>
-        <div class="upperitems" style="font-size:14px;">{{teamregion[idx]}}</div>
-        <div class="upperitems" style="font-size:14px;">{{teaminterests[idx]}}</div>
+        <div class="upperitems" style="font-size:14px; color:black">{{teamtype[idx]}}</div>
+        <div class="upperitems" style="font-size:14px; color:black">{{teamregion[idx]}}</div>
+        <div class="upperitems" style="font-size:14px; color:black">{{teaminterests[idx]}}</div>
       </div>
     </div>
     </button>
@@ -68,7 +72,9 @@ export default {
       memberregion: [],
       memberinterests: [],
       memberoccupation: [],
-      memberuseridx: []
+      memberuseridx: [],
+      liketeamIdx: [], // 각 선호 유저가 있는 팀의 인덱스
+      results: []
     }
   },
   methods: {
@@ -86,12 +92,12 @@ export default {
             this.teamtype.push(this.teams[i].type)
             this.teamIdx.push(this.teams[i].teamIdx)
           }
-          console.log(this.teaminterests)
+          /* console.log(this.teaminterests)
           console.log(this.teamimgurl)
           console.log(this.teamregion)
           console.log(this.teamtitle)
-          console.log(this.teamtype)
-          console.log(this.teamIdx)
+          console.log(this.teamtype) */
+          // console.log(this.teamIdx)
         })
         .catch(err => {
           console.log(err)
@@ -104,7 +110,7 @@ export default {
           this.likings = res.data.result
           console.log(this.likings)
           for (let i = 0; i < this.likings.length; i++) {
-            // this.likers.push(this.likings[i].likers)
+            this.liketeamIdx.push(this.likings[i].teamIdx)
           /* this.memberimgurl.push(this.likings[i].userImgUrl)
             this.memberagerange.push(this.likings[i].ageRange)
             this.memberinterests.push(this.likings[i].interests)
@@ -114,6 +120,8 @@ export default {
             this.membergender.push(this.likings[i].gender)
             this.memberidx.push(this.likings[i].userIdx) */
           }
+          // console.log(this.liketeamIdx) // 가입 요청한 멤버
+          /*
           console.log(this.memberagerange)
           console.log(this.memberinterests)
           console.log(this.membernickname)
@@ -121,7 +129,7 @@ export default {
           console.log(this.memberregion)
           console.log(this.memberimgurl)
           console.log(this.membergender)
-          console.log(this.memberidx)
+          console.log(this.memberidx) */
         })
         .catch(err => {
           console.log(err)
