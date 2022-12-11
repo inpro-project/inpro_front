@@ -22,7 +22,7 @@ const routes = [
         component: () => import(/* webpackChunkName: "teaminfo" */ '../views/TeaminfoView.vue')
       },
       {
-        path: '/otherteaminfo:teamIdx',
+        path: '/otherteaminfo',
         name: 'otherteaminfo',
         component: () => import(/* webpackChunkName: "otherteaminfo" */ '../components/OtherTeaminfoView.vue')
       },
@@ -32,7 +32,7 @@ const routes = [
         component: () => import(/* webpackChunkName: "userinfo" */ '../views/TeamCommentView.vue')
       },
       {
-        path: '/otheruserinfo:userIdx',
+        path: '/otheruserinfo',
         name: 'otheruserinfo',
         component: () => import(/* webpackChunkName: "userinfo" */ '../components/OtherUserinfoView.vue')
       },
@@ -72,6 +72,11 @@ const routes = [
         component: () => import(/* webpackChunkName: "disctestresult" */ '../views/DisctestResultView.vue')
       },
       {
+        path: '/disctestresultlist/',
+        name: 'disctestresultlist',
+        component: () => import(/* webpackChunkName: "disctestresultlist" */ '../views/DisctestResultListView.vue')
+      },
+      {
         path: '/fixworklist',
         name: 'fixworklist',
         component: () => import(/* webpackChunkName: "fixworklist" */ '../views/FixWorkListView.vue')
@@ -109,12 +114,12 @@ const routes = [
       {
         path: '/showperson',
         name: 'showperson',
-        component: () => import(/* webpackChunkName: "fixurllist" */ '../views/ShowPersonView.vue')
+        component: () => import(/* webpackChunkName: "showperson" */ '../views/ShowPersonView.vue')
       },
       {
         path: '/showteam',
         name: 'showteam',
-        component: () => import(/* webpackChunkName: "fixurllist" */ '../views/ShowTeamView.vue')
+        component: () => import(/* webpackChunkName: "showteam" */ '../views/ShowTeamView.vue')
       },
       {
         path: '/memberbox',

@@ -43,6 +43,10 @@
   <div class="input-group" style="width:90%; margin-bottom:20px">
     <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" style="position:relative; left:4%;" @change="changeProfile">
   </div>
+
+  <!--유해이미지 판단시 경고창-->
+ <invalid-alert/>
+
 <!-- 이름수정 -->
   <div class="fixname" style="height:30px; margin-bottom: 20px;">
     <div class="name" style="float:left; position: relative; top:5px; left:20px; margin-right: 35px; font-size: 16px; color:gray;">
@@ -241,8 +245,10 @@
 <script>
 import axios from 'axios'
 import VueCookies from 'vue-cookies'
+import InvalidAlert from '@/components/layout/InvalidAlert.vue'
 
 export default {
+  components: { InvalidAlert },
   data () {
     return {
       userinfo: [],
@@ -395,6 +401,7 @@ export default {
         })
     },
     invalidImg () {
+      this.$store.state.isinvalid = 1
     },
     async CompleteFix () {
       if (this.file != null) {

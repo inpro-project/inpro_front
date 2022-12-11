@@ -81,21 +81,17 @@
     <br/>
     <div style="margin-bottom:100px">
       <div style="float: left; width: 50%;">
-      <router-link to='/showperson'>
-        <button style="height:80px; width:80%; border-style: solid; border-radius: 20px; border-width: 0px; background-color: #4a60d4; color:white; font-size: 18px;"> <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+        <button style="height:80px; width:80%; border-style: solid; border-radius: 20px; border-width: 0px; background-color: #4a60d4; color:white; font-size: 18px;" @click="showperson"> <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
   <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
 </svg>&nbsp;&nbsp;팀원찾기</button>
-      </router-link>
     </div>
 
     <div style="float: left; width: 50%;">
-      <router-link to='/showteam'>
-        <button style="height:80px; width:80%; border-style: solid; border-radius: 20px; border-width: 0px; background-color: #4a60d4; color:white; font-size: 18px;"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="white" class="bi bi-people-fill" viewBox="0 0 16 16">
+        <button style="height:80px; width:80%; border-style: solid; border-radius: 20px; border-width: 0px; background-color: #4a60d4; color:white; font-size: 18px;" @click="showteam"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="white" class="bi bi-people-fill" viewBox="0 0 16 16">
   <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
   <path fill-rule="evenodd" d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z"/>
   <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
 </svg>&nbsp;&nbsp;팀찾기</button>
-      </router-link>
     </div>
 
     </div>
@@ -113,11 +109,14 @@ export default {
   components: {},
   data () {
     return {
+      userIdx: [],
+      teamIdx: []
     }
   },
   setup () {},
   created () {
     this.checkLogin()
+    this.loadidx()
   },
   mounted () {},
   unmounted () {},
@@ -126,6 +125,23 @@ export default {
       if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {
         this.$router.push({ name: 'kakaologin' })
       }
+    },
+    showperson () {
+      this.$store.state.otheruserIdx = this.$store.state.userIdx[this.$store.state.personcounter]
+      this.$router.push({ name: 'showperson', params: { userIdx: this.$store.state.otheruserIdx } })
+    },
+    showteam () {
+      this.$store.state.otherteamIdx = this.$store.state.userIdx[this.$store.state.teamcounter]
+      this.$router.push({ name: 'showteam', params: { userIdx: this.$store.state.otherteamIdx } })
+    },
+    async loadidx () {
+      await this.$store.dispatch('GET_PERSON') // vuex에서 추천 회원 정보 얻어옴
+      await this.$store.dispatch('GET_TEAM') // vuex에서 추천 팀 정보 얻어옴
+      this.$store.state.personcounter = '0'
+      console.log(this.$store.state.userIdx)
+      console.log(this.$store.state.teamIdx)
+      console.log(this.$store.state.personcounter)
+      console.log(this.$store.state.teamcounter)
     }
   }
 }

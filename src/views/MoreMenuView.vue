@@ -16,6 +16,11 @@
       </button>
     </router-link>
     </div>
+    <div>
+      <button style=" width:80%; height:50px; line-height:50px; border-style:solid; border-radius: 10px; border-width:0px; background-color:#c0c0c0; font-size:20px; margin-bottom:30px;" @click="gotoresult">
+나의 DISC
+      </button>
+    </div>
     <button @click="logOut" style=" width:80%; height:50px; line-height:50px; border-style:solid; border-radius: 10px; border-width:0px; background-color:#c0c0c0; font-size:20px; margin-bottom:30px;">
 로그 아웃
       </button>
@@ -45,6 +50,9 @@ export default {
       if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {
         this.$router.push({ name: 'kakaologin' })
       }
+    },
+    gotoresult () {
+      this.$router.push({ name: 'disctestresultlist' })
     }
   }
 }

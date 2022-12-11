@@ -34,11 +34,20 @@
   </div>
 
   <!--disc좌표평면(구현아직X)(api)-->
-  <div class="border10 me-2">
-  </div>
+  <div  class="border10 me-2" style="display:flex; justify-content:center; align-items: center;">
+  <div class="border10" style="display:flex; justify-content:center; align-items: center; border-radius: 50%; border-color: black; border-width:2px;">
+        <button class="discdot" :style="{ left: this.x + 'px', bottom: this.y + 'px'}">
+        <button class="discdot1" :style="{ left: this.$store.state.myrepX + 'px', bottom: this.$store.state.myrepY + 'px'}">
+          </button>
+        </button>
 
-  <div class=" inner" style="width:100%; height:10px">
   </div>
+</div>
+
+<div class=" inner" style="width:100%; height:10px">
+  </div>
+<!--일치율 -->
+<div style="width:100%; height:30px; font-weight:bold; font-size:22px">회원님의 이상향과 {{percent}}% 일치합니다!</div>
 
   <!--3가지성향대표키워드(api)-->
 <div style="display:flex; justify-content:space-between">
@@ -227,17 +236,21 @@ export default {
       title1: '',
       title2: '',
       title3: '',
-      userImgUrl: ''
+      userImgUrl: '',
+      x: 0,
+      y: 0,
+      percent: 0
     }
   },
   methods: {
     getuserinfodata () {
-      const userIdx = this.$route.params.userIdx
+      const userIdx = this.$store.state.otheruserIdx
       axios
-      // get api 뒤에 useridx 값은 나중에 조회할 user의 idx값을 삽입해야함 --> /user-profile/:userIdx
         .get(process.env.VUE_APP_API_BASE_URL + '/app/user-profiles/' + userIdx, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
-          console.log(res.data)
+          console.log('현재param: ' + userIdx)
+          console.log(this.$store.state.myrepX)
+          console.log(this.$store.state.myrepY)
           this.userTags = res.data.result.userTags
           this.userName = res.data.result.nickName
           this.gender = res.data.result.gender
@@ -252,6 +265,11 @@ export default {
           this.title1 = this.repPortfolio[0].title
           this.title2 = this.repPortfolio[1].title
           this.title3 = this.repPortfolio[2].title
+          this.x = res.data.result.x.toFixed(1) * 5
+          this.y = res.data.result.y.toFixed(1) * 5
+          this.percent = res.data.result.percent
+          console.log(this.x)
+          console.lof(this.y)
         })
         .catch(err => {
           console.log(err)
@@ -259,7 +277,6 @@ export default {
     }
   },
   created () {
-    console.log(this.$route)
     // 미리 api에서 조회 데이터 가져옴
     this.getuserinfodata()
   }
@@ -364,5 +381,27 @@ position: relative;
   position: relative;
   top:15px;
   float: left;
+}
+
+.discdot {
+  z-index: 99999;
+  border-radius:10px;
+  position:relative;
+  height:13px;
+  width:5px;
+  border-width:0px;
+  background-color: blue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.discdot1 {
+  border-radius:10px;
+  position:relative;
+  height:13px;
+  width:5px;
+  border-width:0px;
+  background-color: red;
 }
 </style>

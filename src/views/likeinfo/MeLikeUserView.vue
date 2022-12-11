@@ -72,22 +72,22 @@ export default {
             this.membergender.push(this.likings[i].gender)
             this.memberlikingidx.push(this.likings[i].likingIdx)
           }
-          console.log(this.memberagerange)
+          /* console.log(this.memberagerange)
           console.log(this.memberinterests)
           console.log(this.membernickname)
           console.log(this.memberoccupation)
           console.log(this.memberregion)
           console.log(this.memberimgurl)
           console.log(this.membergender)
-          console.log(this.memberlikingidx)
+          console.log(this.memberlikingidx) */
         })
         .catch(err => {
           console.log(err)
         })
     },
     gotoprofile (idx) {
-      const userIdx = this.memberlikingidx[idx]
-      this.$router.push({ name: 'melikeuserinfo', params: { userIdx: userIdx } })
+      this.$store.state.otheruserIdx = this.memberlikingidx[idx]
+      this.$router.push({ name: 'melikeuserinfo', params: { userIdx: this.$store.state.otheruserIdx } })
     },
     checkLogin () {
       if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {
