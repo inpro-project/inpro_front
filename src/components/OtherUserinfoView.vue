@@ -248,9 +248,14 @@ export default {
       axios
         .get(process.env.VUE_APP_API_BASE_URL + '/app/user-profiles/' + userIdx, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
-          console.log('현재param: ' + userIdx)
+          console.log(res.data.result)
           console.log(this.$store.state.myrepX)
           console.log(this.$store.state.myrepY)
+          this.x = res.data.result.x.toFixed(1) * 5
+          this.y = res.data.result.y.toFixed(1) * 5
+          this.percent = res.data.result.percent
+          console.log(this.x)
+          console.log(this.y)
           this.userTags = res.data.result.userTags
           this.userName = res.data.result.nickName
           this.gender = res.data.result.gender
@@ -265,11 +270,6 @@ export default {
           this.title1 = this.repPortfolio[0].title
           this.title2 = this.repPortfolio[1].title
           this.title3 = this.repPortfolio[2].title
-          this.x = res.data.result.x.toFixed(1) * 5
-          this.y = res.data.result.y.toFixed(1) * 5
-          this.percent = res.data.result.percent
-          console.log(this.x)
-          console.lof(this.y)
         })
         .catch(err => {
           console.log(err)
@@ -384,7 +384,6 @@ position: relative;
 }
 
 .discdot {
-  z-index: 99999;
   border-radius:10px;
   position:relative;
   height:13px;

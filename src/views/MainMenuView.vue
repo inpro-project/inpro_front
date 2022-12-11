@@ -128,11 +128,12 @@ export default {
     },
     showperson () {
       this.$store.state.otheruserIdx = this.$store.state.userIdx[this.$store.state.personcounter]
-      this.$router.push({ name: 'showperson', params: { userIdx: this.$store.state.otheruserIdx } })
+      console.log(this.$store.state.otheruserIdx)
+      this.$router.push({ name: 'showperson' })
     },
     showteam () {
       this.$store.state.otherteamIdx = this.$store.state.userIdx[this.$store.state.teamcounter]
-      this.$router.push({ name: 'showteam', params: { userIdx: this.$store.state.otherteamIdx } })
+      this.$router.push({ name: 'showteam' })
     },
     async loadidx () {
       await this.$store.dispatch('GET_PERSON') // vuex에서 추천 회원 정보 얻어옴

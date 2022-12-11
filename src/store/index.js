@@ -13,8 +13,8 @@ export default createStore({
     isteampass: [],
     isuserlike: [],
     isuserpass: [],
-    otheruserIdx: '0',
-    otherteaminfo: '0',
+    otheruserIdx: '',
+    otherteaminfo: '',
     myIdx: '', // 나의 대표 disctest
     istest: '0', // disctest 여부 ( 0 = 없음 / 1 = 있음)
     myrepX: 0,

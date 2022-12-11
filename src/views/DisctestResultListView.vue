@@ -32,6 +32,12 @@
         </div>
     </div>
     <br/>
+    <router-link to="/mainmenu">
+  <button class="btn" type="submit" style="background-color: #4a60d4; color: white; height:50px; width:80%; border-radius:15px; font-size:17px; font-weight: bold; line-height: 20px;">메인메뉴로 이동하기</button>
+</router-link>
+    <br/>
+    <br/>
+    <br/>
     <br/>
     <br/>
     <br/>

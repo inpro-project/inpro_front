@@ -72,7 +72,7 @@ const routes = [
         component: () => import(/* webpackChunkName: "disctestresult" */ '../views/DisctestResultView.vue')
       },
       {
-        path: '/disctestresultlist/',
+        path: '/disctestresultlist',
         name: 'disctestresultlist',
         component: () => import(/* webpackChunkName: "disctestresultlist" */ '../views/DisctestResultListView.vue')
       },

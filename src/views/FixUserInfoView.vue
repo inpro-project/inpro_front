@@ -270,7 +270,7 @@ export default {
       userDisc: [],
       inputtagtext: '', // 유저태그에 들어갈 텍스트
       inputtagidx: '', // 유저태그에 들어갈 인덱스
-      newinputtag: {},
+      newinputtag: [],
       file: null
     }
   },
