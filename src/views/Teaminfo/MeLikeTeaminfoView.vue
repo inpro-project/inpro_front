@@ -42,6 +42,7 @@ export default {
         .catch(err => {
           console.log(err)
         })
+      this.$router.go(-1)
     },
     checkLogin () {
       if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {

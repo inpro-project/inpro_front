@@ -1,7 +1,6 @@
 <template>
 <div>
-  <UserBar>인플</UserBar>
-  <h2>인플</h2>
+
 </div>
 </template>
 
@@ -31,6 +30,11 @@ export default {
         .then(res => {
           VueCookies.set('userIdx', res.data.result.userIdx)
           VueCookies.set('Authorization', res.data.result.jwt)
+          if (this.$store.state.istest === '0') {
+            this.$router.push({ name: 'disctest' })
+          } else {
+            this.$router.push({ name: 'mainmenu' })
+          }
         })
         .catch(err => {
           console.log(err)

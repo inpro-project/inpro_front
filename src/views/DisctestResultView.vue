@@ -9,6 +9,13 @@
     <br/>
     <div class= test>
     </div>
+    <div style="display:flex; justify-content:center; align-items: center; width:100%; height:220px">
+    <div  class="border11" style="display:flex; justify-content:center; align-items: center;">
+      <div class="border10" style="display:flex; justify-content:center; align-items: center; border-radius: 50%; border-color: black; border-width:2px;">
+        <button class="discdot" :style="{ left: this.x + 'px', bottom: this.y + 'px'}"></button>
+  </div>
+    </div>
+</div>
     <div class="progressFull">
       <div class="progress">
   <div class="progress-bar" role="progressbar" :style="setDPercent" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">D</div>
@@ -92,7 +99,7 @@
 <br/>
 <br/>
 <router-link to="/mainmenu">
-  <button class="btn" type="submit" style="background-color: #4a60d4; color: white; height:50px; width:220px; border-radius:15px; font-size:17px; font-weight: bold; line-height: 20px;">메인화면으로 가기</button>
+  <button class="btn" type="submit" style="background-color: #4a60d4; color: white; height:50px; width:80%; border-radius:15px; font-size:17px; font-weight: bold; line-height: 20px;">메인화면으로 가기</button>
 </router-link>
     <br/>
     <br/>
@@ -109,7 +116,9 @@ import VueCookies from 'vue-cookies'
 export default {
   data () {
     return {
-      discTestResult: {}
+      discTestResult: {},
+      x: 0,
+      y: 0
     }
   },
   methods: {
@@ -119,6 +128,11 @@ export default {
         .get(process.env.VUE_APP_API_BASE_URL + '/app/user-discs/' + userDiscIdx, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           this.discTestResult = res.data.result
+          this.x = res.data.result.x.toFixed(1) * 5
+          this.y = res.data.result.y.toFixed(1) * 5
+          console.log(this.discTestResult)
+          console.log(this.x)
+          console.log(this.y)
         })
         .catch(err => {
           console.log(err)
@@ -168,7 +182,26 @@ export default {
 </script>
 
 <style scoped>
+.border10{
+  border-style: solid;
+  border-radius: 20px;
+  border-color: #c0c0c0;
+  background-color: #c0c0c0;
+  border-width: 1px;
+  width: 181px;
+  height: 181px;
+}
 
+.border11{
+  border-style: solid;
+  border-radius: 20px;
+  border-color: #c0c0c0;
+  background-color: #c0c0c0;
+  border-width: 1px;
+  width: 211px;
+  height: 211px;
+  margin-bottom: 30px;
+}
 .text-wrap{
   position: relative;
   width:90%;
@@ -282,5 +315,14 @@ export default {
   display:inline-block;
   width:86%;
   height: 210px;
+}
+
+.discdot {
+  border-radius:10px;
+  position:relative;
+  height:13px;
+  width:5px;
+  border-width:0px;
+  background-color: red;
 }
 </style>

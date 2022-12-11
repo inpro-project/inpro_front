@@ -31,9 +31,12 @@
   <div v-else>
     <img class="border10 me-2" style="margin-left:10px" :src="userImgUrl">
   </div>
-  <!--disc좌표평면(구현아직X)(api)-->
-  <div class="border10 me-2">
+  <!--disc좌표평면-->
+  <div  class="border10 me-2" style="display:flex; justify-content:center; align-items: center;">
+  <div class="border10" style="display:flex; justify-content:center; align-items: center; border-radius: 50%; border-color: black; border-width:2px;">
+        <button class="discdot" :style="{ left: this.x + 'px', bottom: this.y + 'px'}"></button>
   </div>
+</div>
 
   <div class=" inner" style="width:100%; height:10px">
   </div>
@@ -230,7 +233,10 @@ export default {
       title1: '',
       title2: '',
       title3: '',
-      userImgUrl: ''
+      userImgUrl: '',
+      x: 0,
+      y: 0,
+      discTestResult: []
     }
   },
   methods: {
@@ -239,7 +245,8 @@ export default {
       axios
         .get(process.env.VUE_APP_API_BASE_URL + '/app/profiles', { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
-          console.log(res.data)
+          console.log(res.data.result)
+          console.log('myIdx: ' + this.$store.state.myIdx)
           this.userTags = res.data.result.userTags ? res.data.result.userTags : []
           this.userName = res.data.result.nickName
           this.gender = res.data.result.gender
@@ -259,6 +266,28 @@ export default {
           console.log(err)
         })
     },
+    getData () {
+      console.log(VueCookies.get('Authorization'))
+      const userDiscIdx = this.$store.state.myIdx
+      axios
+        .get(process.env.VUE_APP_API_BASE_URL + '/app/user-discs/' + userDiscIdx, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
+        .then(res => {
+          console.log(res.data)
+          this.discTestResult = res.data.result
+          this.x = res.data.result.x.toFixed(1) * 5
+          this.y = res.data.result.y.toFixed(1) * 5
+          console.log(this.discTestResult)
+          // console.log(this.x)
+          // console.log(this.y)
+          this.$store.state.myrepX = this.x
+          this.$store.state.myrepY = this.y
+          console.log(this.$store.state.myrepX)
+          console.log(this.$store.state.myrepY)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
     checkLogin () {
       if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {
         this.$router.push({ name: 'kakaologin' })
@@ -269,6 +298,7 @@ export default {
     // 미리 api에서 조회 데이터 가져옴
     this.checkLogin()
     this.getuserinfodata()
+    this.getData()
   }
 }
 
@@ -372,5 +402,14 @@ position: relative;
   position: relative;
   top:15px;
   float: left;
+}
+
+.discdot {
+  border-radius:10px;
+  position:relative;
+  height:13px;
+  width:5px;
+  border-width:0px;
+  background-color: red;
 }
 </style>

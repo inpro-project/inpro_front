@@ -86,8 +86,8 @@ export default {
         })
     },
     gotoprofile (idx) {
-      const userIdx = this.memberlikingidx[idx]
-      this.$router.push({ name: 'userlikemeinfo', params: { userIdx: userIdx } })
+      this.$store.state.otheruserIdx = this.memberlikingidx[idx]
+      this.$router.push({ name: 'userlikemeinfo', params: { userIdx: this.$store.state.otheruserIdx } })
     },
     checkLogin () {
       if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {

@@ -1,13 +1,26 @@
 <template>
-  <div>
   <br />
   <br />
   <br />
-<button class="about" style="border-width:0px; background-color:white">
-    <img src = "@/assets/kakao_login_medium_narrow.png" @click= "login()" />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <div style="display: flex; justify-content: center;">
+    <img src = "@/assets/inplelogoblue.png" style="width:150px; height:150px;"/>
+  </div>
+  <br />
+  <br />
+  <br />
+  <br />
+<button class="about" style="border-width:0px; background-color:white;">
+    <img src = "@/assets/kakao_login_medium_narrow.png" style="width:180px; height:50px;" @click= "login()" />
     <br />
     </button>
-  </div>
 </template>
 
 <script>
@@ -27,7 +40,7 @@ export default {
     },
     login () {
       if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
-        this.devLogin()
+        this.kakaoLogin()
       } else if (process.env.NODE_ENV === 'production') {
         this.kakaoLogin()
       }

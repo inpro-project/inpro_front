@@ -48,6 +48,9 @@
   <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" style="position:relative; left:4%;" @change="changeProfile">
 </div>
 
+ <!--유해이미지-->
+ <InvalidAlert/>
+
  <!--등록한 프로필이미지-->
  <div class="container1" v-for="(teamImg, idx) in teamImgs" :key="idx" type="button" @click="deleteimg(idx)">
    <img class="border12" :src= "teamImg.url" style="margin-left:7px; margin-bottom: 7px;" draggable="true" @dragstart="startDrag($event, idx)">
@@ -191,8 +194,10 @@
 <script>
 import axios from 'axios'
 import VueCookies from 'vue-cookies'
+import InvalidAlert from '@/components/layout/InvalidAlert.vue'
 
 export default {
+  components: { InvalidAlert },
   data () {
     return {
       members: [],
@@ -257,7 +262,7 @@ export default {
         })
     },
     invalidImg () {
-      // 유해이미지로 판단 되었을때 로직
+      this.$store.state.isinvalid = 1
     },
     changetitle (t) {
       this.title = t.target.value
