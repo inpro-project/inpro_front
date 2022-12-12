@@ -306,7 +306,7 @@ export default {
     posttag () {
       const name = this.newinputtag.name
       axios
-        .post(process.env.VUE_APP_API_BASE_URL + '/app/usertags', null, { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN }, params: { name: name } })
+        .post(process.env.VUE_APP_API_BASE_URL + '/app/usertags', null, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') }, params: { name: name } })
         .then(res => {
           this.userTags.push(this.newinputtag)
           console.log(res)
@@ -317,7 +317,7 @@ export default {
     },
     deletetag (idx) {
       axios
-        .delete(process.env.VUE_APP_API_BASE_URL + '/app/usertags/' + this.userTags[idx].userTagIdx, { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .delete(process.env.VUE_APP_API_BASE_URL + '/app/usertags/' + this.userTags[idx].userTagIdx, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           this.userTags.splice(idx, 1)
           console.log(res)

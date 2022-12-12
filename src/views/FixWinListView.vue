@@ -160,7 +160,7 @@ export default {
         url: portfolio.url
       }
       axios
-        .post(process.env.VUE_APP_API_BASE_URL + '/app/portfolios/2', JSON.stringify(data), { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .post(process.env.VUE_APP_API_BASE_URL + '/app/portfolios/2', JSON.stringify(data), { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           console.log(res)
         })
@@ -171,7 +171,7 @@ export default {
     },
     deletePortfolio (portfolio) {
       axios
-        .delete(process.env.VUE_APP_API_BASE_URL + '/app/portfolios/' + portfolio.portfolioIdx, { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .delete(process.env.VUE_APP_API_BASE_URL + '/app/portfolios/' + portfolio.portfolioIdx, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           console.log(res)
         })
@@ -188,7 +188,7 @@ export default {
         isRepPortfolio: portfolio.isRepPortfolio
       }
       axios
-        .patch(process.env.VUE_APP_API_BASE_URL + '/app/portfolios/' + portfolio.portfolioIdx, JSON.stringify(data), { headers: { 'Content-Type': 'application/json', Authorization: process.env.VUE_APP_ACCESS_TOKEN } })
+        .patch(process.env.VUE_APP_API_BASE_URL + '/app/portfolios/' + portfolio.portfolioIdx, JSON.stringify(data), { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           console.log(res)
         })
