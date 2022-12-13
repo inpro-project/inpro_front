@@ -235,9 +235,9 @@ export default {
       const teamIdx = this.$route.params.teamIdx
       console.log(teamIdx)
       axios
-        .get(process.env.VUE_APP_API_BASE_URL + '/app/teams/' + teamIdx, { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
+        .get(process.env.VUE_APP_API_BASE_URL + '/app/teams/' + teamIdx, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
-          console.log(res.data.result)
+          console.log(res.data)
           this.teamportfolio = res.data.result[0]
           this.commentCount = this.teamportfolio.commentCount
           this.content = this.teamportfolio.content

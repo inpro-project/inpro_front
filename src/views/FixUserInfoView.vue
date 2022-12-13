@@ -13,9 +13,9 @@
       </div>
     </div>
   </div>
-  <div  style="display:flex; justify-content:space-between">
+
   <div v-if="userImgUrl.length==0"
-    class="border10" style="margin-left:10px">
+    class="border10 me-2" style="margin-left:10px">
     <div class="profileicon">
       <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="gray" class="bi bi-person-bounding-box" viewBox="0 0 16 16">
         <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z"/>
@@ -26,14 +26,28 @@
       프로필 사진 업로드
     </div>
   </div>
+
   <div v-else>
-    <img class="border10" style="margin-left:10px" :src="userImgUrl">
+    <img class="border10 me-2" style="margin-left:10px" :src="userImgUrl">
   </div>
-  <div class="border10 me-3">
+  <!--disc좌표평면-->
+  <div  class="border10 me-2" style="display:flex; justify-content:center; align-items: center;">
+  <div class="border10" style="border-radius: 50%; border-color: black; border-width:2px;">
+    <div style="position:absolute; bottom:50%; border-style:solid; border-width:0px; width:177px; height:1px; background-color:black"></div>
+    <div style="position:absolute; left:50%; border-style:solid; border-width:0px; width:1px; height:177px; background-color:black"></div>
+    <div style="position:absolute; left: 25%; bottom:60%; font-weight:bold; font-size:24px; color:gray">D</div>
+    <div style="position:absolute; left: 70%; bottom:60%; font-weight:bold; font-size:24px; color:gray">I</div>
+    <div style="position:absolute; left: 70%; bottom:20%; font-weight:bold; font-size:24px; color:gray">S</div>
+    <div style="position:absolute; left: 25%; bottom:20%; font-weight:bold; font-size:24px; color:gray">C</div>
+        <div class="discdot" :style="{ left: this.x + 80 + 'px', bottom: this.y + 80 + 'px'}"></div>
   </div>
-  </div>
+</div>
 
   <div class=" inner" style="width:100%; height:10px">
+  </div>
+  <div style="width:100%; display:flex; align-items:center; justify-content:center">
+  <div class = "discdotexplain"></div>
+  <div class="explain ms-3" style="position:relative; left:-25%; color: gray;">나의 DISC 지표</div>
   </div>
 
   <!-- 프로필사진수정 -->
@@ -327,10 +341,20 @@ export default {
         })
     },
     getuserinfodata () {
+      console.log(VueCookies.get('Authorization'))
       axios
         .get(process.env.VUE_APP_API_BASE_URL + '/app/profiles', { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
-          this.userTags = res.data.result.userTags
+          console.log(res.data.result)
+          this.x = res.data.result.x.toFixed(1) * 5
+          this.y = res.data.result.y.toFixed(1) * 5
+          console.log(this.x)
+          console.log(this.y)
+          this.$store.state.myrepX = this.x
+          this.$store.state.myrepY = this.y
+          console.log('vuex x: ' + this.$store.state.myrepX)
+          console.log('vuex y: ' + this.$store.state.myrepY)
+          this.userTags = res.data.result.userTags ? res.data.result.userTags : []
           this.userName = res.data.result.nickName
           this.gender = res.data.result.gender
           this.ageRange = res.data.result.ageRange
@@ -344,10 +368,6 @@ export default {
           this.title1 = this.repPortfolio[0].title
           this.title2 = this.repPortfolio[1].title
           this.title3 = this.repPortfolio[2].title
-          this.searchDisc = res.data.result.searchDisc
-          this.userDisc = res.data.result.userDisc
-          this.userinfo = res.data.result
-          console.log(res.data)
         })
         .catch(err => {
           console.log(err)
@@ -437,14 +457,16 @@ export default {
   }
 
   .border10{
-    border-style: solid;
-    border-radius: 20px;
-    border-color: #c0c0c0;
-    background-color: #c0c0c0;
-    border-width: 1px;
-    width: 180px;
-    height: 180px;
-  }
+  float: left;
+  position: relative;
+  border-style: solid;
+  border-radius: 20px;
+  border-color: #c0c0c0;
+  background-color: #c0c0c0;
+  border-width: 1px;
+  width: 181px;
+  height: 181px;
+}
 
   .usertag{
     border-style: solid;
@@ -489,4 +511,22 @@ export default {
     top:15px;
     float: left;
   }
+
+  .discdot {
+  border-radius:10px;
+  position:absolute;
+  height:13px;
+  width:13px;
+  border-width:0px;
+  background-color: red;
+}
+.discdotexplain {
+  border-radius:10px;
+  position:relative;
+  height:13px;
+  width:13px;
+  border-width:0px;
+  background-color: red;
+  left:-25%;
+}
   </style>

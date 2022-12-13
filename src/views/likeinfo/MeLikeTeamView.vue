@@ -84,7 +84,7 @@ export default {
     },
     gotoprofile (idx) {
       const teamIdx = this.teamIdx[idx]
-      console.log(teamIdx)
+      this.$store.state.otherteamIdx = this.teamIdx[idx]
       this.$router.push({ name: 'meliketeaminfo', params: { teamIdx: teamIdx } })
     },
     checkLogin () {

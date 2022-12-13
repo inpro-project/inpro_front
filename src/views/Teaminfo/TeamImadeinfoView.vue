@@ -68,13 +68,12 @@ export default {
   methods: {
     gotofixteaminfo () { // 정보 수정하러 가기
       this.teamIdx = this.$route.params.teamIdx
-      console.log(this.$teamIdx)
       this.$router.push({ name: 'fixteaminfo', params: { teamIdx: this.teamIdx } })
     },
     getteamlikers () {
       this.teamIdx = this.$route.params.teamIdx
       axios
-        .get(process.env.VUE_APP_API_BASE_URL + '/app/team-likers', { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
+        .get(process.env.VUE_APP_API_BASE_URL + '/app/team-likers', { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           this.likings = res.data.result
           this.likers = this.likings.filter((team) => team.teamIdx === Number(this.teamIdx))[0].likers
