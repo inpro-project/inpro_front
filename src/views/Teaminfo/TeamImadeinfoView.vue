@@ -108,6 +108,7 @@ export default {
     },
     gotoprofile (idx) {
       const userIdx = this.memberuseridx[idx]
+      this.$store.state.otheruserIdx = this.memberuseridx[idx]
       this.$router.push({ name: 'userliketeaminfo', params: { userIdx: userIdx, teamIdx: this.teamIdx } })
     },
     checkLogin () {
