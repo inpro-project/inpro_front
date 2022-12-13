@@ -74,7 +74,7 @@
 <br/>
 <br/>
 <br/>
-<div style="position: fixed; bottom:11%; height:10.8%; border-style: solid; background-color: #4a60d4; border-width:0px; width:100%; min-width:390px; z-index: 9999">
+<div style="position: fixed; bottom:8%; height:65px; border-style: solid; background-color: #4a60d4; border-width:0px; width:100%; min-width:390px; z-index: 9999">
     <div class="input-group mb-3" style="position:relative; height:45px; margin-top:10px; width:95%; margin-left:2%;">
   <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" style="border-radius:10px;" @change="inputcomment">
   <button class="btn btn-outline-secondary" type="button" id="button-addon1" style="margin-left: 10px; background-color:#4a60d4; color:#4a60d4; background-color: white; border-radius: 10px; font-weight: bold;" @click="postnewcomment">입력</button>

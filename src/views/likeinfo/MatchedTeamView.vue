@@ -86,6 +86,7 @@ export default {
     },
     gotoprofile (idx) {
       const teamIdx = this.teamIdx[idx]
+      this.$store.state.otherteamIdx = this.teamIdx[idx]
       this.$router.push({ name: 'matchedteaminfo', params: { teamIdx: teamIdx } })
     },
     checkLogin () {
