@@ -73,7 +73,7 @@
           </span>
         </div>
         <div v-else-if="chat.MEDIA==1">
-          <ChatImages :images="chat.message" />
+          <!-- <ChatImages :images="chat.message" /> -->
         </div>
         <div v-else-if="chat.MEDIA==2">
           <video
@@ -120,7 +120,7 @@
                 </span>
               </div>
               <div v-else-if="chat.MEDIA==1">
-                <ChatImages :images="chat.message" />
+                <!-- <ChatImages :images="chat.message" /> -->
               </div>
               <div v-else-if="chat.MEDIA==2">
                 <video
@@ -148,7 +148,7 @@
               </span>
             </div>
             <div v-else-if="chat.MEDIA==1">
-              <ChatImages :images="chat.message" />
+              <!-- <ChatImages :images="chat.message" /> -->
             </div>
             <div v-else-if="chat.MEDIA==2">
               <video
