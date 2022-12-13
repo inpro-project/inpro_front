@@ -15,7 +15,8 @@ export default {
       codes: '',
       results: [],
       personfilter: [],
-      teamfilter: []
+      teamfilter: [],
+      discresult: []
     }
   },
   setup () {},
@@ -53,6 +54,7 @@ export default {
       await axios
         .get(process.env.VUE_APP_API_BASE_URL + '/app/user-discs/', { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
+          this.discresult = res.data.result
           console.log(res.data.result)
           if (res.data.result.length === 0) { // DISC 목록 조회가 없다면 테스트 보여줌
             this.$router.push({ name: 'disctest' })
@@ -63,6 +65,8 @@ export default {
         .catch(err => {
           console.log(err)
         })
+      this.$store.state.myIdx = this.discresult.filter((p) => p.isRepDisc === 'Y')[0].userDiscIdx // 내 대표 disc로 지정
+      console.log('myIdx: ' + this.$store.state.myIdx)
     },
     async getfilteringdata () {
       await axios

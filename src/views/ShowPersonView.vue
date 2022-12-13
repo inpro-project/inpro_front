@@ -67,6 +67,7 @@ export default {
       this.$store.state.isuserpass.push('0')
       this.addCounter()
       this.nextpage()
+      this.loadidx()
     },
     async deleteLike () { // 유저 좋아요 취소
       const likingIdx = this.$store.state.otheruserIdx
@@ -128,15 +129,13 @@ export default {
         this.$router.push({ name: 'mainmenu' })
       }
       this.forceRerender()
-      this.loadidx()
     },
-    loadidx () {
-      this.nowIdx = this.$store.state.userIdx[this.$store.state.personcounter]
+    async loadidx () {
+      await this.$store.dispatch('GET_PERSON')
     }
   },
   created () {
     this.checkLogin()
-    this.nowIdx = this.$store.state.userIdx[this.$store.state.personcounter]
   }
 }
 </script>

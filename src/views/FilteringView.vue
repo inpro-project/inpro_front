@@ -99,7 +99,7 @@
         <!-- 관심분야수정 -->
         <div class="fixinsterest" style="height:30px; margin-bottom: 20px;">
         <div class="input-group" style="float:left; width:93%;  margin-bottom: 10px;">
-            <span style="color:gray; margin-left:20px; margin-right:20px; line-height: 40px;">직업</span>
+            <span style="color:gray; margin-left:20px; margin-right:20px; line-height: 40px;">분야</span>
   <select class="form-select" id="interestinputGroupSelect" aria-label="multiple select with button addon" style="border-radius:10px;" @change="changeInterest">
     <option selected>분야</option>
     <option value="경영/사무">경영/사무</option>

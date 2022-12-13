@@ -9,13 +9,32 @@
     <br/>
     <div class= test>
     </div>
-    <div style="display:flex; justify-content:center; align-items: center; width:100%; height:220px">
-    <div  class="border11" style="display:flex; justify-content:center; align-items: center;">
-      <div class="border10" style="display:flex; justify-content:center; align-items: center; border-radius: 50%; border-color: black; border-width:2px;">
-        <button class="discdot" :style="{ left: this.x + 'px', bottom: this.y + 'px'}"></button>
+
+  <!--disc좌표평면-->
+  <div style="display:flex; justify-content:center;">
+  <div  class="border10" style=" display:flex; justify-content:center; align-items: center;">
+  <div class="border10" style="border-radius: 50%; border-color: black; border-width:2px;">
+    <div style="position:absolute; bottom:50%; border-style:solid; border-width:0px; width:177px; height:1px; background-color:black"></div>
+    <div style="position:absolute; left:50%; border-style:solid; border-width:0px; width:1px; height:177px; background-color:black"></div>
+    <div style="position:absolute; left: 25%; bottom:60%; font-weight:bold; font-size:24px; color:gray">D</div>
+    <div style="position:absolute; left: 70%; bottom:60%; font-weight:bold; font-size:24px; color:gray">I</div>
+    <div style="position:absolute; left: 70%; bottom:20%; font-weight:bold; font-size:24px; color:gray">S</div>
+    <div style="position:absolute; left: 25%; bottom:20%; font-weight:bold; font-size:24px; color:gray">C</div>
+        <div class="discdot" :style="{ left: this.x + 81 + 'px', bottom: this.y + 81 + 'px'}"></div>
   </div>
-    </div>
 </div>
+</div>
+
+<div class=" inner" style="width:100%; height:10px">
+  </div>
+  <div style="width:100%; display:flex; align-items:center; justify-content:center">
+  <div class = "discdotexplain"></div>
+  <div class="explain ms-3" style="position:relative; left:-25%; color: gray;">나의 DISC 지표</div>
+  </div>
+
+  <div class=" inner" style="width:100%; height:10px">
+  </div>
+
     <div class="progressFull">
       <div class="progress">
   <div class="progress-bar" role="progressbar" :style="setDPercent" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">D</div>
@@ -183,6 +202,8 @@ export default {
 
 <style scoped>
 .border10{
+  float: left;
+  position: relative;
   border-style: solid;
   border-radius: 20px;
   border-color: #c0c0c0;
@@ -319,10 +340,19 @@ export default {
 
 .discdot {
   border-radius:10px;
-  position:relative;
+  position:absolute;
   height:13px;
-  width:5px;
+  width:13px;
   border-width:0px;
   background-color: red;
+}
+.discdotexplain {
+  border-radius:10px;
+  position:relative;
+  height:13px;
+  width:13px;
+  border-width:0px;
+  background-color: red;
+  left:-25%;
 }
 </style>
