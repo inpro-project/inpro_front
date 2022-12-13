@@ -3,6 +3,11 @@
     <div>
       <PreviousChat v-bind:roomMembers="roomMembers" v-bind:roomId="roomId" />
       <PresentChat v-bind:newMessages="newMessages" v-bind:roomMembers="roomMembers" v-bind:roomId="roomId" />
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
     </div>
   </div>
 </template>

@@ -58,9 +58,9 @@
             {{ chat.message }}
           </span>
         </div>
-        <div v-else-if="chat.MEDIA==1">
+        <!-- <div v-else-if="chat.MEDIA==1">
           <ChatImages :images="chat.message" />
-        </div>
+        </div> -->
         <div v-else-if="chat.MEDIA==2">
           <video
 

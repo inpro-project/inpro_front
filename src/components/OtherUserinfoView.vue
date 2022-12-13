@@ -262,17 +262,10 @@ export default {
       axios
         .get(process.env.VUE_APP_API_BASE_URL + '/app/user-profiles/' + userIdx, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
-          console.log(res.data)
           this.searchX = res.data.result.searchX.toFixed(1) * 5
           this.searchY = res.data.result.searchY.toFixed(1) * 5
           this.x = res.data.result.x.toFixed(1) * 5
           this.y = res.data.result.y.toFixed(1) * 5
-          console.log(this.x)
-          console.log(this.y)
-          console.log('vuex x: ' + this.$store.state.myrepX)
-          console.log('vuex y: ' + this.$store.state.myrepY)
-          console.log('searchX: ' + this.searchX)
-          console.log('searchY: ' + this.searchY)
           this.userName = res.data.result.nickName
           this.gender = res.data.result.gender
           this.ageRange = res.data.result.ageRange

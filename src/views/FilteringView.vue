@@ -281,7 +281,6 @@ export default {
         .get(process.env.VUE_APP_API_BASE_URL + '/app/user-filters', { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           const filters = res.data.result
-          console.log(filters)
           for (const filter of filters) {
             if (filter.category === 1) {
               this.filters.user.age.push(filter)
@@ -303,7 +302,6 @@ export default {
         .get(process.env.VUE_APP_API_BASE_URL + '/app/team-filters', { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           const filters = res.data.result
-          console.log(filters)
           for (const filter of filters) {
             if (filter.category === 1) {
               this.filters.team.type.push(filter)
@@ -325,25 +323,31 @@ export default {
         userFilterIdx: undefined
       }
       for (const curFilter of this.filters[matchType][filterType]) {
-        if (curFilter.name === filter[filterType]) {
+        if (curFilter.name === filter.name) {
           return
         }
       }
-      if (filter.age === '무관') {
-        for (const curFilter of this.filters[matchType][filterType]) {
-          if (curFilter.userFilterIdx !== undefined) {
-            this.deletedFilters[matchType][filterType].push(curFilter)
+      if (filter.name === '무관') {
+        while (this.filters[matchType][filterType].length > 0) {
+          this.deleteFilter(matchType, filterType, 0)
+        }
+      } else {
+        const curFilters = this.filters[matchType][filterType]
+        for (let i = 0; i < curFilters.length; i++) {
+          if (curFilters[i].name === '무관') {
+            this.deleteFilter(matchType, filterType, i)
           }
         }
       }
-      for (const curFilter of this.deletedFilters[matchType][filterType]) {
-        if (curFilter.name === filter[filterType]) {
-          this.filters[matchType][filterType].push(curFilter)
+      const curDeletedFilters = this.deletedFilters[matchType][filterType]
+      for (let i = 0; i < curDeletedFilters.length; i++) {
+        if (curDeletedFilters[i].name === filter.name) {
+          this.filters[matchType][filterType].push(curDeletedFilters)
+          this.deletedFilters[matchType][filterType].splice(i, 1)
           return
         }
       }
       this.filters[matchType][filterType].push(filter)
-      console.log(this.filters)
     },
     changeAgeRange (a) {
       this.changeFilter('user', 'age', a.target.value)
@@ -414,7 +418,6 @@ export default {
       for (const curFilter of this.deletedFilters.user.region) {
         userFilters.regionDelete.push(curFilter.userFilterIdx)
       }
-      console.log(userFilters)
       await axios
         .patch(process.env.VUE_APP_API_BASE_URL + '/app/user-filters', JSON.stringify(userFilters), { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
@@ -459,7 +462,6 @@ export default {
       for (const curFilter of this.deletedFilters.team.interests) {
         teamFilters.interestsDelete.push(curFilter.teamFilterIdx)
       }
-
       await axios
         .patch(process.env.VUE_APP_API_BASE_URL + '/app/team-filters', JSON.stringify(teamFilters), { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
@@ -471,7 +473,7 @@ export default {
     },
     deleteFilter (matchType, filterType, idx) {
       const curFilter = this.filters[matchType][filterType][idx]
-      if (curFilter.userFilterIdx !== undefined) {
+      if (curFilter.userFilterIdx !== undefined || curFilter.teamFilterIdx !== undefined) {
         this.deletedFilters[matchType][filterType].push(curFilter)
       }
       this.filters[matchType][filterType].splice(idx, 1)
