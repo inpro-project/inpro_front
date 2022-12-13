@@ -56,7 +56,7 @@ export default {
     async sendLike () { // 유저 좋아요
       const likingIdx = this.$store.state.otherteamIdx
       await axios
-        .post(process.env.VUE_APP_API_BASE_URL + '/app/user-likes/' + likingIdx, likingIdx, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
+        .post(process.env.VUE_APP_API_BASE_URL + '/app/team-likes/' + likingIdx, likingIdx, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           console.log(res)
         })
@@ -71,7 +71,7 @@ export default {
     async deleteLike () { // 유저 좋아요 취소
       const likingIdx = this.$store.state.otherteamIdx
       await axios
-        .patch(process.env.VUE_APP_API_BASE_URL + '/app/user-likes/' + likingIdx, likingIdx, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
+        .patch(process.env.VUE_APP_API_BASE_URL + '/app/team-likes/' + likingIdx, likingIdx, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           console.log(res)
         })
@@ -82,7 +82,7 @@ export default {
     async passLike () { // 유저 좋아요 넘기기
       const passingIdx = this.$store.state.otherteamIdx
       await axios
-        .post(process.env.VUE_APP_API_BASE_URL + '/app/user-passes/' + passingIdx, passingIdx, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
+        .post(process.env.VUE_APP_API_BASE_URL + '/app/team-passes/' + passingIdx, passingIdx, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           console.log(res)
         })
@@ -97,7 +97,7 @@ export default {
     async deletepass () { // 유저 넘기기 취소
       const passingIdx = this.$store.state.otherteamIdx
       await axios
-        .patch(process.env.VUE_APP_API_BASE_URL + '/app/user-likes/' + passingIdx, passingIdx, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
+        .patch(process.env.VUE_APP_API_BASE_URL + '/app/team-likes/' + passingIdx, passingIdx, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           console.log(res)
         })

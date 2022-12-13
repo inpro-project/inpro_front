@@ -264,6 +264,8 @@ export default {
         .then(res => {
           this.searchX = res.data.result.searchX.toFixed(1) * 5
           this.searchY = res.data.result.searchY.toFixed(1) * 5
+          console.log('searchX: ' + this.searchX)
+          console.log('searchY: ' + this.searchY)
           this.x = res.data.result.x.toFixed(1) * 5
           this.y = res.data.result.y.toFixed(1) * 5
           this.userName = res.data.result.nickName
