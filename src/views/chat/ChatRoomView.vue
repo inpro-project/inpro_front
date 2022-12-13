@@ -62,7 +62,9 @@ export default {
           MEDIA: 0,
           message: parsedMessage.message
         })
-        setTimeout(() => this.$refs.chatMessage.scrollTo({ top: this.$refs.chatMessage.scrollHeight, behavior: 'smooth' }), 100)
+        setTimeout(() => {
+          this.$refs.chatMessage.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' })
+        }, 100)
       })
       this.stompClient.send('/app/chat/message', JSON.stringify({ type: 'ENTER', roomId: this.roomId, sender: this.userId, message: this.message }), { Authorization: VueCookies.get('Authorization') })
     },
@@ -100,8 +102,8 @@ export default {
 <style  scoped>
   .chat-messages {
     position: static;
-    max-height: 385px;
-    overflow: auto;
+    max-height: 100%;
+    overflow: scroll;
   }
   .chat-wrapper{
     margin-bottom : 50px;
@@ -110,7 +112,7 @@ export default {
     display: none;
   }
   .chat-input {
-    position: absolute;
+    position: fixed;
     right: 0px;
     left: 0px;
     bottom: 70px;
