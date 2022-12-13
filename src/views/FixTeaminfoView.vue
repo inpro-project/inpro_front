@@ -330,12 +330,13 @@ export default {
           console.log(err)
         })
         // 팀 status 각 상태에 따라 다르게 수정되는 patch api 호출
+      const data = {}
       switch (this.statusidx) {
         case 0: console.log(this.status)
           break
         case 1: console.log(this.status) // 수정 되는 상태가 inactive(모집완료)일 때
           await axios
-            .patch(process.env.VUE_APP_API_BASE_URL + '/app/team-deadlines/' + teamIdx, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
+            .patch(process.env.VUE_APP_API_BASE_URL + '/app/team-deadlines/' + teamIdx, JSON.stringify(data), { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
             .then(res => {
               console.log(res.data) // JWT 관련 오류 발생
             })
@@ -345,7 +346,7 @@ export default {
           break
         case 2: console.log(this.status) // 수정 되는 상태가 inactive(모집완료)일 때
           await axios
-            .patch(process.env.VUE_APP_API_BASE_URL + '/app/team-finishes/' + teamIdx, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
+            .patch(process.env.VUE_APP_API_BASE_URL + '/app/team-finishes/' + teamIdx, JSON.stringify(data), { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
             .then(res => {
               console.log(res.data) // JWT 관련 오류 발생
             })
