@@ -47,7 +47,7 @@
 </div>
 
         <!--대댓글-->
-        <div v-for="(rep, index) in comments[idx].replys.length" :key="index">
+        <div v-for="(rep, index) in comments[idx].replys" :key="index">
     <div style="margin-top:10px; margin-bottom:10px; border-style:solid; border-radius:10px; background-color:white; border-width:0px; height:100px; width:100%">
             <img :src= "comments[idx].replys[index].userImgUrl" style="float:left; border-style:solid; border-radius: 30px; background-color: gray; border-width:0px; height:50px; width:50px; position:relative; top:5px; left:10px;">
 <div style="float:left; position:relative; left:20px;line-height:35px;">
@@ -116,12 +116,12 @@ export default {
         .then(res => {
           console.log(res.data)
           this.comments = res.data.result
-          this.comcount = this.comments.length
+          /* this.comcount = this.comments.length
           for (let k = 0; k < this.comcount; k++) {
             this.replcount += this.comments[k].replys.length
           }
           this.commentCount = this.comcount + this.replcount
-          console.log(this.commentCount)
+          console.log(this.commentCount) */
         })
         .catch(err => {
           console.log(err)
@@ -157,7 +157,7 @@ export default {
       this.mycomment = { content: this.content, nickName: this.userName, userImgUrl: this.userImgUrl, createdAt: this.now }
       this.comments.push(this.mycomment)
       await axios
-        .post(process.env.VUE_APP_API_BASE_URL + '/app/comments/', mynewcomment, { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
+        .post(process.env.VUE_APP_API_BASE_URL + '/app/comments/', mynewcomment, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           console.log(res.data)
         })
@@ -183,7 +183,7 @@ export default {
       this.myreply = { content: this.content, nickName: this.userName, userImgUrl: this.userImgUrl, createdAt: this.now }
       this.comments[idx].replys.push(this.myreply)
       await axios
-        .post(process.env.VUE_APP_API_BASE_URL + '/app/comments/', mynewcomment, { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
+        .post(process.env.VUE_APP_API_BASE_URL + '/app/comments/', mynewcomment, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
         })
         .catch(err => {
