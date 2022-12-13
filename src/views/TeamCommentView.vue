@@ -110,9 +110,9 @@ export default {
   },
   methods: {
     getcommentinfodata () {
-      const teamIdx = this.$route.params.teamIdx
+      const teamIdx = this.$store.state.otherteamIdx
       axios
-        .get(process.env.VUE_APP_API_BASE_URL + '/app/comments/' + teamIdx, { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
+        .get(process.env.VUE_APP_API_BASE_URL + '/app/comments/' + teamIdx, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           console.log(res.data)
           this.comments = res.data.result
@@ -144,9 +144,8 @@ export default {
       this.content = p.target.value
     },
     async postnewcomment () { // 새로운 댓글 입력
-      const teamIdx = this.$route.params.teamIdx
-      this.parentIdx = 0
-      const mynewcomment = { content: this.content, parentIdx: this.parentIdx, teamIdx: teamIdx }
+      const teamIdx = this.$store.state.otherteamIdx
+      const mynewcomment = { content: this.content, parentIdx: 0, teamIdx: teamIdx }
       const date = new Date()
       this.year = date.getFullYear() - 2000
       this.hour = date.getHours()
@@ -170,7 +169,7 @@ export default {
       this.content = p.target.value
     },
     async postnewreply (idx) { // 새로운 대댓글 입력
-      const teamIdx = this.$route.params.teamIdx
+      const teamIdx = this.$store.state.otherteamIdx
       this.parentIdx = this.comments[idx].commentIdx
       const mynewcomment = { content: this.content, parentIdx: this.parentIdx, teamIdx: teamIdx }
       const date = new Date()

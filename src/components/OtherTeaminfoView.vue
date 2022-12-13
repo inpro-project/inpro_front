@@ -52,7 +52,7 @@
   </div>
 
   <!--모달 팝업-->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="min-width:390px">
+  <div v-if="teamimgs.length !== 0" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="min-width:390px">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -88,11 +88,37 @@
   </div>
 </div>
   <!--disc좌표평면(구현아직X)(api)-->
-  <div class="border10">
+  <div  class="border10 me-2" style="display:flex; justify-content:center; align-items: center;">
+  <div class="border10" style="display:flex; justify-content:center; align-items: center; border-radius: 50%; border-color: black; border-width:2px;">
+    <div style="position:absolute; bottom:50%; border-style:solid; border-width:0px; width:177px; height:1px; background-color:black"></div>
+    <div style="position:absolute; left:50%; border-style:solid; border-width:0px; width:1px; height:177px; background-color:black"></div>
+    <div style="position:absolute; left: 25%; bottom:60%; font-weight:bold; font-size:24px; color:gray">D</div>
+    <div style="position:absolute; left: 70%; bottom:60%; font-weight:bold; font-size:24px; color:gray">I</div>
+    <div style="position:absolute; left: 70%; bottom:20%; font-weight:bold; font-size:24px; color:gray">S</div>
+    <div style="position:absolute; left: 25%; bottom:20%; font-weight:bold; font-size:24px; color:gray">C</div>
+    <div class="discdot2" :style="{left: this.searchX + 79 + 'px', bottom: this.searchY + 80  + 'px'}"></div> <!--탐색-->
+    <div class="discdot" :style="{ left: this.$store.state.myrepX + 80  + 'px', bottom: this.$store.state.myrepY + 80 + 'px'}"></div> <!--나-->
+    <!--<div class="discdot1" :style="{ left: 80  + 'px', bottom: 80  + 'px'}"></div>-->
+  </div>
+</div>
+
+  <div class=" inner" style="width:100%; height:0px">
+  </div>
+
+  <!--각 점의 설명-->
+  <div style="width:100%; display:flex; align-items:center; justify-content:space-between">
+  <div class = "discdot2explain ms-4"></div>
+  <div style="position:relative; left:-5%; color: gray;">팀장의 탐색 지표</div>
+  <div class = "discdotexplain"></div>
+  <div class="explain me-3" style="position:relative; left:-5%; color: gray;">나의 DISC 지표</div>
   </div>
 
   <div class=" inner" style="width:100%; height:0px">
   </div>
+
+  <!--일치율 -->
+<div style="width:100%; height:30px; font-weight:bold; font-size:18px">회원님이 팀장의 이상향과 {{percent}}% 일치합니다!</div>
+
   <!--이름-->
       <div class="nas" style="height:max-content; margin-top: 20px;">
         <div class="username fw-bold" style="position: relative; left:20px; margin-right: 35px; font-size: 28px;">
@@ -239,12 +265,17 @@ export default {
       memberregion: [],
       memberinterests: [],
       memberoccupation: [],
-      memberuseridx: []
+      memberuseridx: [],
+      userDiscX: 0,
+      userDiscY: 0,
+      searchX: 0,
+      searchY: 0,
+      percent: 0
     }
   },
   methods: {
     getuserinfodata () {
-      const teamIdx = this.$route.params.teamIdx
+      const teamIdx = this.$store.state.otherteamIdx
       axios
         .get(process.env.VUE_APP_API_BASE_URL + '/app/teams/' + teamIdx, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
@@ -262,6 +293,12 @@ export default {
           this.title = this.teamportfolio.title
           this.type = this.teamportfolio.type
           this.status = this.teamportfolio.status
+          this.searchX = Number(this.teamportfolio.searchDiscAndPercent.x).toFixed(1) * 5
+          this.searchY = Number(this.teamportfolio.searchDiscAndPercent.y).toFixed(1) * 5
+          this.percent = this.teamportfolio.searchDiscAndPercent.percent
+          console.log('searchX: ' + this.searchX)
+          console.log('searchY: ' + this.searchY)
+
           this.$emit('setChatRoomIdx', this.teamportfolio.chatRoomIdx)
           if (this.status === 'active') {
             this.status = '모집중'
@@ -280,31 +317,21 @@ export default {
             this.memberuseridx.push(this.members[i].userIdx)
             this.memberrole.push(this.members[i].role)
           }
-          console.log(res.data)
-          console.log(this.teamportfolio)
-          console.log(this.memberimgurl[0])
-          console.log(this.memberagerange)
-          console.log(this.memberinterests)
-          console.log(this.membernickname)
-          console.log(this.memberoccupation)
-          console.log(this.memberregion)
-          console.log(this.memberuseridx)
-          console.log(this.memberrole)
         })
         .catch(err => {
           console.log(err)
         })
     },
     gotoprofile (idx) {
-      const userIdx = this.memberuseridx[idx]
-      this.$router.push({ name: 'otheruserinfo', params: { userIdx: userIdx } })
+      this.$store.state.otheruserIdx = this.memberuseridx[idx]
+      this.$router.push({ name: 'otheruserinfo' })
     },
     gotocomment () {
-      const teamIdx = this.$route.params.teamIdx
+      const teamIdx = this.$store.state.otherteamIdx
       this.$router.push({ name: 'teamcomment', params: { teamIdx: teamIdx } })
     },
     getimg () { // 팀 이미지 정보
-      const teamIdx = this.$route.params.teamIdx
+      const teamIdx = this.$store.state.otherteamIdx
       axios
         .get(process.env.VUE_APP_API_BASE_URL + '/app/team-imgs/' + teamIdx, { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
         .then(res => {
@@ -323,7 +350,7 @@ export default {
         })
     },
     gotoreview () {
-      const teamIdx = this.$route.params.teamIdx
+      const teamIdx = this.$store.state.otherteamIdx
       this.$router.push({ name: 'teamreview', params: { teamIdx: teamIdx } })
     }
   },
@@ -359,8 +386,8 @@ export default {
   border-color: #c0c0c0;
   background-color: #c0c0c0;
   border-width: 1px;
-  width: 180px;
-  height: 180px;
+  width: 181px;
+  height: 181px;
 }
 
 .nas{
@@ -392,5 +419,48 @@ position: relative;
 }
 .upperitems{
   margin-left: 10px;
+}
+
+.discdot {
+  border-radius:10px;
+  position:absolute;
+  height:13px;
+  width:13px;
+  border-width:0px;
+  background-color: red;
+}
+
+.discdotexplain {
+  border-radius:10px;
+  position:relative;
+  height:13px;
+  width:13px;
+  border-width:0px;
+  background-color: red;
+}
+
+.discdot1 {
+  border-radius:10px;
+  position:absolute;
+  height:13px;
+  width:13px;
+  border-width:0px;
+  background-color: blue;
+}
+
+.discdot2 {
+  position:absolute;
+  height:17px;
+  width:17px;
+  border-width:0px;
+  background-color: yellow;
+}
+
+.discdot2explain {
+  position:relative;
+  height:17px;
+  width:17px;
+  border-width:0px;
+  background-color: yellow;
 }
 </style>

@@ -128,21 +128,21 @@ export default {
     },
     showperson () {
       this.$store.state.otheruserIdx = this.$store.state.userIdx[this.$store.state.personcounter]
-      console.log(this.$store.state.otheruserIdx)
       this.$router.push({ name: 'showperson' })
     },
     showteam () {
-      this.$store.state.otherteamIdx = this.$store.state.userIdx[this.$store.state.teamcounter]
+      this.$store.state.otherteamIdx = this.$store.state.teamIdx[this.$store.state.teamcounter]
       this.$router.push({ name: 'showteam' })
     },
     async loadidx () {
       await this.$store.dispatch('GET_PERSON') // vuex에서 추천 회원 정보 얻어옴
       await this.$store.dispatch('GET_TEAM') // vuex에서 추천 팀 정보 얻어옴
       this.$store.state.personcounter = '0'
+      this.$store.state.teamcounter = '0'
       console.log(this.$store.state.userIdx)
       console.log(this.$store.state.teamIdx)
-      console.log(this.$store.state.personcounter)
-      console.log(this.$store.state.teamcounter)
+      console.log('Vuex x: ' + this.$store.state.myrepX)
+      console.log('Vuex y: ' + this.$store.state.myrepY)
     }
   }
 }
