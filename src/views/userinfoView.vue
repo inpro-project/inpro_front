@@ -33,10 +33,23 @@
   </div>
   <!--disc좌표평면-->
   <div  class="border10 me-2" style="display:flex; justify-content:center; align-items: center;">
-  <div class="border10" style="display:flex; justify-content:center; align-items: center; border-radius: 50%; border-color: black; border-width:2px;">
-        <button class="discdot" :style="{ left: this.x + 'px', bottom: this.y + 'px'}"></button>
+  <div class="border10" style="border-radius: 50%; border-color: black; border-width:2px;">
+    <div style="position:absolute; bottom:50%; border-style:solid; border-width:0px; width:177px; height:1px; background-color:black"></div>
+    <div style="position:absolute; left:50%; border-style:solid; border-width:0px; width:1px; height:177px; background-color:black"></div>
+    <div style="position:absolute; left: 25%; bottom:60%; font-weight:bold; font-size:24px; color:gray">D</div>
+    <div style="position:absolute; left: 70%; bottom:60%; font-weight:bold; font-size:24px; color:gray">I</div>
+    <div style="position:absolute; left: 70%; bottom:20%; font-weight:bold; font-size:24px; color:gray">S</div>
+    <div style="position:absolute; left: 25%; bottom:20%; font-weight:bold; font-size:24px; color:gray">C</div>
+        <div class="discdot" :style="{ left: this.x + 80 + 'px', bottom: this.y + 80 + 'px'}"></div>
   </div>
 </div>
+
+  <div class=" inner" style="width:100%; height:10px">
+  </div>
+  <div style="width:100%; display:flex; align-items:center; justify-content:center">
+  <div class = "discdotexplain"></div>
+  <div class="explain ms-3" style="position:relative; left:-25%; color: gray;">나의 DISC 지표</div>
+  </div>
 
   <div class=" inner" style="width:100%; height:10px">
   </div>
@@ -246,7 +259,14 @@ export default {
         .get(process.env.VUE_APP_API_BASE_URL + '/app/profiles', { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           console.log(res.data.result)
-          console.log('myIdx: ' + this.$store.state.myIdx)
+          this.x = res.data.result.x.toFixed(1) * 5
+          this.y = res.data.result.y.toFixed(1) * 5
+          console.log(this.x)
+          console.log(this.y)
+          this.$store.state.myrepX = this.x
+          this.$store.state.myrepY = this.y
+          console.log('vuex x: ' + this.$store.state.myrepX)
+          console.log('vuex y: ' + this.$store.state.myrepY)
           this.userTags = res.data.result.userTags ? res.data.result.userTags : []
           this.userName = res.data.result.nickName
           this.gender = res.data.result.gender
@@ -266,28 +286,6 @@ export default {
           console.log(err)
         })
     },
-    getData () {
-      console.log(VueCookies.get('Authorization'))
-      const userDiscIdx = this.$store.state.myIdx
-      axios
-        .get(process.env.VUE_APP_API_BASE_URL + '/app/user-discs/' + userDiscIdx, { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
-        .then(res => {
-          console.log(res.data)
-          this.discTestResult = res.data.result
-          this.x = res.data.result.x.toFixed(1) * 5
-          this.y = res.data.result.y.toFixed(1) * 5
-          console.log(this.discTestResult)
-          // console.log(this.x)
-          // console.log(this.y)
-          this.$store.state.myrepX = this.x
-          this.$store.state.myrepY = this.y
-          console.log(this.$store.state.myrepX)
-          console.log(this.$store.state.myrepY)
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
     checkLogin () {
       if (VueCookies.get('Authorization') === null || VueCookies.get('userIdx') === null) {
         this.$router.push({ name: 'kakaologin' })
@@ -298,7 +296,7 @@ export default {
     // 미리 api에서 조회 데이터 가져옴
     this.checkLogin()
     this.getuserinfodata()
-    this.getData()
+    // this.getData()
   }
 }
 
@@ -323,8 +321,8 @@ export default {
   border-color: #c0c0c0;
   background-color: #c0c0c0;
   border-width: 1px;
-  width: 180px;
-  height: 180px;
+  width: 181px;
+  height: 181px;
 }
 
 .nas{
@@ -406,10 +404,19 @@ position: relative;
 
 .discdot {
   border-radius:10px;
-  position:relative;
+  position:absolute;
   height:13px;
-  width:5px;
+  width:13px;
   border-width:0px;
   background-color: red;
+}
+.discdotexplain {
+  border-radius:10px;
+  position:relative;
+  height:13px;
+  width:13px;
+  border-width:0px;
+  background-color: red;
+  left:-25%;
 }
 </style>

@@ -32,6 +32,12 @@
         </div>
     </div>
     <br/>
+    <router-link to="/mainmenu">
+  <button class="btn" type="button" style="background-color: #4a60d4; color: white; height:50px; width:80%; border-radius:15px; font-size:17px; font-weight: bold; line-height: 20px;" @click="gotomenu">메인화면으로 가기</button>
+</router-link>
+    <br/>
+    <br/>
+    <br/>
     <br/>
     <br/>
     <br/>
@@ -80,7 +86,15 @@ export default {
       this.results.filter((p) => p.isRepDisc === 'Y')[0].isRepDisc = 'N'
       this.results[idx].isRepDisc = 'Y'
       this.$store.state.myIdx = this.results.filter((p) => p.isRepDisc === 'Y')[0].userDiscIdx // 내 대표 disc로 지정
+      console.log(this.results)
       console.log('myIdx: ' + this.$store.state.myIdx)
+    },
+    gotomenu () {
+      if (this.$store.state.personfilter.length === 0 | this.$store.state.teamfilter.length === 0) { // 팀 또는 팀원 필터링이 없을 때
+        this.$router.push({ name: '/filtering' }) // 필터링 실시
+      } else {
+        this.$router.push({ name: 'mainmenu' }) // 메뉴로 이동
+      }
     }
   },
   created () {

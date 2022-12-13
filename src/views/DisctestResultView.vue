@@ -98,8 +98,8 @@
 <br/>
 <br/>
 <br/>
-<router-link to="/mainmenu">
-  <button class="btn" type="submit" style="background-color: #4a60d4; color: white; height:50px; width:80%; border-radius:15px; font-size:17px; font-weight: bold; line-height: 20px;">메인화면으로 가기</button>
+<router-link to="/disctestresultlist">
+  <button class="btn" type="submit" style="background-color: #4a60d4; color: white; height:50px; width:80%; border-radius:15px; font-size:17px; font-weight: bold; line-height: 20px;">나의 DISC 목록으로 가기</button>
 </router-link>
     <br/>
     <br/>

@@ -72,7 +72,7 @@ const routes = [
         component: () => import(/* webpackChunkName: "disctestresult" */ '../views/DisctestResultView.vue')
       },
       {
-        path: '/disctestresultlist/',
+        path: '/disctestresultlist',
         name: 'disctestresultlist',
         component: () => import(/* webpackChunkName: "disctestresultlist" */ '../views/DisctestResultListView.vue')
       },
@@ -105,6 +105,21 @@ const routes = [
         path: '/urllist',
         name: 'urllist',
         component: () => import(/* webpackChunkName: "fixurllist" */ '../views/UrlListView.vue')
+      },
+      {
+        path: '/otherworklist/:userIdx',
+        name: 'otherworklist',
+        component: () => import(/* webpackChunkName: "fixworklist" */ '../views/OtherWorkListView.vue')
+      },
+      {
+        path: '/otherwinlist/:userIdx',
+        name: 'otherwinlist',
+        component: () => import(/* webpackChunkName: "fixwinlist" */ '../views/OtherWinListView.vue')
+      },
+      {
+        path: '/otherurllist/:userIdx',
+        name: 'otherurllist',
+        component: () => import(/* webpackChunkName: "fixurllist" */ '../views/OtherUrlListView.vue')
       },
       {
         path: '/filtering',
