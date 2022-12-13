@@ -137,12 +137,6 @@ const routes = [
         component: () => import(/* webpackChunkName: "showteam" */ '../views/ShowTeamView.vue')
       },
       {
-        path: '/memberbox',
-        name: 'memberbox',
-        component: () => import(/* webpackChunkName: "memberbox" */ '../components/layout/MemberBox.vue')
-        // 임시 테스트용 멤버 박스
-      },
-      {
         path: '/melikeuser',
         name: 'melikeuser',
         component: () => import(/* webpackChunkName: "likeinfo" */ '../views/likeinfo/MeLikeUserView.vue')

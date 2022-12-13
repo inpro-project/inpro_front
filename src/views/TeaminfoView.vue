@@ -214,7 +214,7 @@ export default {
   methods: {
     getuserinfodata () {
       axios
-        .get('http://prod.inpro-server.shop:9000/app/teams/1', { headers: { 'Content-Type': 'application/json', Authorization: 'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2Njg3NTkzMjIsImV4cCI6MTY3MDIzMDU1MX0.uETLHjg2EDpy3KEmpRgVGcMw-vv2bvImh_Dpdj4RTtc' } })
+        .get('http://prod.inpro-server.shop:9000/app/teams/1', { headers: { 'Content-Type': 'application/json', Authorization: VueCookies.get('Authorization') } })
         .then(res => {
           console.log(res.data)
           this.teamportfolio = res.data.result[0]
